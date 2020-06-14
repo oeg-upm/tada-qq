@@ -197,7 +197,7 @@ for line in f.readlines():
         a.append(float(line))
 f.close()
 b = []
-f = open("local_sample2_n100.txt")
+f = open("local_sample2_n1000.txt")
 for line in f.readlines():
     if line.strip()!="":
         b.append(float(line))
