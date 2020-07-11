@@ -1,3 +1,5 @@
+import numpy as np
+from sklearn.metrics import mean_squared_error
 
 # def f():
 #     sample_data = [2,1,3.4,-2,-1.1]
@@ -26,10 +28,14 @@ class QQE(object):
 
     def __init__(self, sample_data):
         self.sample_base = sample_data
+        self.sample_base = self._remove_duplicates(self.sample_base)
         self.sample_base.sort()
         self.estimated_base_eq = self._estimate_base_quantiles(self.sample_base)
         self.ms = self._compute_ms(self.sample_base, self.estimated_base_eq)
         self.bs = self._compute_bs(self.sample_base, self.estimated_base_eq, self.ms)  # estimate the b shift
+
+    def _remove_duplicates(self, data):
+        return list(set(data))
 
     def _estimate_base_quantiles(self, sorted_data):
         """
@@ -42,7 +48,7 @@ class QQE(object):
         for i0, d in enumerate(sorted_data):
             i = i0 + 1  # as the formula starts from i = 1
             q = (i - 0.5) / n
-            print("x = %2.2f    y = %2.2f   " % (d, q))
+            # print("x = %2.2f    y = %2.2f   " % (d, q))
             #print(q)
             eq.append(q)
         return eq
@@ -53,10 +59,11 @@ class QQE(object):
         :return:
         """
         predicted_quantiles = []
+        clean_data = self._remove_duplicates(data)
         print("\nPredicted quantiles: ")
-        for d in sorted(data):
+        for d in sorted(clean_data):
             y = self.estimate_datum_quantile(d)
-            print("x = %2.2f    y = %2.2f" % (d, y))
+            # print("x = %2.2f    y = %2.2f" % (d, y))
             #print(y)
             predicted_quantiles.append(y)
         return predicted_quantiles
@@ -110,14 +117,22 @@ class QQE(object):
             x2 = sample_data[i+1]
             y1 = quantiles[i]
             y2 = quantiles[i+1]
-            m = (y2 - y1) / (x2 - x1)
-            print("m = %2.2f    x1 = %2.2f   x2 = %2.2f  y1 = %2.2f  y2 = %2.2f" % (m, x1, x2, y1, y2))
+            dx = (x2 - x1)
+            dy = (y2 - y1)
+            #m = (y2 - y1) / (x2 - x1)
+            if dx == 0:
+                print("error: "+str(x2))
+                m = (y2 - y1) / (x2 - x1)
+            else:
+                m = dy / dx
+            # print("m = %2.2f    x1 = %2.2f   x2 = %2.2f  y1 = %2.2f  y2 = %2.2f" % (m, x1, x2, y1, y2))
             # print(m)
             ms.append(m)
         return ms
 
     def _compute_bs(self, sample_data, quantiles, slopes):
         """
+        y = mx + b
         compute the b shift for the linear equation
         :param sample_data:
         :param quantiles:
@@ -130,6 +145,49 @@ class QQE(object):
             bs.append(b)
         return bs
 
+    def compute_and_draw(self, sample):
+        import pandas as pd
+        import matplotlib
+        matplotlib.use('TkAgg')
+        import matplotlib.pyplot as plt
+        import seaborn as sns
+
+        # qqe = QQE(a)
+        # base_quantiles = qqe.estimated_base_eq
+        # predicted_quantiles = qqe.estimate_sample_quantiles(b)
+        # adjusted_quantiles = qqe.get_adjusted_base_quantiles(len(predicted_quantiles))
+
+        predicted_quantiles = self.estimate_sample_quantiles(sample)
+        y = predicted_quantiles
+        x = self.get_adjusted_base_quantiles(len(predicted_quantiles))
+        err_sq = mean_squared_error(x,y)
+        print("squared error: "+str(err_sq))
+        err = mean_errors(y,x)
+        print("errors mean: "+str(err))
+        df = pd.DataFrame(zip(x, y), columns=["x", "y"])
+        # print(df)
+        # sns.lmplot(x="x", y="y", data=df)
+        ax = sns.scatterplot(x="x", y="y", data=df, linewidth=0.05)
+        ax = sns.lineplot(x="x", y="y", color='red', data=pd.DataFrame(zip([0, 1], [0, 1]), columns=["x", "y"]), ax=ax)
+        # plt.savefig('fig.eps', format='eps')
+        plt.show()
+
+
+def mean_errors(y_pred, y_real):
+    """
+    :param y_pred:
+    :param y_real:
+    :return:
+    """
+    if len(y_pred) != len(y_real):
+        print("Error, unmatched number of ys")
+        return None
+    tot_err = 0.0
+    for i in range(len(y_pred)):
+        tot_err += abs(y_pred[i]-y_real[i])
+    mean_tot_err = tot_err/len(y_pred)
+    return mean_tot_err
+
 
 def draw(x, y):
     import pandas as pd
@@ -140,10 +198,11 @@ def draw(x, y):
     import matplotlib.pyplot as plt
     import seaborn as sns
     df = pd.DataFrame(zip(x,y), columns=["x","y"])
-    print(df)
+    # print(df)
     # sns.lmplot(x="x", y="y", data=df)
-    sns.scatterplot(x="x", y="y", data=df, linewidth=0.2)
-    sns.lineplot(x="x", y="y", color='red', data=pd.DataFrame(zip([0,1],[0,1]), columns=["x","y"]))
+    ax = sns.scatterplot(x="x", y="y", data=df, linewidth=0.05)
+    ax = sns.lineplot(x="x", y="y", color='red', data=pd.DataFrame(zip([0,1],[0,1]), columns=["x","y"]), ax=ax)
+    # plt.savefig('fig.eps', format='eps')
     plt.show()
 
 
@@ -162,7 +221,6 @@ def draw(x, y):
     # g.set_axis_labels("Total bill (US Dollars)", "Tip");
     # g.set(xticks=[10, 30, 50], yticks=[2, 6, 10]);
     #g.fig.subplots_adjust(wspace=.02, hspace=.02)
-
 
 
 # a = [
@@ -190,42 +248,75 @@ def draw(x, y):
 # 1.78746177,
 # 2.67267751
 # ]
-a = []
-f = open("local_sample1_n1000.txt")
-for line in f.readlines():
-    if line.strip()!="":
-        a.append(float(line))
-f.close()
-b = []
-f = open("local_sample2_n1000.txt")
-for line in f.readlines():
-    if line.strip()!="":
-        b.append(float(line))
-f.close()
 
+def get_data(fname):
+    """
+    :param fname:
+    :return:
+    """
+    a = []
+    f = open(fname)
+    for line in f.readlines():
+        if line.strip() != "":
+            a.append(float(line))
+    f.close()
+    return a
+
+
+def get_stats(data):
+    mean = np.mean(data)
+    median = np.median(data)
+    std = np.std(data)
+    print("mean: "+str(mean))
+    print("median: "+str(median))
+    print("std: "+str(std))
+# a = []
+# f = open("local_sample1_n1000.txt")
+# for line in f.readlines():
+#     if line.strip()!="":
+#         a.append(float(line))
+# f.close()
+# b = []
+# f = open("local_sample2_n1000.txt")
+# for line in f.readlines():
+#     if line.strip()!="":
+#         b.append(float(line))
+# f.close()
+
+# a = get_data("local_sample1_n1000.txt")
+# b = get_data("local_sample2_n1000.txt")
+# a = get_data("local_normal_n10000_m3_s2.txt")
+# b = get_data("local_normal_n10000_2.txt")
+a = get_data("local_dbpedia.org-ontology-Person-height - dbpedia.org-ontology-BasketballPlayer.txt")
+#b = get_data("local_dbpedia.org-ontology-Person-height - dbpedia.org-ontology-SoccerPlayer.txt")
+#b = get_data("local_dbpedia.org-ontology-Person-height - dbpedia.org-ontology-BasketballPlayer.txt")
+b = get_data("local_olympic_basketball_height_cm.txt")
+get_stats(a)
+get_stats(b)
 qqe = QQE(a)
-base_quantiles = qqe.estimated_base_eq
-predicted_quantiles = qqe.estimate_sample_quantiles(b)
-adjusted_quantiles = qqe.get_adjusted_base_quantiles(len(predicted_quantiles))
-
-
-print("\n\nBase quantiles: ")
-for q in base_quantiles:
-    print q
-print("\n\nBase quantiles adjusted: ")
-for q in adjusted_quantiles:
-    print q
-print("\nPredicted quantiles: ")
-for q in predicted_quantiles:
-    print q
-print("\nQuantiles diff: ")
-for q1,q2 in zip(adjusted_quantiles, predicted_quantiles):
-    print(abs(q1-q2))
-# print("Sample A: ")
-# estimate_quantiles(a)
-# print("Sample B: ")
-# estimate_quantiles(b)
-
+qqe.compute_and_draw(b)
+# qqe = QQE(a)
+# base_quantiles = qqe.estimated_base_eq
+# predicted_quantiles = qqe.estimate_sample_quantiles(b)
+# adjusted_quantiles = qqe.get_adjusted_base_quantiles(len(predicted_quantiles))
+#
+#
+# print("\n\nBase quantiles: ")
+# for q in base_quantiles:
+#     print q
+# print("\n\nBase quantiles adjusted: ")
+# for q in adjusted_quantiles:
+#     print q
+# print("\nPredicted quantiles: ")
+# for q in predicted_quantiles:
+#     print q
+# print("\nQuantiles diff: ")
+# for q1,q2 in zip(adjusted_quantiles, predicted_quantiles):
+#     print(abs(q1-q2))
+# # print("Sample A: ")
+# # estimate_quantiles(a)
+# # print("Sample B: ")
+# # estimate_quantiles(b)
+#
 #draw(base_quantiles, predicted_quantiles)
-draw(qqe.get_adjusted_base_quantiles(len(predicted_quantiles)), predicted_quantiles)
-
+# draw(qqe.get_adjusted_base_quantiles(len(predicted_quantiles)), predicted_quantiles)

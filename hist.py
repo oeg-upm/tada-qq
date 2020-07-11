@@ -10,7 +10,6 @@ from scipy import stats
 
 
 def poisson():
-
     a = []
     f = open("local_poisson_n1000_l2.txt")
     for line in f.readlines():
@@ -109,7 +108,7 @@ def noise_scatter():
     # ax.set_xlabel("")
     plt.show()
 
-noise_scatter()
+# noise_scatter()
 # noise()
 # normal()
 # poisson()
