@@ -58,7 +58,7 @@ class QQE(object):
         """
         predicted_quantiles = []
         clean_data = self._remove_duplicates(data)
-        print("\nPredicted quantiles: ")
+        # print("\nPredicted quantiles: ")
         for d in sorted(clean_data):
             y = self.estimate_datum_quantile(d)
             # print("x = %2.2f    y = %2.2f" % (d, y))

@@ -3,14 +3,21 @@ import logging
 from qqe import QQE
 from easysparql import easysparql
 from dist import get_data
+import pandas as pd
+from pandas.api.types import is_numeric_dtype
+from datetime import datetime
 
 data_dir = "local_data"
 
+# The minimum number of objects for a numeric property
+MIN_NUM_OBJ = 30
+
 
 def get_logger(name, level=logging.INFO):
-    # logging.basicConfig(level=level)
     logger = logging.getLogger(name)
     handler = logging.StreamHandler()
+    formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
+    handler.setFormatter(formatter)
     logger.addHandler(handler)
     logger.setLevel(level)
     return logger
@@ -39,7 +46,7 @@ def uri_to_fname(uri):
 
 
 def save_objects(data_dir, class_uri, property_uri, objects):
-    fdir = os.path.join(data_dir, uri_to_fname(class_uri), uri_to_fname(property_uri))
+    fdir = os.path.join(data_dir, uri_to_fname(class_uri), uri_to_fname(property_uri)) + ".txt"
     # fname = uri_to_fname(class_uri) + " - " + uri_to_fname(property_uri)
     lines = [str(o) for o in objects]
     txt = "\n".join(lines)
@@ -80,12 +87,12 @@ def collect_numeric_data(class_uri, endpoint):
                 logger.debug('No results for the query: '+query)
                 continue
             objects = [r['o']['value'] for r in results]
-            if len(objects) >= 30:
+            if len(objects) >= MIN_NUM_OBJ:
                 nums = easysparql.get_numerics_from_list(objects, 0.5)
                 if nums is None:
                     logger.debug('property is not numeric: '+prop)
                     continue
-                elif len(nums) >= 30:
+                elif len(nums) >= MIN_NUM_OBJ:
                     logger.debug('saving property: '+prop)
                     save_objects(data_dir, class_uri, prop, nums)
                 else:
@@ -108,19 +115,121 @@ def aaa():
     for fname in fnames:
         sample = get_data(os.path.join(data_dir, fname))
         err = qqe.compute_error_mean(sample, remove_outliers=True)
-        print("mean: "+(str(err))+"  - "+fname)
+        logger.debug("mean: "+(str(err))+"  - "+fname)
         item = (err, fname)
         errs.append(item)
 
     errs.sort()
     for item in errs:
-        print("err: "+str(item[0]) + "  - " + item[1])
+        logger.debug("err: "+str(item[0]) + "  - " + item[1])
 
 
-DBPEDIA_ENDPOINT = "https://dbpedia.org/sparql"
-basketball_player_uri = "http://dbpedia.org/ontology/BasketballPlayer"
-collect_numeric_data(basketball_player_uri, DBPEDIA_ENDPOINT)
-aaa()
+def get_candidate_properties(class_uri, sample_data):
+    """
+    :param class_uri:
+    :param sample_data:
+    :return: list of pairs. each pair os composed of (mean_err, prop-fname)
+    """
+    global data_dir
+    class_fname = uri_to_fname(class_uri)
+    class_dir = os.path.join(data_dir, class_fname)
+    logger.debug("sample data: ")
+    logger.debug(sample_data)
+    qqe = QQE(sample_data)
+    fnames = [f for f in os.listdir(class_dir) if os.path.isfile(os.path.join(class_dir, f))]
+    # fnames = [f for f in fnames if f[:-4] == ".txt"]
+    logger.debug("fnames: ")
+    logger.debug(fnames)
+    errs = []
+    for f in fnames:
+        prop_dir = os.path.join(class_dir, f)
+        prop_data = get_data(prop_dir)
+        err = qqe.compute_error_mean(prop_data, remove_outliers=True)
+        item = (err, f)
+        errs.append(item)
+        # print(item)
+
+    errs.sort()
+    return errs
+
+
+def annotate_file(fdir, class_uri, endpoint, remove_outliers):
+    global data_dir
+    collect_numeric_data(class_uri=class_uri, endpoint=endpoint)
+    num_cols = get_numeric_columns(fdir)
+    class_dir = os.path.join(data_dir, uri_to_fname(class_uri))
+    properties_files = [f for f in os.listdir(class_dir) if os.path.isfile(os.path.join(class_dir, f))]
+    logger.debug("File: "+fdir.split('/')[-1])
+    for colobj in num_cols:
+        colid, coldata = colobj
+        logger.debug('Column: ' + str(colid))
+        annotate_column(col=coldata, properties_files=properties_files, remove_outliers=remove_outliers)
+
+
+def annotate_column(col, properties_files, remove_outliers):
+    qqe = QQE(col)
+    errs = []
+    for prop_f in properties_files:
+        objects = get_data(os.path.join(data_dir, prop_f))
+        err = qqe.compute_error_mean(objects, remove_outliers=remove_outliers)
+        item = (err, prop_f)
+        errs.append(item)
+    errs.sort()
+    for idx, item in enumerate(errs):
+        logger.debug(str(idx+1)+" err: "+str(item[0]) + "  - " + item[1])
+
+
+def get_numeric_columns(fdir):
+    """
+    :param fdir:
+    :return: list of the pair (colid, list)
+    """
+    df = pd.read_csv(fdir)
+    numeric_cols = []
+    for col in df:
+        if is_numeric_dtype(col):
+            pair = (col, list(df[col]))
+            numeric_cols.append(pair)
+    return numeric_cols
+
+
+def annotate_olympic_games(endpoint, remove_outliers):
+    olympic_games_dir = 'olympic_games'
+    olympic_games_data_dir = os.path.join(data_dir, olympic_games_dir, 'data')
+    meta_dir = os.path.join(data_dir, olympic_games_dir, 'meta.csv')
+    f = open(meta_dir)
+    for line in f.readlines():
+        atts = line.split(',')
+        if len(atts) > 1:
+            fname = atts[0].strip()
+            class_uri = atts[1].strip()
+            fdir = os.path.join(olympic_games_data_dir, fname)
+            annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers, endpoint=endpoint)
+
+
+a = datetime.now()
+
+annotate_olympic_games(endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql', remove_outliers=True)
+
+b = datetime.now()
+
+
+print(b-a)
+print((b-a).total_seconds())
+print((b-a).total_seconds()/60.0)
+
+
+# DBPEDIA_ENDPOINT = "https://dbpedia.org/sparql"
+# basketball_player_uri = "http://dbpedia.org/ontology/BasketballPlayer"
+# collect_numeric_data(basketball_player_uri, DBPEDIA_ENDPOINT)
+# aaa()
+
+# errs = get_candidate_properties('http://dbpedia.org/ontology/BasketballPlayer',
+#                                 get_data("local_olympic_basketball_height_cm.txt"))
+#
+# for e in errs:
+#     print("%.4f\t %s" % (e[0], e[1]))
+
 # DBPEDIA_ENDPOINT = "https://dbpedia.org/sparql"
 #
 # basketball_player_uri = "http://dbpedia.org/ontology/BasketballPlayer"
