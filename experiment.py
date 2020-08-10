@@ -15,8 +15,8 @@ MIN_NUM_OBJ = 30
 
 def get_logger(name, level=logging.INFO):
     logger = logging.getLogger(name)
-    handler = logging.StreamHandler()
     formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
+    handler = logging.StreamHandler()
     handler.setFormatter(formatter)
     logger.addHandler(handler)
     logger.setLevel(level)
@@ -56,54 +56,110 @@ def save_objects(data_dir, class_uri, property_uri, objects):
 
 
 def data_exists(data_dir, class_uri, property_uri):
+    print("data_dir: ")
+    print(data_dir)
+    print("class uri: ")
+    print(class_uri)
+    print("property uri: ")
+    print(property_uri)
     fdir = os.path.join(data_dir, uri_to_fname(class_uri), uri_to_fname(property_uri))
     file_exists = os.path.exists(fdir)
     return file_exists
 
 
+# def collect_numeric_data(class_uri, endpoint):
+#     query_template = """select ?o where{
+#         ?s a <%s>.
+#         ?s <%s> ?o.
+#     }
+#     """
+#     create_dir(data_dir)
+#     class_dir = os.path.join(data_dir, uri_to_fname(class_uri))
+#     if os.path.exists(class_dir):
+#         return
+#     create_dir(class_dir)
+#     subjects = easysparql.get_subjects(class_uri=class_uri, endpoint=endpoint)
+#     logger.debug('num of subjects is: '+str(len(subjects)))
+#     total_num = len(subjects)
+#     for idx, subject in enumerate(subjects):
+#         logger.debug(" %d from %d" % (idx, total_num))
+#         properties = easysparql.get_properties_of_subject(subject_uri=subject, endpoint=endpoint)
+#         for prop in properties:
+#             if data_exists(data_dir=data_dir,class_uri=class_uri, property_uri=prop):
+#                 continue
+#             query = query_template % (class_uri, prop)
+#             results = easysparql.run_query(query=query, endpoint=endpoint)
+#             if results is None:
+#                 logger.debug('No results for the query: '+query)
+#                 continue
+#             objects = [r['o']['value'] for r in results]
+#             if len(objects) >= MIN_NUM_OBJ:
+#                 nums = easysparql.get_numerics_from_list(objects, 0.5)
+#                 if nums is None:
+#                     logger.debug('property is not numeric: '+prop)
+#                     continue
+#                 elif len(nums) >= MIN_NUM_OBJ:
+#                     logger.debug('saving property: '+prop)
+#                     save_objects(data_dir, class_uri, prop, nums)
+#                 else:
+#                     logger.debug("less than 30 numeric values: "+prop)
+#             else:
+#                 logger.debug('less than 30 objects: '+prop)
+#
+#     # for each, get properties
+#     # for each, get count
+#     # check if numeric
+#     # for numerics, if count > 30, consider
+
+
 def collect_numeric_data(class_uri, endpoint):
+    """
+    :param class_uri:
+    :param endpoint:
+    :return:
+    """
+
+    prop_query = """select distinct ?p where{
+        ?s a <%s>.
+        ?s ?p ?o.
+    }
+    """ % (class_uri)
+
     query_template = """select ?o where{
         ?s a <%s>.
         ?s <%s> ?o.
     }
     """
+
     create_dir(data_dir)
     class_dir = os.path.join(data_dir, uri_to_fname(class_uri))
     if os.path.exists(class_dir):
         return
     create_dir(class_dir)
-    subjects = easysparql.get_subjects(class_uri=class_uri, endpoint=endpoint)
-    logger.debug('num of subjects is: '+str(len(subjects)))
-    total_num = len(subjects)
-    for idx, subject in enumerate(subjects):
-        logger.debug(" %d from %d" % (idx, total_num))
-        properties = easysparql.get_properties_of_subject(subject_uri=subject, endpoint=endpoint)
-        for prop in properties:
-            if data_exists(data_dir=data_dir,class_uri=class_uri, property_uri=prop):
-                continue
-            query = query_template % (class_uri, prop)
-            results = easysparql.run_query(query=query, endpoint=endpoint)
-            if results is None:
-                logger.debug('No results for the query: '+query)
-                continue
-            objects = [r['o']['value'] for r in results]
-            if len(objects) >= MIN_NUM_OBJ:
-                nums = easysparql.get_numerics_from_list(objects, 0.5)
-                if nums is None:
-                    logger.debug('property is not numeric: '+prop)
-                    continue
-                elif len(nums) >= MIN_NUM_OBJ:
-                    logger.debug('saving property: '+prop)
-                    save_objects(data_dir, class_uri, prop, nums)
-                else:
-                    logger.debug("less than 30 numeric values: "+prop)
-            else:
-                logger.debug('less than 30 objects: '+prop)
 
-    # for each, get properties
-    # for each, get count
-    # check if numeric
-    # for numerics, if count > 30, consider
+    results = easysparql.run_query(prop_query, endpoint=endpoint)
+    properties = [r['p']['value'] for r in results]
+    for prop in properties:
+        if data_exists(data_dir=data_dir, class_uri=class_uri, property_uri=prop):
+            continue
+        query = query_template % (class_uri, prop)
+        results = easysparql.run_query(query=query, endpoint=endpoint)
+        if results is None:
+            logger.debug('No results for the query: ' + query)
+            continue
+        objects = [r['o']['value'] for r in results]
+        if len(objects) >= MIN_NUM_OBJ:
+            nums = easysparql.get_numerics_from_list(objects, 0.5)
+            if nums is None:
+                logger.debug('property is not numeric: ' + prop)
+                continue
+            elif len(nums) >= MIN_NUM_OBJ:
+                logger.debug('saving property: ' + prop)
+                save_objects(data_dir, class_uri, prop, nums)
+            else:
+                logger.debug("less than 30 numeric values: " + prop)
+        else:
+            logger.debug('less than 30 objects: ' + prop)
 
 
 def aaa():
@@ -154,23 +210,36 @@ def get_candidate_properties(class_uri, sample_data):
 
 
 def annotate_file(fdir, class_uri, endpoint, remove_outliers):
+    """
+    :param fdir: of the csv file to be annotated
+    :param class_uri:
+    :param endpoint:
+    :param remove_outliers: True/False
+    :return:
+    """
     global data_dir
+    print("class_uri: ")
+    print(class_uri)
     collect_numeric_data(class_uri=class_uri, endpoint=endpoint)
     num_cols = get_numeric_columns(fdir)
     class_dir = os.path.join(data_dir, uri_to_fname(class_uri))
+    print("class_dir: ")
+    print(class_dir)
     properties_files = [f for f in os.listdir(class_dir) if os.path.isfile(os.path.join(class_dir, f))]
+    properties_dirs = [os.path.join(class_dir, pf) for pf in properties_files]
     logger.debug("File: "+fdir.split('/')[-1])
+    print(properties_dirs)
     for colobj in num_cols:
         colid, coldata = colobj
         logger.debug('Column: ' + str(colid))
-        annotate_column(col=coldata, properties_files=properties_files, remove_outliers=remove_outliers)
+        annotate_column(col=coldata, properties_dirs=properties_dirs, remove_outliers=remove_outliers)
 
 
-def annotate_column(col, properties_files, remove_outliers):
+def annotate_column(col, properties_dirs, remove_outliers):
     qqe = QQE(col)
     errs = []
-    for prop_f in properties_files:
-        objects = get_data(os.path.join(data_dir, prop_f))
+    for prop_f in properties_dirs:
+        objects = get_data(prop_f)
         err = qqe.compute_error_mean(objects, remove_outliers=remove_outliers)
         item = (err, prop_f)
         errs.append(item)
@@ -185,11 +254,15 @@ def get_numeric_columns(fdir):
     :return: list of the pair (colid, list)
     """
     df = pd.read_csv(fdir)
+    # print(df)
     numeric_cols = []
     for col in df:
-        if is_numeric_dtype(col):
+        # print(df[col].dtype)
+        if is_numeric_dtype(df[col]):
             pair = (col, list(df[col]))
             numeric_cols.append(pair)
+    # logger.debug("Get numeric columns:")
+    # logger.debug(numeric_cols)
     return numeric_cols
 
 
@@ -205,6 +278,8 @@ def annotate_olympic_games(endpoint, remove_outliers):
             class_uri = atts[1].strip()
             fdir = os.path.join(olympic_games_data_dir, fname)
             annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers, endpoint=endpoint)
+            # Just to test
+            return
 
 
 a = datetime.now()
@@ -213,7 +288,7 @@ annotate_olympic_games(endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql', remov
 
 b = datetime.now()
 
-
+print("Time it took")
 print(b-a)
 print((b-a).total_seconds())
 print((b-a).total_seconds()/60.0)
