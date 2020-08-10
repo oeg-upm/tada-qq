@@ -8,7 +8,7 @@ wget -O aaabadmintonplayers.csv https://zenodo.org/record/3975405/files/aaabadmi
 wget -O aaabasketballplayers.csv https://zenodo.org/record/3975405/files/aaabasketballplayers.csv?download=1
 wget -O aaaboxers.csv https://zenodo.org/record/3975405/files/aaaboxers.csv?download=1
 wget -O aaacyclists.csv https://zenodo.org/record/3975405/files/aaacyclists.csv?download=1
-wget -O aaagolfplayers.csv https://zenodo.org/record/3975405/files/aaagolfplayers.csv?download=1
+wget -O aaagolfplayers.csv https://zenodo.org/record/3977957/files/aaagolfplayers.csv?download=1
 wget -O aaagymnasts.csv https://zenodo.org/record/3975405/files/aaagymnasts.csv?download=1
 wget -O aaahandballplayers.csv https://zenodo.org/record/3975405/files/aaahandballplayers.csv?download=1
 wget -O aaarower.csv https://zenodo.org/record/3975405/files/aaarower.csv?download=1

@@ -237,14 +237,14 @@ def annotate_file(fdir, class_uri, endpoint, remove_outliers):
 
 
 def annotate_column(col, properties_dirs, remove_outliers):
-    print("\n\ncol: ")
-    print(col)
+    # print("\n\ncol: ")
+    # print(col)
     qqe = QQE(col)
     errs = []
     for prop_f in properties_dirs:
         objects = get_data(prop_f)
-        print("objects: ")
-        print(objects)
+        # print("objects: ")
+        # print(objects)
         err = qqe.compute_error_mean(objects, remove_outliers=remove_outliers)
         item = (err, prop_f)
         errs.append(item)
@@ -262,6 +262,8 @@ def get_numeric_columns(fdir):
     # print(df)
     numeric_cols = []
     for col in df:
+        # print("\n\n\n=========================")
+        # print(col)
         # print(df[col].dtype)
         if is_numeric_dtype(df[col]):
             pair = (col, list(df[col]))
@@ -296,6 +298,10 @@ print(b-a)
 print((b-a).total_seconds())
 print((b-a).total_seconds()/60.0)
 
+# cols = get_numeric_columns('local_data/olympic_games/data/aaagolfplayers.csv')
+# for col in cols:
+#     print("\n\n\nColumn: ")
+#     print(col)
 
 # DBPEDIA_ENDPOINT = "https://dbpedia.org/sparql"
 # basketball_player_uri = "http://dbpedia.org/ontology/BasketballPlayer"
