@@ -15,15 +15,16 @@ MIN_NUM_OBJ = 30
 
 def get_logger(name, level=logging.INFO):
     logger = logging.getLogger(name)
-    formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
-    handler = logging.StreamHandler()
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
+    # formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
+    # handler = logging.StreamHandler()
+    # handler.setFormatter(formatter)
+    # logger.addHandler(handler)
     logger.setLevel(level)
     return logger
 
 
-logger = get_logger(__name__, level=logging.DEBUG)
+# logger = get_logger(__name__, level=logging.DEBUG)
+logger = get_logger(__name__, level=logging.INFO)
 
 
 def create_dir(adir):
@@ -218,20 +219,20 @@ def annotate_file(fdir, class_uri, endpoint, remove_outliers):
     :return:
     """
     global data_dir
-    print("class_uri: ")
-    print(class_uri)
+    # print("class_uri: ")
+    # print(class_uri)
     collect_numeric_data(class_uri=class_uri, endpoint=endpoint)
     num_cols = get_numeric_columns(fdir)
     class_dir = os.path.join(data_dir, uri_to_fname(class_uri))
-    print("class_dir: ")
-    print(class_dir)
+    # print("class_dir: ")
+    # print(class_dir)
     properties_files = [f for f in os.listdir(class_dir) if os.path.isfile(os.path.join(class_dir, f))]
     properties_dirs = [os.path.join(class_dir, pf) for pf in properties_files]
-    logger.debug("File: "+fdir.split('/')[-1])
-    print(properties_dirs)
+    logger.info("\n\n\nFile: "+fdir.split('/')[-1])
+    # print(properties_dirs)
     for colobj in num_cols:
         colid, coldata = colobj
-        logger.debug('Column: ' + str(colid))
+        logger.info('\nColumn: ' + str(colid))
         annotate_column(col=coldata, properties_dirs=properties_dirs, remove_outliers=remove_outliers)
 
 
@@ -244,8 +245,8 @@ def annotate_column(col, properties_dirs, remove_outliers):
         item = (err, prop_f)
         errs.append(item)
     errs.sort()
-    for idx, item in enumerate(errs):
-        logger.debug(str(idx+1)+" err: "+str(item[0]) + "  - " + item[1])
+    for idx, item in enumerate(errs[:3]):
+        logger.info(str(idx+1)+" err: "+str(item[0]) + "  - " + item[1])
 
 
 def get_numeric_columns(fdir):

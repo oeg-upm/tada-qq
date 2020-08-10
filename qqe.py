@@ -1,6 +1,7 @@
 from util import errors_mean
 import numpy as np
 
+
 class QQE(object):
     """
     This is the quantile-quantile estimator
@@ -42,7 +43,7 @@ class QQE(object):
         """
         n = len(sorted_data) * 1.0
         eq = []  # estimated quantiles
-        print("Estimated base: ")
+        # print("Estimated base: ")
         for i0, d in enumerate(sorted_data):
             i = i0 + 1  # as the formula starts from i = 1
             q = (i - 0.5) / n
@@ -119,7 +120,7 @@ class QQE(object):
             dy = (y2 - y1)
             #m = (y2 - y1) / (x2 - x1)
             if dx == 0:
-                print("error: "+str(x2))
+                # print("error: "+str(x2))
                 m = (y2 - y1) / (x2 - x1)
             else:
                 m = dy / dx
