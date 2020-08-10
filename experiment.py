@@ -279,8 +279,6 @@ def annotate_olympic_games(endpoint, remove_outliers):
             class_uri = atts[1].strip()
             fdir = os.path.join(olympic_games_data_dir, fname)
             annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers, endpoint=endpoint)
-            # Just to test
-            return
 
 
 a = datetime.now()
