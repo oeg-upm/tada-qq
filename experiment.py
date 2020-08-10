@@ -57,12 +57,12 @@ def save_objects(data_dir, class_uri, property_uri, objects):
 
 
 def data_exists(data_dir, class_uri, property_uri):
-    print("data_dir: ")
-    print(data_dir)
-    print("class uri: ")
-    print(class_uri)
-    print("property uri: ")
-    print(property_uri)
+    # print("data_dir: ")
+    # print(data_dir)
+    # print("class uri: ")
+    # print(class_uri)
+    # print("property uri: ")
+    # print(property_uri)
     fdir = os.path.join(data_dir, uri_to_fname(class_uri), uri_to_fname(property_uri))
     file_exists = os.path.exists(fdir)
     return file_exists
@@ -190,13 +190,13 @@ def get_candidate_properties(class_uri, sample_data):
     global data_dir
     class_fname = uri_to_fname(class_uri)
     class_dir = os.path.join(data_dir, class_fname)
-    logger.debug("sample data: ")
-    logger.debug(sample_data)
+    # logger.debug("sample data: ")
+    # logger.debug(sample_data)
     qqe = QQE(sample_data)
     fnames = [f for f in os.listdir(class_dir) if os.path.isfile(os.path.join(class_dir, f))]
     # fnames = [f for f in fnames if f[:-4] == ".txt"]
-    logger.debug("fnames: ")
-    logger.debug(fnames)
+    # logger.debug("fnames: ")
+    # logger.debug(fnames)
     errs = []
     for f in fnames:
         prop_dir = os.path.join(class_dir, f)
