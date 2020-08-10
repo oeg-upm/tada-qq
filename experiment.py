@@ -241,6 +241,8 @@ def annotate_column(col, properties_dirs, remove_outliers):
     errs = []
     for prop_f in properties_dirs:
         objects = get_data(prop_f)
+        print("objects: ")
+        print(objects)
         err = qqe.compute_error_mean(objects, remove_outliers=remove_outliers)
         item = (err, prop_f)
         errs.append(item)
