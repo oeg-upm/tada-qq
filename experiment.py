@@ -237,6 +237,7 @@ def annotate_file(fdir, class_uri, endpoint, remove_outliers):
 
 
 def annotate_column(col, properties_dirs, remove_outliers):
+    print("col: "+col)
     qqe = QQE(col)
     errs = []
     for prop_f in properties_dirs:
