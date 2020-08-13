@@ -33,7 +33,7 @@ def create_dir(adir):
 
 
 def uri_to_fname(uri):
-    fname = uri.strip().replace('http://','')
+    fname = uri.strip().replace('http://', '')
     fname = fname.replace('dbpedia.org/ontology', 'dbo')
     fname = fname.replace('dbpedia.org/property', 'dbp')
     fname = fname.replace('dbpedia.org/resource', 'dbr')
@@ -249,7 +249,7 @@ def annotate_column(col, properties_dirs, remove_outliers):
         item = (err, prop_f)
         errs.append(item)
     errs.sort()
-    for idx, item in enumerate(errs[:3]):
+    for idx, item in enumerate(errs[:10]):
         logger.info(str(idx+1)+" err: "+str(item[0]) + "  - " + item[1])
 
 
