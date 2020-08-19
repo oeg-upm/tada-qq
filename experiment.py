@@ -284,12 +284,16 @@ def annotate_olympic_games(endpoint, remove_outliers):
             fname = atts[0].strip()
             class_uri = atts[1].strip()
             fdir = os.path.join(olympic_games_data_dir, fname)
+            #investigate
+            if 'Basket' not in line:
+                continue
             annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers, endpoint=endpoint)
 
 
 a = datetime.now()
 
 annotate_olympic_games(endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql', remove_outliers=True)
+
 
 b = datetime.now()
 

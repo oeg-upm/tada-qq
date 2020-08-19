@@ -72,18 +72,19 @@ class QQE(object):
         :param data_point: float
         :return: quantile: float
         """
-        # set quantile for quantile > (n-0.5)/n
-        m = self.ms[-1]
-        b = self.bs[-1]
         # For quantile < (0.5)/n
         if data_point < self.sample_base[0]:
             m = self.ms[0]
             b = self.bs[0]
+        # For quantile > (n-0.5)/n
+        elif data_point > self.sample_base[-1]:
+            m = self.ms[-1]
+            b = self.bs[-1]
         else:  # for 0.5/n < quantile < (n-0.5)/n
             for i, d in enumerate(self.sample_base[1:]):
-                if data_point < d:
-                    m = self.ms[i]
-                    b = self.bs[i]
+                if data_point <= d:
+                    m = self.ms[i+1]
+                    b = self.bs[i+1]
                     break
 
         y = data_point * m + b
@@ -109,7 +110,8 @@ class QQE(object):
         :return:
         """
         # data_quantile_pairs = zip(sample_data, quantiles)
-        ms = []
+        m = quantiles[0]/sample_data[0]
+        ms = [m, ]
         # print("\nslopes: ")
         for i in range(0, len(sample_data)-1):
             x1 = sample_data[i]
@@ -120,13 +122,15 @@ class QQE(object):
             dy = (y2 - y1)
             #m = (y2 - y1) / (x2 - x1)
             if dx == 0:
-                # print("error: "+str(x2))
+                # logger.error("error: "+str(x2))
+                print("error: "+str(x2))
                 m = (y2 - y1) / (x2 - x1)
             else:
                 m = dy / dx
             # print("m = %2.2f    x1 = %2.2f   x2 = %2.2f  y1 = %2.2f  y2 = %2.2f" % (m, x1, x2, y1, y2))
             # print(m)
             ms.append(m)
+        ms.append(0)
         return ms
 
     def _compute_bs(self, sample_data, quantiles, slopes):
@@ -138,10 +142,20 @@ class QQE(object):
         :param slopes:
         :return:
         """
-        bs = []
+        # qs = [0] + quantiles
+        # bs = []
+        # b = -sample_data[0] * slopes[0]  # for the first slope
+        # bs = [b]
+        # for i in range(0, len(sample_data)-1):
+        #     b = qs[i] - slopes[i] * sample_data[i]
+        #     bs.append(b)
+        b = -sample_data[0] * slopes[0]  # for the first slope
+        bs = [b]
         for i in range(0, len(sample_data)-1):
-            b = quantiles[i] - slopes[i] * sample_data[i]
+            b = quantiles[i] - slopes[i+1] * sample_data[i]
             bs.append(b)
+        b = -sample_data[-1] * slopes[-1]  # for the last slope
+        bs.append(b)
         return bs
 
     def compute_error_mean(self, sample, remove_outliers=True):
