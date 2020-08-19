@@ -15,16 +15,16 @@ MIN_NUM_OBJ = 30
 
 def get_logger(name, level=logging.INFO):
     logger = logging.getLogger(name)
-    # formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
-    # handler = logging.StreamHandler()
-    # handler.setFormatter(formatter)
-    # logger.addHandler(handler)
+    formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
+    handler = logging.StreamHandler()
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
     logger.setLevel(level)
     return logger
 
 
-# logger = get_logger(__name__, level=logging.DEBUG)
-logger = get_logger(__name__, level=logging.INFO)
+logger = get_logger(__name__, level=logging.DEBUG)
+# logger = get_logger(__name__, level=logging.INFO)
 
 
 def create_dir(adir):
