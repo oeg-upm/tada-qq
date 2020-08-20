@@ -110,9 +110,11 @@ class QQE(object):
         :return:
         """
         # data_quantile_pairs = zip(sample_data, quantiles)
-        m = quantiles[0]/sample_data[0]
+        # m = quantiles[0]/sample_data[0]
+        m = 0
         ms = [m, ]
         # print("\nslopes: ")
+        # ms = []
         for i in range(0, len(sample_data)-1):
             x1 = sample_data[i]
             x2 = sample_data[i+1]
@@ -131,6 +133,8 @@ class QQE(object):
             # print(m)
             ms.append(m)
         ms.append(0)
+
+        # ms = [ms[0]]+ms
         return ms
 
     def _compute_bs(self, sample_data, quantiles, slopes):

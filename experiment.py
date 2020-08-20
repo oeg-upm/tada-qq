@@ -163,22 +163,22 @@ def collect_numeric_data(class_uri, endpoint):
             logger.debug('less than 30 objects: ' + prop)
 
 
-def aaa():
-    data_dir = 'local_data/dbo-BasketballPlayer'
-    a = get_data("local_olympic_basketball_height_cm.txt")
-    qqe = QQE(a)
-    fnames = [f for f in os.listdir(data_dir) if os.path.isfile(os.path.join(data_dir, f))]
-    errs = []
-    for fname in fnames:
-        sample = get_data(os.path.join(data_dir, fname))
-        err = qqe.compute_error_mean(sample, remove_outliers=True)
-        logger.debug("mean: "+(str(err))+"  - "+fname)
-        item = (err, fname)
-        errs.append(item)
-
-    errs.sort()
-    for item in errs:
-        logger.debug("err: "+str(item[0]) + "  - " + item[1])
+# def aaa():
+#     data_dir = 'local_data/dbo-BasketballPlayer'
+#     a = get_data("local_olympic_basketball_height_cm.txt")
+#     qqe = QQE(a)
+#     fnames = [f for f in os.listdir(data_dir) if os.path.isfile(os.path.join(data_dir, f))]
+#     errs = []
+#     for fname in fnames:
+#         sample = get_data(os.path.join(data_dir, fname))
+#         err = qqe.compute_error_mean(sample, remove_outliers=True)
+#         logger.debug("mean: "+(str(err))+"  - "+fname)
+#         item = (err, fname)
+#         errs.append(item)
+#
+#     errs.sort()
+#     for item in errs:
+#         logger.debug("err: "+str(item[0]) + "  - " + item[1])
 
 
 def get_candidate_properties(class_uri, sample_data):
@@ -284,9 +284,6 @@ def annotate_olympic_games(endpoint, remove_outliers):
             fname = atts[0].strip()
             class_uri = atts[1].strip()
             fdir = os.path.join(olympic_games_data_dir, fname)
-            #investigate
-            if 'Basket' not in line:
-                continue
             annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers, endpoint=endpoint)
 
 
