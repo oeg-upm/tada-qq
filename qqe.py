@@ -158,7 +158,7 @@ class QQE(object):
         for i in range(0, len(sample_data)-1):
             b = quantiles[i] - slopes[i+1] * sample_data[i]
             bs.append(b)
-        b = -sample_data[-1] * slopes[-1]  # for the last slope
+        b = 1 -sample_data[-1] * slopes[-1]  # for the last slope
         bs.append(b)
         return bs
 
