@@ -36,3 +36,6 @@ The data is available [[here](http://webdatacommons.org/webtables/)]
 
 We have a script to download the data automatically here `scripts/t2dv2-download.sh` 
 You can run it as follows:```sh scripts/t2dv2-download.sh```
+
+*This script calls a python script. So make sure to download the python libraries 
+in `requirements.txt`( such as `pip install -r requirements`)*

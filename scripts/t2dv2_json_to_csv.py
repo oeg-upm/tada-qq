@@ -19,8 +19,10 @@ def get_logger(name, level=logging.DEBUG):
     logger.setLevel(level)
     return logger
 
-print("name: ")
+# print("name: ")
 # print(logging.getLogger(__name__))
+
+
 logger = get_logger(__name__)
 
 DATA_DIR = None  # "data"
