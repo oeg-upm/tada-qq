@@ -30,3 +30,9 @@ You can run it as follows:```sh scripts/olympic-download.sh```
   url          = {https://doi.org/10.5281/zenodo.1408562}
 }
 ```
+
+## T2Dv2 Dataset
+The data is available [[here](http://webdatacommons.org/webtables/)]
+
+We have a script to download the data automatically here `scripts/t2dv2-download.sh` 
+You can run it as follows:```sh scripts/t2dv2-download.sh```
