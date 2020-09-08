@@ -439,6 +439,7 @@ def annotate_t2dv2(endpoint, remove_outliers):
             print(atts)
             colid = atts[5]
             if colid.strip() != '':
+                print("colid: "+colid)
                 colid = int(colid)
                 # fname = atts[0].strip()[1:-1]
                 fname = atts[0].strip()
