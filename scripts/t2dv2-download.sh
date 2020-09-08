@@ -9,7 +9,7 @@ rm extended_instance_goldstandard.tar.gz
 ls
 rm classes_GS.csv
 wget -O classes_GS.csv https://raw.githubusercontent.com/oeg-upm/tada-gam/master/experiments/t2dv2/classes_GS.fixed
-cp classes_GS.csv ../meta.csv
+#cp classes_GS.csv ../meta.csv
+wget -O ../meta.csv https://raw.githubusercontent.com/oeg-upm/ttla/master/meta/T2Dv2_typology.csv
 cd ../../..
 python scripts/t2dv2_json_to_csv.py local_data/t2dv2/raw local_data/t2dv2/data
-

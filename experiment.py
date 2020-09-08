@@ -46,6 +46,24 @@ def uri_to_fname(uri):
     return fname
 
 
+def fname_to_uri(fname):
+    uri = fname.strip()[:-4]
+    uri = uri.replace('dbo-', 'http://dbpedia.org/ontology/')
+    uri = uri.replace('dbp-', 'http://dbpedia.org/property/')
+    uri = uri.replace('dbr-', 'http://dbpedia.org/resource/')
+    uri = uri.replace('foaf-', 'http://xmlns.com/foaf/0.1/')
+    uri = uri.replace('owl-', 'http://www.w3.org/2002/07/owl#')
+    uri = uri.replace('rdfs-', 'http://www.w3.org/2000/01/rdf-schema#')
+    uri = uri.replace('rdf-', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
+    # Filter out the class
+    start_idx = uri.find('http://')
+    uri = uri[start_idx+1:]
+    # Get to the property
+    start_idx = uri.find('http://')
+    uri = uri[start_idx:]
+    return uri
+
+
 def save_objects(data_dir, class_uri, property_uri, objects):
     fdir = os.path.join(data_dir, uri_to_fname(class_uri), uri_to_fname(property_uri)) + ".txt"
     # fname = uri_to_fname(class_uri) + " - " + uri_to_fname(property_uri)
@@ -210,6 +228,22 @@ def get_candidate_properties(class_uri, sample_data):
     return errs
 
 
+def annotate_a_col_in_file(fdir, class_uri, endpoint, remove_outliers, colid):
+    """
+    Similar to the function `annotate_file` but the difference is that this expects a colid
+    :return: list of the pair (err, property_uri)
+    """
+    collect_numeric_data(class_uri=class_uri, endpoint=endpoint)
+    class_dir = os.path.join(data_dir, uri_to_fname(class_uri))
+    properties_files = [f for f in os.listdir(class_dir) if os.path.isfile(os.path.join(class_dir, f))]
+    properties_dirs = [os.path.join(class_dir, pf) for pf in properties_files]
+    col = get_column(fdir, colid)
+    num_col = easysparql.get_numerics_from_list(col, 0)
+    print("col: ")
+    print(num_col)
+    return annotate_column(col=num_col, properties_dirs=properties_dirs, remove_outliers=remove_outliers)
+
+
 def annotate_file(fdir, class_uri, endpoint, remove_outliers):
     """
     :param fdir: of the csv file to be annotated
@@ -237,6 +271,12 @@ def annotate_file(fdir, class_uri, endpoint, remove_outliers):
 
 
 def annotate_column(col, properties_dirs, remove_outliers):
+    """
+    :param col:
+    :param properties_dirs:
+    :param remove_outliers:
+    :return: list of the pair (err,property)
+    """
     # print("\n\ncol: ")
     # print(col)
     qqe = QQE(col)
@@ -251,6 +291,7 @@ def annotate_column(col, properties_dirs, remove_outliers):
     errs.sort()
     for idx, item in enumerate(errs[:10]):
         logger.info(str(idx+1)+" err: "+str(item[0]) + "  - " + item[1])
+    return errs
 
 
 def get_numeric_columns(fdir):
@@ -273,6 +314,21 @@ def get_numeric_columns(fdir):
     return numeric_cols
 
 
+def get_column(fdir, colid):
+    """
+    :param fdir:
+    :param colid:
+    :return: a list of the cells of the colid
+    """
+    print("open: "+fdir)
+    df = pd.read_csv(fdir)
+    # print(df)
+    numeric_cols = []
+    col = list(df.iloc[:, colid])
+    # col = list(df[df.columns[colid]])
+    return col
+
+
 def annotate_olympic_games(endpoint, remove_outliers):
     olympic_games_dir = 'olympic_games'
     olympic_games_data_dir = os.path.join(data_dir, olympic_games_dir, 'data')
@@ -287,9 +343,133 @@ def annotate_olympic_games(endpoint, remove_outliers):
             annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers, endpoint=endpoint)
 
 
+def get_k_from_errs(errs, property_uri):
+    """
+    :param errs: list of pairs (err, property_uri)
+    :param property_uri: the correct property_uri
+    :return:
+    """
+    # logger.debug("Top: "+errs[0][1] + " ("+property_uri+")")
+    g_prop_name = property_uri.split('/')[-1]
+    for idx, pair in enumerate(errs):
+        k = idx+1
+        err, prop_path = pair
+        curr_prop_uri = fname_to_uri(prop_path).strip()
+        if curr_prop_uri == property_uri:
+            return k
+        else:
+            logger.debug("Checking %s  ---  %s" % (curr_prop_uri, property_uri))
+    return -1
+
+    # logger.debug("Top: "+errs[0][1] + " ("+property_uri+")")
+    # g_prop_name = property_uri.split('/')[-1]
+    # for idx, pair in enumerate(errs):
+    #     k = idx+1
+    #     err, prop_path = pair
+    #     prop_last = prop_path.split('/')[-1]
+    #     prop_name = prop_last[4:-4]
+    #     if prop_name == g_prop_name:
+    #         return k
+    #     else:
+    #         logger.debug("Checking %s  ---  %s" % (prop_name, g_prop_name))
+    # return -1
+
+
+def compute_scores(ks):
+    """
+    :param ks:
+    :return:
+    """
+    num_corr =0
+    num_incorr =0
+    num_notfound =0
+    rr = 0
+    num_rr = 0
+    for k in ks:
+        if k < 0:
+            num_notfound +=1
+        elif k==1:
+            num_corr+=1
+        elif k > 1:
+            num_incorr+=1
+        else:
+            logger.error("ERROR .. invalid k")
+        if k > 0:
+            rr += 1.0 / k
+            num_rr += 1
+    if num_rr == 0:
+        mrr = 0
+    else:
+        mrr = rr/num_rr
+    if num_corr + num_incorr == 0:
+        pre = 0
+    else:
+        pre = num_corr / (num_corr + num_incorr)
+    if num_corr + num_notfound == 0:
+        rec = 0
+    else:
+        rec = num_corr / (num_corr + num_notfound)
+    if pre+rec == 0:
+        f1 = 0
+    else:
+        f1 = 2.0 * pre * rec / (pre + rec)
+    print("MRR: %f\nPrecision: %f\nRecall: %f\nF1: %f" % (mrr, pre, rec, f1))
+
+
+def append_results(fdir, line):
+    """
+    :param fdir:
+    :param line:
+    :return:
+    """
+    f = open(fdir, "a")
+    f.write(line+"\n")
+    f.close()
+
+
+def annotate_t2dv2(endpoint, remove_outliers):
+    t2dv2_dir = 't2dv2'
+    t2dv2_data_dir = os.path.join(data_dir, t2dv2_dir, 'data')
+    meta_dir = os.path.join(data_dir, t2dv2_dir, 'meta.csv')
+    f = open(meta_dir)
+    ks = []
+    for line in f.readlines()[1:]:
+        atts = line.strip().split(',')
+        if len(atts) > 5:
+            print(atts)
+            colid = atts[5]
+            if colid.strip() != '':
+                colid = int(colid)
+                # fname = atts[0].strip()[1:-1]
+                fname = atts[0].strip()
+                fname = fname[:-7] + ".csv"  # remove .tar.gz
+                property_uri = atts[4].strip()
+                # class_uri = atts[2].strip()[1:-1]
+                class_uri = "http://dbpedia.org/ontology/"+atts[1].strip()
+                fdir = os.path.join(t2dv2_data_dir, fname)
+                errs = annotate_a_col_in_file(fdir=fdir, class_uri=class_uri, endpoint=endpoint,
+                                       remove_outliers=remove_outliers, colid=colid)
+                for idx, e in enumerate(errs[:3]):
+                    print("e1: "+e[1])
+                    line = ",".join([fname, class_uri, property_uri, fname_to_uri(e[1]), str(idx+1)])
+                    append_results("new_t2dv2_results.csv", line)
+                k = get_k_from_errs(errs, property_uri)
+                ks.append(k)
+                # break
+                # collect_numeric_data(class_uri=class_uri, endpoint=endpoint)
+                # class_dir = os.path.join(data_dir, uri_to_fname(class_uri))
+                # properties_files = [f for f in os.listdir(class_dir) if os.path.isfile(os.path.join(class_dir, f))]
+                # properties_dirs = [os.path.join(class_dir, pf) for pf in properties_files]
+                # col = get_column(fdir, colid)
+                # annotate_column(col=col, properties_dirs=properties_dirs, remove_outliers=remove_outliers)
+                # annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers, endpoint=endpoint)
+    compute_scores(ks)
+
+
 a = datetime.now()
 
-annotate_olympic_games(endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql', remove_outliers=True)
+annotate_t2dv2(endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql', remove_outliers=True)
+# annotate_olympic_games(endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql', remove_outliers=True)
 
 
 b = datetime.now()
