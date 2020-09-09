@@ -322,8 +322,7 @@ def get_column(fdir, colid):
     """
     print("open: "+fdir)
     df = pd.read_csv(fdir)
-    # print(df)
-    numeric_cols = []
+    df = df[df.iloc[:, colid].notnull()]
     col = list(df.iloc[:, colid])
     # col = list(df[df.columns[colid]])
     return col

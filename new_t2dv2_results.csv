@@ -25,3 +25,6 @@
 1146722_1_7558140036342906956.csv,http://dbpedia.org/ontology/Mountain,http://dbpedia.org/ontology/maximumElevation,http://dbpedia.org/property/elevationM,1
 1146722_1_7558140036342906956.csv,http://dbpedia.org/ontology/Mountain,http://dbpedia.org/ontology/maximumElevation,http://dbpedia.org/ontology/elevation,2
 1146722_1_7558140036342906956.csv,http://dbpedia.org/ontology/Mountain,http://dbpedia.org/ontology/maximumElevation,http://dbpedia.org/ontology/firstAscentYear,3
+1146722_1_7558140036342906956.csv,http://dbpedia.org/ontology/Mountain,http://dbpedia.org/ontology/maximumElevation,http://dbpedia.org/property/elevationM,1
+1146722_1_7558140036342906956.csv,http://dbpedia.org/ontology/Mountain,http://dbpedia.org/ontology/maximumElevation,http://dbpedia.org/ontology/elevation,2
+1146722_1_7558140036342906956.csv,http://dbpedia.org/ontology/Mountain,http://dbpedia.org/ontology/maximumElevation,http://dbpedia.org/ontology/firstAscentYear,3
