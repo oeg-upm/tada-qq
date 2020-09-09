@@ -349,7 +349,6 @@ def get_k_from_errs(errs, property_uri):
     :return:
     """
     # logger.debug("Top: "+errs[0][1] + " ("+property_uri+")")
-    g_prop_name = property_uri.split('/')[-1]
     for idx, pair in enumerate(errs):
         k = idx+1
         err, prop_path = pair
@@ -359,19 +358,6 @@ def get_k_from_errs(errs, property_uri):
         else:
             logger.debug("Checking %s  ---  %s" % (curr_prop_uri, property_uri))
     return -1
-
-    # logger.debug("Top: "+errs[0][1] + " ("+property_uri+")")
-    # g_prop_name = property_uri.split('/')[-1]
-    # for idx, pair in enumerate(errs):
-    #     k = idx+1
-    #     err, prop_path = pair
-    #     prop_last = prop_path.split('/')[-1]
-    #     prop_name = prop_last[4:-4]
-    #     if prop_name == g_prop_name:
-    #         return k
-    #     else:
-    #         logger.debug("Checking %s  ---  %s" % (prop_name, g_prop_name))
-    # return -1
 
 
 def compute_scores(ks):
