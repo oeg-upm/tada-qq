@@ -22,3 +22,6 @@
 16767252_0_2409448375013995751.csv,http://dbpedia.org/ontology/Film,http://dbpedia.org/property/released,http://dbpedia.org/property/year,1
 16767252_0_2409448375013995751.csv,http://dbpedia.org/ontology/Film,http://dbpedia.org/property/released,http://dbpedia.org/property/established,2
 16767252_0_2409448375013995751.csv,http://dbpedia.org/ontology/Film,http://dbpedia.org/property/released,http://dbpedia.org/property/recorded,3
+1146722_1_7558140036342906956.csv,http://dbpedia.org/ontology/Mountain,http://dbpedia.org/ontology/maximumElevation,http://dbpedia.org/property/elevationM,1
+1146722_1_7558140036342906956.csv,http://dbpedia.org/ontology/Mountain,http://dbpedia.org/ontology/maximumElevation,http://dbpedia.org/ontology/elevation,2
+1146722_1_7558140036342906956.csv,http://dbpedia.org/ontology/Mountain,http://dbpedia.org/ontology/maximumElevation,http://dbpedia.org/ontology/firstAscentYear,3
