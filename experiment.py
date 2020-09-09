@@ -434,7 +434,7 @@ def annotate_t2dv2_ttla_meta(endpoint, remove_outliers):
                                remove_outliers=remove_outliers, colid=colid)
         for idx, e in enumerate(errs[:3]):
             print("e1: "+e[1])
-            line = ",".join([fname, class_uri, property_uri, fname_to_uri(e[1]), str(idx+1)])
+            line = ",".join([fname, class_uri, str(colid), property_uri, fname_to_uri(e[1]), str(idx+1)])
             append_results("new_t2dv2_results.csv", line)
         k = get_k_from_errs(errs, property_uri)
         ks.append(k)
