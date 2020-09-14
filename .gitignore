@@ -1,3 +1,4 @@
+*.png
 .idea*
 local*
 .DS_Store

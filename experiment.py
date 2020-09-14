@@ -435,7 +435,7 @@ def annotate_t2dv2_ttla_meta(endpoint, remove_outliers):
         for idx, e in enumerate(errs[:3]):
             print("e1: "+e[1])
             line = ",".join([fname, class_uri, str(colid), property_uri, fname_to_uri(e[1]), str(idx+1)])
-            append_results("new_t2dv2_results.csv", line)
+            append_results("local_t2dv2_results.csv", line)
         k = get_k_from_errs(errs, property_uri)
         ks.append(k)
     compute_scores(ks)
@@ -482,8 +482,8 @@ def annotate_t2dv2_ttla_meta(endpoint, remove_outliers):
 
 a = datetime.now()
 
-annotate_t2dv2_ttla_meta(endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql', remove_outliers=True)
-# annotate_olympic_games(endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql', remove_outliers=True)
+# annotate_t2dv2_ttla_meta(endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql', remove_outliers=True)
+annotate_olympic_games(endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql', remove_outliers=True)
 
 
 b = datetime.now()
