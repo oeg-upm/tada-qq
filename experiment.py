@@ -365,11 +365,13 @@ def compute_scores(ks):
     :param ks:
     :return:
     """
-    num_corr =0
-    num_incorr =0
-    num_notfound =0
-    rr = 0
-    num_rr = 0
+    print("ks: ")
+    print(ks)
+    num_corr = 0.0
+    num_incorr = 0.0
+    num_notfound = 0.0
+    rr = 0.0
+    num_rr = 0.0
     for k in ks:
         if k < 0:
             num_notfound +=1
@@ -379,6 +381,7 @@ def compute_scores(ks):
             num_incorr+=1
         else:
             logger.error("ERROR .. invalid k")
+            raise Exception("Invalid k")
         if k > 0:
             rr += 1.0 / k
             num_rr += 1
@@ -386,15 +389,15 @@ def compute_scores(ks):
         mrr = 0
     else:
         mrr = rr/num_rr
-    if num_corr + num_incorr == 0:
+    if (num_corr + num_incorr) == 0:
         pre = 0
     else:
         pre = num_corr / (num_corr + num_incorr)
-    if num_corr + num_notfound == 0:
+    if (num_corr + num_notfound) == 0:
         rec = 0
     else:
         rec = num_corr / (num_corr + num_notfound)
-    if pre+rec == 0:
+    if (pre+rec) == 0:
         f1 = 0
     else:
         f1 = 2.0 * pre * rec / (pre + rec)
@@ -412,78 +415,102 @@ def append_results(fdir, line):
     f.close()
 
 
-def annotate_t2dv2_ttla_meta(endpoint, remove_outliers):
-    t2dv2_dir = 't2dv2'
-    t2dv2_data_dir = os.path.join(data_dir, t2dv2_dir, 'data')
-    meta_dir = os.path.join(data_dir, t2dv2_dir, 'meta.csv')
-    df = pd.read_csv(meta_dir)
-    # filename, concept, k, column, property, columnid, kind, sub_kind
-    df = df[df.columnid.notnull()]
-    ks = []
-    for idx_out, row in df.iterrows():
-        print("row: ")
-        print(row)
-        colid = int(row['columnid'])
-        # fname = atts[0].strip()[1:-1]
-        fname = row['filename'].strip()
-        fname = fname[:-7] + ".csv"  # remove .tar.gz
-        property_uri = row['property'].strip()
-        class_uri = "http://dbpedia.org/ontology/"+row['concept'].strip()
-        fdir = os.path.join(t2dv2_data_dir, fname)
-        errs = annotate_a_col_in_file(fdir=fdir, class_uri=class_uri, endpoint=endpoint,
-                               remove_outliers=remove_outliers, colid=colid)
-        for idx, e in enumerate(errs[:3]):
-            print("e1: "+e[1])
-            line = ",".join([fname, class_uri, str(colid), property_uri, fname_to_uri(e[1]), str(idx+1)])
-            append_results("local_t2dv2_results.csv", line)
-        k = get_k_from_errs(errs, property_uri)
-        ks.append(k)
-    compute_scores(ks)
-
-# def annotate_t2dv2(endpoint, remove_outliers):
+# def annotate_t2dv2_ttla_meta(endpoint, remove_outliers):
 #     t2dv2_dir = 't2dv2'
 #     t2dv2_data_dir = os.path.join(data_dir, t2dv2_dir, 'data')
 #     meta_dir = os.path.join(data_dir, t2dv2_dir, 'meta.csv')
-#     f = open(meta_dir)
+#     df = pd.read_csv(meta_dir)
+#     # filename, concept, k, column, property, columnid, kind, sub_kind
+#     df = df[df.columnid.notnull()]
 #     ks = []
-#     for line in f.readlines()[1:]:
-#         atts = line.strip().split(',')
-#         if len(atts) > 5:
-#             print(atts)
-#             colid = atts[5]
-#             if colid.strip() != '':
-#                 print("colid: "+colid)
-#                 colid = int(colid)
-#                 # fname = atts[0].strip()[1:-1]
-#                 fname = atts[0].strip()
-#                 fname = fname[:-7] + ".csv"  # remove .tar.gz
-#                 property_uri = atts[4].strip()
-#                 # class_uri = atts[2].strip()[1:-1]
-#                 class_uri = "http://dbpedia.org/ontology/"+atts[1].strip()
-#                 fdir = os.path.join(t2dv2_data_dir, fname)
-#                 errs = annotate_a_col_in_file(fdir=fdir, class_uri=class_uri, endpoint=endpoint,
-#                                        remove_outliers=remove_outliers, colid=colid)
-#                 for idx, e in enumerate(errs[:3]):
-#                     print("e1: "+e[1])
-#                     line = ",".join([fname, class_uri, property_uri, fname_to_uri(e[1]), str(idx+1)])
-#                     append_results("new_t2dv2_results.csv", line)
-#                 k = get_k_from_errs(errs, property_uri)
-#                 ks.append(k)
-#                 # break
-#                 # collect_numeric_data(class_uri=class_uri, endpoint=endpoint)
-#                 # class_dir = os.path.join(data_dir, uri_to_fname(class_uri))
-#                 # properties_files = [f for f in os.listdir(class_dir) if os.path.isfile(os.path.join(class_dir, f))]
-#                 # properties_dirs = [os.path.join(class_dir, pf) for pf in properties_files]
-#                 # col = get_column(fdir, colid)
-#                 # annotate_column(col=col, properties_dirs=properties_dirs, remove_outliers=remove_outliers)
-#                 # annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers, endpoint=endpoint)
+#     for idx_out, row in df.iterrows():
+#         print("row: ")
+#         print(row)
+#         colid = int(row['columnid'])
+#         # fname = atts[0].strip()[1:-1]
+#         fname = row['filename'].strip()
+#         fname = fname[:-7] + ".csv"  # remove .tar.gz
+#         property_uri = row['property'].strip()
+#         class_uri = "http://dbpedia.org/ontology/"+row['concept'].strip()
+#         fdir = os.path.join(t2dv2_data_dir, fname)
+#         errs = annotate_a_col_in_file(fdir=fdir, class_uri=class_uri, endpoint=endpoint,
+#                                remove_outliers=remove_outliers, colid=colid)
+#         for idx, e in enumerate(errs[:3]):
+#             print("e1: "+e[1])
+#             line = ",".join([fname, class_uri, str(colid), property_uri, fname_to_uri(e[1]), str(idx+1)])
+#             append_results("local_t2dv2_results.csv", line)
+#         k = get_k_from_errs(errs, property_uri)
+#         ks.append(k)
 #     compute_scores(ks)
+
+
+# 1146722_1_7558140036342906956.csv	http://dbpedia.org/ontology/Mountain	5	http://dbpedia.org/ontology/maximumElevation,http://dbpedia.org/property/elevationM,http://dbpedia.org/ontology/elevation
+
+def annotate_t2dv2(endpoint, remove_outliers):
+    out_results = 't2dv2_k_results.csv'
+    f = open(out_results, 'w')
+    f.close()
+    t2dv2_dir = 't2dv2'
+    t2dv2_data_dir = os.path.join(data_dir, t2dv2_dir, 'data')
+    meta_dir = 't2dv2_multi_meta.tsv'
+    # meta_dir = os.path.join(data_dir, t2dv2_dir, 'meta.csv')
+    f = open(meta_dir)
+    ks = []
+    for line in f.readlines():
+        atts = line.strip().split('\t')
+        if len(atts) == 4:
+            print(atts)
+            colid = atts[2]
+            if colid.strip() != '':
+                print("colid: "+colid)
+                colid = int(colid)
+                fname = atts[0].strip()
+                properties = atts[3].strip().split(',')
+                class_uri = atts[1].strip()
+                fdir = os.path.join(t2dv2_data_dir, fname)
+                errs = annotate_a_col_in_file(fdir=fdir, class_uri=class_uri, endpoint=endpoint,
+                                       remove_outliers=remove_outliers, colid=colid)
+
+                # for idx, e in enumerate(errs[:3]):
+                k = -1
+                merr = -1
+                for idx, e in enumerate(errs):
+                    c_property = fname_to_uri(e[1]).strip()
+                    if c_property in properties:
+                        k = idx+1
+                        merr = e[0]
+                        break
+                if k==-1:
+                    c_property = " "
+                line = ",".join([fname, class_uri, str(colid), c_property, str(k), str(merr)])
+                append_results(out_results, line)
+                ks.append(k)
+    compute_scores(ks)
 
 
 a = datetime.now()
 
+# '''
+# 21801207_0_8144839668470123042.csv	http://dbpedia.org/ontology/VideoGame	0
+# '''
+# t2dv2_dir = 't2dv2'
+# t2dv2_data_dir = os.path.join(data_dir, t2dv2_dir, 'data')
+# fname = "21801207_0_8144839668470123042.csv"
+# class_uri = "http://dbpedia.org/ontology/VideoGame"
+# colid = 0
+# fdir = os.path.join(t2dv2_data_dir, fname)
+# errs = annotate_a_col_in_file(fdir=fdir, class_uri=class_uri, endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql',
+#                               remove_outliers=True, colid=colid)
+# for idx, e in enumerate(errs):
+#     c_property = fname_to_uri(e[1]).strip()
+#     merr = e[0]
+#     print("property: "+c_property)
+#     print("                 -- "+str(merr))
+
+
+annotate_t2dv2(endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql', remove_outliers=True)
 # annotate_t2dv2_ttla_meta(endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql', remove_outliers=True)
-annotate_olympic_games(endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql', remove_outliers=True)
+# annotate_olympic_games(endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql', remove_outliers=True)
 
 
 b = datetime.now()

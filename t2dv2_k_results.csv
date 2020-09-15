@@ -1,0 +1,123 @@
+1146722_1_7558140036342906956.csv,http://dbpedia.org/ontology/Mountain,5,http://dbpedia.org/property/elevationM,1,0.168207945145
+11688006_0_8123036130090004213.csv,http://dbpedia.org/ontology/Country,2,http://dbpedia.org/property/populationEstimate,1,0.158728679183
+11688006_0_8123036130090004213.csv,http://dbpedia.org/ontology/Country,3,http://dbpedia.org/property/statArea,2,0.0844294430776
+11688006_0_8123036130090004213.csv,http://dbpedia.org/ontology/Country,5,http://dbpedia.org/property/statArea,1,0.0419964859188
+13395751_3_369722706637560735.csv,http://dbpedia.org/ontology/Lake,3,http://dbpedia.org/ontology/elevation,3,0.227338179955
+14311244_0_7604843865524657408.csv,http://dbpedia.org/ontology/Mountain,1,http://dbpedia.org/property/elevationFt,1,0.238891521372
+15700884_0_8204220284166767221.csv,http://dbpedia.org/ontology/Company,2,http://dbpedia.org/property/employees,7,0.194472814916
+16767252_0_2409448375013995751.csv,http://dbpedia.org/ontology/Film,2,http://dbpedia.org/property/year,1,0.042108956602
+19073331_0_2742992342272078110.csv,http://dbpedia.org/ontology/PoliticalParty,3,http://dbpedia.org/property/year,13,0.5
+20135078_0_7570343137119682530.csv,http://dbpedia.org/ontology/Film,2,http://dbpedia.org/property/year,1,0.0798035759255
+2066887_0_746204117268168398.csv,http://dbpedia.org/ontology/Saint,4,http://dbpedia.org/ontology/deathYear,2,0.298517007939
+21329809_0_5526008408364682899.csv,http://dbpedia.org/ontology/City,3,http://dbpedia.org/ontology/populationMetro,2,0.1263664375
+21329809_0_5526008408364682899.csv,http://dbpedia.org/ontology/City,4,http://dbpedia.org/ontology/populationMetro,2,0.314030363762
+21337553_0_8832378999628437599.csv,http://dbpedia.org/ontology/Mountain,2,http://dbpedia.org/property/elevationFt,1,0.22543057693
+21362676_0_6854186738074119688.csv,http://dbpedia.org/ontology/Film,2,http://dbpedia.org/property/year,1,0.0667868717201
+21801207_0_8144839668470123042.csv,http://dbpedia.org/ontology/VideoGame,0, ,-1,-1
+21801207_0_8144839668470123042.csv,http://dbpedia.org/ontology/VideoGame,2, ,-1,-1
+24036779_0_5608105867560183058.csv,http://dbpedia.org/ontology/Country,1,http://dbpedia.org/property/statArea,3,0.0852089955385
+24036779_0_5608105867560183058.csv,http://dbpedia.org/ontology/Country,4,http://dbpedia.org/property/populationEstimate,3,0.22129391274
+24417511_0_3058323105166963431.csv,http://dbpedia.org/ontology/BaseballPlayer,0,http://dbpedia.org/property/hofdate,1,0.0359047619048
+24850757_0_5978004733768297283.csv,http://dbpedia.org/ontology/Country,1,http://dbpedia.org/ontology/PopulatedPlace-areaTotal,3,0.105975515995
+25404227_0_2240631045609013057.csv,http://dbpedia.org/ontology/Film,2,http://dbpedia.org/property/year,1,0.0393675909604
+26270372_1_3774607938887520564.csv,http://dbpedia.org/ontology/Monarch,2,http://dbpedia.org/ontology/activeYearsEndYear,3,0.487764195562
+26310680_0_5150772059999313798.csv,http://dbpedia.org/ontology/Currency,3,http://dbpedia.org/property/isoNumber,1,0.0817634107539
+27466715_0_3913547177671701530.csv,http://dbpedia.org/ontology/VideoGame,1,http://dbpedia.org/property/years,1,0.271671617607
+28036255_0_5705563063166785494.csv,http://dbpedia.org/ontology/Mountain,1,http://dbpedia.org/property/elevationM,1,0.168370291185
+28154036_0_909001972154294543.csv,http://dbpedia.org/ontology/PoliticalParty,3,http://dbpedia.org/property/seats,2,0.308641975309
+28993628_1_6072768612274729703.csv,http://dbpedia.org/ontology/Mountain,2,http://dbpedia.org/property/elevationM,1,0.16076604468
+29414811_12_251152470253168163.csv,http://dbpedia.org/ontology/VideoGame,0,http://dbpedia.org/property/years,1,0.201086956522
+29414811_13_8724394428539174350.csv,http://dbpedia.org/ontology/VideoGame,0,http://dbpedia.org/property/years,1,0.0899102079395
+29414811_2_4773219892816395776.csv,http://dbpedia.org/ontology/VideoGame,0,http://dbpedia.org/property/years,1,0.208498023715
+29414811_6_8221428333921653560.csv,http://dbpedia.org/ontology/VideoGame,0,http://dbpedia.org/property/years,1,0.108332121565
+29886325_0_1448173912684571475.csv,http://dbpedia.org/ontology/City,3,http://dbpedia.org/ontology/populationMetro,2,0.230047989582
+29886325_0_1448173912684571475.csv,http://dbpedia.org/ontology/City,4,http://dbpedia.org/ontology/populationMetro,3,0.339952432537
+32812626_0_5428724146873158593.csv,http://dbpedia.org/ontology/Hospital,2,http://dbpedia.org/property/beds,6,0.156830210437
+33242247_1_7232384061498591611.csv,http://dbpedia.org/ontology/Election,1, ,-1,-1
+33242247_1_7232384061498591611.csv,http://dbpedia.org/ontology/Election,4,http://dbpedia.org/property/seats%25_,14,0.188283091631
+3389822_6_374624044314151266.csv,http://dbpedia.org/ontology/Mountain,2,http://dbpedia.org/property/elevationM,1,0.209969450551
+34041816_1_4749054164534706977.csv,http://dbpedia.org/ontology/Airport,4,http://dbpedia.org/property/elevationM,4,0.5
+35188621_0_6058553107571275232.csv,http://dbpedia.org/ontology/Film,2,http://dbpedia.org/property/year,1,0.0574205361754
+36039980_4_4283009829602711082.csv,http://dbpedia.org/ontology/Mountain,2,http://dbpedia.org/property/elevationM,1,0.187141622835
+37541068_1_1156932518917623732.csv,http://dbpedia.org/ontology/BaseballPlayer,3, ,-1,-1
+37541068_1_1156932518917623732.csv,http://dbpedia.org/ontology/BaseballPlayer,4, ,-1,-1
+38428277_0_1311643810102462607.csv,http://dbpedia.org/ontology/Film,2,http://dbpedia.org/property/year,1,0.0901345713211
+3887681_0_7938589465814037992.csv,http://dbpedia.org/ontology/Lake,3,http://dbpedia.org/ontology/buildingStartDate,1,0.108838963506
+39107734_2_2329160387535788734.csv,http://dbpedia.org/ontology/Airport,4, ,-1,-1
+3917335_0_7791699395300625164.csv,http://dbpedia.org/ontology/Country,2,http://dbpedia.org/property/statArea,1,0.0457619321604
+3917335_0_7791699395300625164.csv,http://dbpedia.org/ontology/Country,3,http://dbpedia.org/property/populationEstimate,1,0.0627136784712
+39173938_0_7916056990138658530.csv,http://dbpedia.org/ontology/Film,2,http://dbpedia.org/property/established,1,0.0935064935065
+39759273_0_1427898308030295194.csv,http://dbpedia.org/ontology/Film,2,http://dbpedia.org/property/years,1,0.0299998511015
+39759273_0_1427898308030295194.csv,http://dbpedia.org/ontology/Film,5,http://dbpedia.org/property/imdb,1,0.103066785293
+40844462_1_6230938203735169234.csv,http://dbpedia.org/ontology/Film,2,http://dbpedia.org/property/year,1,0.0321984928365
+41194422_0_7231546114369966811.csv,http://dbpedia.org/ontology/Country,0,http://dbpedia.org/property/populationDensityRank,1,0.0160992326047
+41194422_0_7231546114369966811.csv,http://dbpedia.org/ontology/Country,2,http://dbpedia.org/property/populationEstimate,1,0.0869007982397
+41194422_1_1172256090552737974.csv,http://dbpedia.org/ontology/Country,0,http://dbpedia.org/property/populationDensityRank,1,0.0160992326047
+41194422_1_1172256090552737974.csv,http://dbpedia.org/ontology/Country,2,http://dbpedia.org/property/populationEstimate,1,0.0869007982397
+41819807_0_3139249984404131679.csv,http://dbpedia.org/ontology/Lake,2, ,-1,-1
+43469354_0_6029017163991310319.csv,http://dbpedia.org/ontology/City,3,http://dbpedia.org/ontology/populationUrban,7,0.47475875184
+43469354_0_6029017163991310319.csv,http://dbpedia.org/ontology/City,4,http://dbpedia.org/ontology/populationMetro,5,0.462781879114
+44206774_0_3810538885942465703.csv,http://dbpedia.org/ontology/GolfPlayer,2, ,-1,-1
+44206774_0_3810538885942465703.csv,http://dbpedia.org/ontology/GolfPlayer,4, ,-1,-1
+4444204_0_951426790527152756.csv,http://dbpedia.org/ontology/City,3,http://dbpedia.org/ontology/populationMetro,2,0.187942391796
+4444204_0_951426790527152756.csv,http://dbpedia.org/ontology/City,4,http://dbpedia.org/ontology/populationMetro,2,0.246562361788
+49087820_0_461228320225084868.csv,http://dbpedia.org/ontology/Currency,3,http://dbpedia.org/property/isoNumber,4,0.298534820113
+49772588_0_6549847739640234347.csv,http://dbpedia.org/ontology/Country,2,http://dbpedia.org/property/populationEstimate,3,0.201493885317
+49801939_0_6964113429298874283.csv,http://dbpedia.org/ontology/Mountain,1,http://dbpedia.org/property/elevationFt,1,0.238891521372
+50245608_0_871275842592178099.csv,http://dbpedia.org/ontology/Film,1,http://dbpedia.org/property/years,1,0.0350846678642
+50245608_0_871275842592178099.csv,http://dbpedia.org/ontology/Film,5,http://dbpedia.org/property/length,10,0.224551792702
+52299421_0_4473286348258170200.csv,http://dbpedia.org/ontology/Country,6,http://dbpedia.org/property/populationEstimate,3,0.237780851641
+53822652_0_5767892317858575530.csv,http://dbpedia.org/ontology/Film,2,http://dbpedia.org/property/years,1,0.0768033878236
+53989675_0_8697482470743954630.csv,http://dbpedia.org/ontology/Lake,2,http://dbpedia.org/property/catchment,3,0.155028373892
+54719588_0_8417197176086756912.csv,http://dbpedia.org/ontology/Film,6,http://dbpedia.org/property/year,1,0.0450212176578
+55961337_0_6548713781034932742.csv,http://dbpedia.org/ontology/Currency,3,http://dbpedia.org/property/isoNumber,4,0.209676227914
+57938705_0_8737506792349461963.csv,http://dbpedia.org/ontology/VideoGame,3,http://dbpedia.org/property/years,1,0.199275362319
+58891288_0_1117541047012405958.csv,http://dbpedia.org/ontology/Film,2,http://dbpedia.org/property/established,1,0.101500365753
+5972322_0_3150366936082777235.csv,http://dbpedia.org/ontology/Election,1,http://dbpedia.org/property/votes,7,0.1250290685
+5972322_0_3150366936082777235.csv,http://dbpedia.org/ontology/Election,3,http://dbpedia.org/property/seats%25_,3,0.140666887126
+61069974_0_1894536874590565102.csv,http://dbpedia.org/ontology/Currency,3,http://dbpedia.org/property/isoNumber,2,0.224288964213
+61626303_0_266372209664087642.csv,http://dbpedia.org/ontology/RadioStation,3, ,-1,-1
+61626303_0_266372209664087642.csv,http://dbpedia.org/ontology/RadioStation,4, ,-1,-1
+66329615_0_3585856495110277641.csv,http://dbpedia.org/ontology/VideoGame,0,http://dbpedia.org/property/years,1,0.188768115942
+67865873_0_8259587610208037357.csv,http://dbpedia.org/ontology/Country,2,http://dbpedia.org/property/populationEstimate,1,0.0570083828607
+68779923_0_3859283110041832023.csv,http://dbpedia.org/ontology/Country,1,http://dbpedia.org/property/years,1,0.0805891668084
+68779923_1_3240042497463101224.csv,http://dbpedia.org/ontology/Country,1,http://dbpedia.org/property/fromyr,1,0.0648640729368
+68779923_2_1000046510804975562.csv,http://dbpedia.org/ontology/Country,1,http://dbpedia.org/property/fromyr,1,0.14476679817
+68779923_5_2067037721454758189.csv,http://dbpedia.org/ontology/Country,1, ,-1,-1
+69537082_0_7789694313271016902.csv,http://dbpedia.org/ontology/Country,0,http://dbpedia.org/property/populationDensityRank,2,0.0205356918391
+69537082_0_7789694313271016902.csv,http://dbpedia.org/ontology/Country,2,http://dbpedia.org/property/populationEstimate,1,0.0581610215043
+69881946_0_1105130426898457358.csv,http://dbpedia.org/ontology/Film,2,http://dbpedia.org/property/year,1,0.0444010744565
+70404164_0_5498195978476333642.csv,http://dbpedia.org/ontology/City,3,http://dbpedia.org/ontology/populationMetro,3,0.165741804639
+70404164_0_5498195978476333642.csv,http://dbpedia.org/ontology/City,4,http://dbpedia.org/ontology/populationMetro,2,0.289587873918
+72017594_0_7055198579167316152.csv,http://dbpedia.org/ontology/Museum,2,http://dbpedia.org/property/visitors,1,0.446785202972
+72017594_0_7055198579167316152.csv,http://dbpedia.org/ontology/Museum,3,http://dbpedia.org/property/visitors,2,0.474569865414
+73988811_0_2775758476756716904.csv,http://dbpedia.org/ontology/Film,2,http://dbpedia.org/property/years,2,0.0531830238727
+75154185_0_1607627349983289012.csv,http://dbpedia.org/ontology/City,3,http://dbpedia.org/ontology/populationMetro,2,0.166225259143
+75154185_0_1607627349983289012.csv,http://dbpedia.org/ontology/City,4,http://dbpedia.org/ontology/populationMetro,2,0.304285434093
+76275868_0_4528346580716713695.csv,http://dbpedia.org/ontology/Country,1,http://dbpedia.org/property/populationEstimate,1,0.130819238134
+77632062_0_2292892375652659825.csv,http://dbpedia.org/ontology/City,3,http://dbpedia.org/ontology/populationMetro,3,0.184578893997
+77632062_0_2292892375652659825.csv,http://dbpedia.org/ontology/City,4,http://dbpedia.org/ontology/populationMetro,2,0.293245084562
+77694908_0_6083291340991074532.csv,http://dbpedia.org/ontology/Film,2,http://dbpedia.org/property/year,1,0.0362201432081
+78891639_0_3299957631631122948.csv,http://dbpedia.org/ontology/City,3,http://dbpedia.org/ontology/populationMetro,3,0.180268112966
+78891639_0_3299957631631122948.csv,http://dbpedia.org/ontology/City,4,http://dbpedia.org/ontology/populationMetro,2,0.313233539911
+8009320_0_5507755752653817624.csv,http://dbpedia.org/ontology/Country,1,http://dbpedia.org/ontology/populationDensity,20,0.142871652563
+8009320_0_5507755752653817624.csv,http://dbpedia.org/ontology/Country,2,http://dbpedia.org/property/statArea,4,0.177840958591
+8009320_0_5507755752653817624.csv,http://dbpedia.org/ontology/Country,3,http://dbpedia.org/property/populationEstimate,1,0.154778438525
+84548468_0_5955155464119382182.csv,http://dbpedia.org/ontology/Film,2,http://dbpedia.org/property/year,1,0.0390550658944
+8468806_0_4382447409703007384.csv,http://dbpedia.org/ontology/Lake,3, ,-1,-1
+86297395_0_6919201319699354263.csv,http://dbpedia.org/ontology/Country,1,http://dbpedia.org/property/statArea,1,0.0301307218527
+86297395_0_6919201319699354263.csv,http://dbpedia.org/ontology/Country,4,http://dbpedia.org/property/populationEstimate,3,0.193841110054
+86627271_6_2239821927452848323.csv,http://dbpedia.org/ontology/Lake,1, ,-1,-1
+86627271_6_2239821927452848323.csv,http://dbpedia.org/ontology/Lake,2, ,-1,-1
+86627271_6_2239821927452848323.csv,http://dbpedia.org/ontology/Lake,3,http://dbpedia.org/property/elevationM,1,0.0593006515072
+88353875_0_4876234304797064286.csv,http://dbpedia.org/ontology/Mountain,2,http://dbpedia.org/property/elevationM,1,0.166842632215
+88732174_0_7321365014357502211.csv,http://dbpedia.org/ontology/BaseballPlayer,0,http://dbpedia.org/property/hofdate,1,0.0578012578616
+88732174_0_7321365014357502211.csv,http://dbpedia.org/ontology/BaseballPlayer,2, ,-1,-1
+90593344_0_8311455501234425088.csv,http://dbpedia.org/ontology/Mountain,3,http://dbpedia.org/property/elevationM,1,0.166806236245
+91474256_0_964747655387573523.csv,http://dbpedia.org/ontology/City,3,http://dbpedia.org/ontology/populationMetro,2,0.143855783544
+91474256_0_964747655387573523.csv,http://dbpedia.org/ontology/City,4,http://dbpedia.org/ontology/populationMetro,2,0.278310945056
+91959037_0_7907661684242014480.csv,http://dbpedia.org/ontology/VideoGame,3, ,-1,-1
+9206866_1_8114610355671172497.csv,http://dbpedia.org/ontology/Country,4,http://dbpedia.org/property/populationEstimate,2,0.170446823248
+9475172_1_1023126399856690702.csv,http://dbpedia.org/ontology/TelevisionShow,2,http://dbpedia.org/property/numSeries,1,0.05
+97941125_0_8220652154649529701.csv,http://dbpedia.org/ontology/Currency,3,http://dbpedia.org/property/isoNumber,2,0.232804712365
+99070098_0_2074872741302696997.csv,http://dbpedia.org/ontology/Mountain,2,http://dbpedia.org/property/elevationM,1,0.167640986828
