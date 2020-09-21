@@ -61,6 +61,19 @@ def fname_to_uri(fname):
     # Get to the property
     start_idx = uri.find('http://')
     uri = uri[start_idx:]
+    # uri = uri.replace('-', '/')  # This might affect properties which include - in their uri
+    uri = hardcorded_fname_to_uri(uri)
+    return uri
+
+
+def hardcorded_fname_to_uri(uri):
+    patterns = [
+        'Lake-',
+        'Person-',
+    ]
+    for p in patterns:
+        if p in uri:
+            return uri.replace('-','/')
     return uri
 
 
@@ -279,10 +292,14 @@ def annotate_column(col, properties_dirs, remove_outliers):
     """
     # print("\n\ncol: ")
     # print(col)
+    # qqe = QQE(col, remove_outliers=remove_outliers)
     qqe = QQE(col)
     errs = []
     for prop_f in properties_dirs:
         objects = get_data(prop_f)
+        if len(objects) < MIN_NUM_OBJ:
+            print("skipping: "+prop_f)
+            continue
         # print("objects: ")
         # print(objects)
         err = qqe.compute_error_mean(objects, remove_outliers=remove_outliers)
@@ -490,22 +507,25 @@ def annotate_t2dv2(endpoint, remove_outliers):
 
 a = datetime.now()
 
+
+# line = '''
+#
+# 15700884_0_8204220284166767221.csv	http://dbpedia.org/ontology/Company	2	http://dbpedia.org/property/employees
+#
 # '''
-# 21801207_0_8144839668470123042.csv	http://dbpedia.org/ontology/VideoGame	0
-# '''
+# atts = line.strip().split('\t')
 # t2dv2_dir = 't2dv2'
 # t2dv2_data_dir = os.path.join(data_dir, t2dv2_dir, 'data')
-# fname = "21801207_0_8144839668470123042.csv"
-# class_uri = "http://dbpedia.org/ontology/VideoGame"
-# colid = 0
+# fname = atts[0]
+# class_uri = atts[1]
+# colid = int(atts[2])
 # fdir = os.path.join(t2dv2_data_dir, fname)
 # errs = annotate_a_col_in_file(fdir=fdir, class_uri=class_uri, endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql',
 #                               remove_outliers=True, colid=colid)
 # for idx, e in enumerate(errs):
 #     c_property = fname_to_uri(e[1]).strip()
 #     merr = e[0]
-#     print("property: "+c_property)
-#     print("                 -- "+str(merr))
+#     print("property: "+c_property+"   -- "+str(merr))
 
 
 annotate_t2dv2(endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql', remove_outliers=True)
