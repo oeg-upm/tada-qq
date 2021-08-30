@@ -1,3 +1,6 @@
+[![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-380/)
+
+
 # tada-num-dist
 TADA for numeric column. It focuses on distributions to label numeric columns in tabular data.
 

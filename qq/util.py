@@ -1,8 +1,8 @@
 
 def errors_mean(y_pred, y_real):
     """
-    :param y_pred:
-    :param y_real:
+    :param y_pred: list of predicted
+    :param y_real: list of real
     :return:
     """
     if len(y_pred) != len(y_real):

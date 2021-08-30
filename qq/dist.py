@@ -1,3 +1,6 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 import numpy as np
 from qqe import QQE
 from util import errors_mean
@@ -6,12 +9,6 @@ from util import errors_mean
 class QQE2(QQE):
 
     def compute_and_draw_with_range(self, sample, mult, b):
-        import pandas as pd
-        import matplotlib
-        matplotlib.use('TkAgg')
-        import matplotlib.pyplot as plt
-        import seaborn as sns
-
         # qqe = QQE(a)
         # base_quantiles = qqe.estimated_base_eq
         # predicted_quantiles = qqe.estimate_sample_quantiles(b)
@@ -25,7 +22,7 @@ class QQE2(QQE):
         x = [xx * mult - b for xx in x]
         y = [yy * mult - b for yy in y]
         print("New X: ")
-        print x
+        print(x)
 
         err = errors_mean(y, x)
         print("errors mean: "+str(err))
@@ -38,12 +35,6 @@ class QQE2(QQE):
         plt.show()
 
     def compute_and_draw(self, sample):
-        import pandas as pd
-        import matplotlib
-        matplotlib.use('TkAgg')
-        import matplotlib.pyplot as plt
-        import seaborn as sns
-
         # qqe = QQE(a)
         # base_quantiles = qqe.estimated_base_eq
         # predicted_quantiles = qqe.estimate_sample_quantiles(b)
@@ -254,13 +245,6 @@ class QQE2(QQE):
 
 
 def draw(x, y):
-    import pandas as pd
-    import matplotlib
-    # matplotlib.use('pdf')
-    # matplotlib.use('Qt5Agg')
-    matplotlib.use('TkAgg')
-    import matplotlib.pyplot as plt
-    import seaborn as sns
     df = pd.DataFrame(zip(x,y), columns=["x","y"])
     # print(df)
     # sns.lmplot(x="x", y="y", data=df)

@@ -1,12 +1,8 @@
 import matplotlib
 
-# matplotlib.use('pdf')
-# matplotlib.use('Qt5Agg')
-matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
-
 
 
 def poisson():

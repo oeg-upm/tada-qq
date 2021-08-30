@@ -1,13 +1,16 @@
 import os
 import logging
-from qqe import QQE
-from easysparql import easysparql
-from dist import get_data
-import pandas as pd
-from pandas.api.types import is_numeric_dtype
 from datetime import datetime
 
-data_dir = "local_data"
+import pandas as pd
+from pandas.api.types import is_numeric_dtype
+from easysparql import easysparql
+
+from qq.qqe import QQE
+from qq.dist import get_data
+
+
+data_dir = "../local_data"
 
 # The minimum number of objects for a numeric property
 MIN_NUM_OBJ = 30
