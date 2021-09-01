@@ -33,3 +33,12 @@ You can run it as follows:```sh scripts/olympic-download.sh```
   url          = {https://doi.org/10.5281/zenodo.1408562}
 }
 ```
+
+## T2Dv2
+### Automatic
+To download and transform the data automatically, you can use [this](https://github.com/oeg-upm/ttla/blob/master/data/preprocessing.py)
+script. 
+
+### Manual
+* [T2Dv2_typology.csv](https://github.com/oeg-upm/ttla/blob/master/meta/T2Dv2_typology.csv)
+* [T2Dv2](http://webdatacommons.org/webtables/extended_instance_goldstandard.tar.gz)
