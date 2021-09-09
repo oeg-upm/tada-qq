@@ -24,7 +24,6 @@ blocks:
       secrets:
         - name: tada-qq
       env_vars: []
-
   - name: Coverage
     task:
       jobs:
