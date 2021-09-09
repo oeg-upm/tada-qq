@@ -39,4 +39,3 @@ blocks:
             - 'bash <(curl -s https://codecov.io/bash)'
       secrets:
         - name: tada-qq
-
