@@ -9,18 +9,18 @@ blocks:
     task:
       jobs:
         - name: unittest
-          matrix:
-            - env_vars: PYTHON_VERSION
-              values:
-                - '3.6'
-                - '3.7'
-                - '3.8'
           commands:
             - checkout
             - sem-version python $PYTHON_VERSION
             - python -m pip install --upgrade pip
             - pip install -r requirements.txt
             - sh scripts/run_tests.sh
+          matrix:
+            - env_var: PYTHON_VERSION
+              values:
+                - '3.6'
+                - '3.7'
+                - '3.8'
       env_vars: []
   - name: Coverage
     task:
