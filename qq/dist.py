@@ -2,8 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
-from qqe import QQE
-from util import errors_mean
+from qq.qqe import QQE
+from qq.util import errors_mean
 
 
 class QQE2(QQE):
