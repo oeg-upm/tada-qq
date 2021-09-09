@@ -21,7 +21,22 @@ blocks:
             - python -m pip install --upgrade pip
             - pip install -r requirements.txt
             - sh scripts/run_tests.sh
+      secrets:
+        - name: tada-qq
       env_vars: []
+
+  - name: Coverage
+    task:
+      jobs:
+        - name: Coverage
+          commands:
+            - checkout
+            - python -m pip install --upgrade pip
+            - pip install -r requirements.txt
+            - python -m pip install coverage
+            - 'export PATH=$PATH:/home/semaphore/.local/bin'
+            - coverage run -m unittest discover
+            - 'bash <(curl -s https://codecov.io/bash)'
       secrets:
         - name: tada-qq
 
