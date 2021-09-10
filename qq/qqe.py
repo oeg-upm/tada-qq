@@ -34,6 +34,8 @@ class QQE:
         if len(column) < 1:
             return []
         clean_column = []
+        # print("remove_outliers> column")
+        # print(column)
         q1 = np.percentile(column, 25)
         q3 = np.percentile(column, 75)
         # k = 1.5

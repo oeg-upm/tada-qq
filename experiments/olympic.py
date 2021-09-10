@@ -2,7 +2,7 @@ import os
 import logging
 from datetime import datetime
 
-from experiments.common import annotate_file
+from experiments.common import annotate_file, eval_column, compute_scores
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
 from easysparql import easysparql
@@ -274,24 +274,40 @@ logger = get_logger(__name__, level=logging.DEBUG)
 #     return numeric_cols
 
 
-def annotate_olympic_games(endpoint, remove_outliers, data_dir):
+def annotate_olympic_games(endpoint, remove_outliers, meta_dir):
+    """
+    endpoint:
+    remove_outliers:
+    meta_dir:
+    """
     olympic_games_dir = 'olympic_games'
     olympic_games_data_dir = os.path.join(data_dir, olympic_games_dir, 'data')
-    meta_dir = os.path.join(data_dir, olympic_games_dir, 'meta.csv')
     f = open(meta_dir)
+    eval_data = []
     for line in f.readlines():
         atts = line.split(',')
         if len(atts) > 1:
             fname = atts[0].strip()
             class_uri = atts[1].strip()
+            col_id = int(atts[2])
+            uris = atts[3].split(';')
+            trans_uris = [uri_to_fname(uri) for uri in uris]
             fdir = os.path.join(olympic_games_data_dir, fname)
-            annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers, endpoint=endpoint,
-                          data_dir=data_dir, min_objs=MIN_NUM_OBJ)
-
+            preds = annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers, endpoint=endpoint,
+                          data_dir=data_dir, min_objs=MIN_NUM_OBJ, cols=[col_id])
+            for c in preds:
+                res = eval_column(preds[c], correct_uris=trans_uris)
+                eval_data.append(res)
+                if not res:
+                    print(preds)
+    print("results: ")
+    print(eval_data)
+    compute_scores(eval_data, k=1)
 
 a = datetime.now()
 
-annotate_olympic_games(endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql', remove_outliers=True, data_dir=data_dir)
+annotate_olympic_games(endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql', remove_outliers=True,
+                       meta_dir="experiments/olympic_meta.csv")
 
 
 b = datetime.now()
