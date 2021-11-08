@@ -3,7 +3,7 @@ import logging
 
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
-from easysparql import easysparql
+from easysparql import easysparqlclass
 
 from qq.qqe import QQE
 from qq.dist import get_data
@@ -20,12 +20,15 @@ def get_logger(name, level=logging.INFO):
     return logger
 
 
-logger = get_logger(__name__, level=logging.INFO)
+# logger = get_logger(__name__, level=logging.INFO)
+logger = get_logger(__name__, level=logging.DEBUG)
+
+
+esparql = easysparqlclass.EasySparql(cache_dir=".cache", logger=logger)
 
 
 def save_objects(data_dir, class_uri, property_uri, objects):
     fdir = os.path.join(data_dir, uri_to_fname(class_uri), uri_to_fname(property_uri)) + ".txt"
-    # fname = uri_to_fname(class_uri) + " - " + uri_to_fname(property_uri)
     lines = [str(o) for o in objects]
     txt = "\n".join(lines)
     f = open(fdir, 'w')
@@ -87,20 +90,20 @@ def collect_numeric_data(class_uri, endpoint, data_dir, min_objs):
     if os.path.exists(class_dir):
         return
     create_dir(class_dir)
-
-    results = easysparql.run_query(prop_query, endpoint=endpoint)
+    esparql.endpoint = endpoint
+    results = esparql.run_query(prop_query)
     properties = [r['p']['value'] for r in results]
     for prop in properties:
         if data_exists(data_dir=data_dir, class_uri=class_uri, property_uri=prop):
             continue
         query = query_template % (class_uri, prop)
-        results = easysparql.run_query(query=query, endpoint=endpoint)
+        results = esparql.run_query(query=query)
         if results is None:
             logger.debug('No results for the query: ' + query)
             continue
         objects = [r['o']['value'] for r in results]
         if len(objects) >= min_objs:
-            nums = easysparql.get_numerics_from_list(objects, 0.5)
+            nums = esparql.get_numerics_from_list(objects, 0.5)
             if nums is None:
                 logger.debug('property is not numeric: ' + prop)
                 continue
@@ -189,11 +192,12 @@ def annotate_file(fdir, class_uri, endpoint, remove_outliers, data_dir, min_objs
     class_dir = os.path.join(data_dir, uri_to_fname(class_uri))
     properties_files = [f for f in os.listdir(class_dir) if os.path.isfile(os.path.join(class_dir, f))]
     properties_dirs = [os.path.join(class_dir, pf) for pf in properties_files]
-    logger.info("File: "+fdir.split('/')[-1])
+    # logger.info("File: "+fdir.split('/')[-1])
     preds = dict()
     for colobj in num_cols:
         colid, coldata = colobj
-        logger.info('Column: ' + str(colid))
+        logger.info('%s - (col=%d) ' % (fdir.split('/')[-1], colid))
+        # logger.info('Column: ' + str(colid))
         errs = annotate_column(col=coldata, properties_dirs=properties_dirs, remove_outliers=remove_outliers)
         preds[colid] = errs
     return preds
@@ -205,17 +209,11 @@ def get_numeric_columns(fdir):
     :return: list of the pair (colid, list)
     """
     df = pd.read_csv(fdir)
-    # print(df)
     numeric_cols = []
     for col in df:
-        # print("\n\n\n=========================")
-        # print(col)
-        # print(df[col].dtype)
         if is_numeric_dtype(df[col]):
             pair = (col, list(df[col]))
             numeric_cols.append(pair)
-    # logger.debug("Get numeric columns:")
-    # logger.debug(numeric_cols)
     return numeric_cols
 
 
@@ -224,16 +222,26 @@ def get_columns_data(fdir, ids):
     :param fdir:
     :return: list of the pair (colid, list)
     """
-    df = pd.read_csv(fdir)
+    df = pd.read_csv(fdir, thousands=',')
     numeric_cols = []
     for colid, col in enumerate(df):
         if colid in ids:
-            pair = (colid, list(df.iloc[:, colid]))
+            # pair = (colid, list(df.iloc[:, colid]))
+            # df_col = df[df.columns[colid]]
+            df_clean = df[~df[df.columns[colid]].isnull()]
+            c = pd.to_numeric(df_clean[df_clean.columns[colid]], errors='coerce')
+            c = c[~c.isnull()]
+            pair = (colid, list(c))
+
+            # pair = (colid, list(pd.to_numeric(df_clean[df_clean.columns[colid]], errors='coerce')[~df_clean[df_clean[df_clean.columns[0]]].isnull()]))
+            # pair = (colid, list(pd.to_numeric(df.iloc[:, colid])))
             numeric_cols.append(pair)
     return numeric_cols
 
 
 def annotate_column(col, properties_dirs, remove_outliers):
+    print("annotate_column> col:")
+    print(col)
     qqe = QQE(col)
     errs = []
     for prop_f in properties_dirs:
@@ -252,21 +260,6 @@ def property_dir_to_uri(fdir):
     return class_uri, property_uri
 
 
-# def eval_column(p_errs, k=3, correct_uris=[]):
-#     """
-#     p_errs: a list of pairs. each pair starts with the error/distance and the filename
-#         (e.g., <0.1, dbo-Person-abc/dbp-xyz.txt>)
-#     k: consider the prediction correct if it is in the top k.
-#         Check if prediction is correct or not
-#     """
-#     for idx, item in enumerate(p_errs[:k]):
-#         trans_uri = item[1].split('/')[-1][:-4]
-#         trans_uri = uri_to_fname(trans_uri)
-#         # logger.info(str(idx+1)+" err: "+str(item[0]) + "  - " + item[1] + " - "+property_dir_to_uri(item[1])[1])
-#         if trans_uri in correct_uris:
-#             return True
-#     return False
-
 def eval_column(p_errs, correct_uris=[]):
     """
     p_errs: a list of pairs. each pair starts with the error/distance and the filename
@@ -278,7 +271,9 @@ def eval_column(p_errs, correct_uris=[]):
     for idx, item in enumerate(p_errs):
         trans_uri = item[1].split('/')[-1][:-4]
         trans_uri = uri_to_fname(trans_uri)
-        # logger.info(str(idx+1)+" err: "+str(item[0]) + "  - " + item[1] + " - "+property_dir_to_uri(item[1])[1])
+        if idx<3:
+            logger.info("%d err: %.2f - %s - %s" % (idx+1, item[0], item[1], property_dir_to_uri(item[1])[1]))
+            # logger.info(str(idx+1)+" err: "+str(item[0]) + "  - " + item[1] + " - "+property_dir_to_uri(item[1])[1])
         if trans_uri in correct_uris:
             k = idx + 1
             break

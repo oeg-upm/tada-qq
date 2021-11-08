@@ -26,21 +26,17 @@ def json_to_csv(fname, t2dv2_dir , dest_dir, overwrite=False):
         return
     json_fdir = os.path.join(t2dv2_dir, "tables", fname)
     f = open(json_fdir, 'rb')
+
     s = f.read()
     detected_encoding = chardet.detect(s)['encoding']
-    # logger.debug("detected encoding %s for %s" % (detected_encoding, fname))
     decoded_s = s.decode(detected_encoding)
-    # decoded_s = s
     j = json.loads(decoded_s)
     f.close()
     table = zip(*j["relation"])
-
     with open(csv_dest, 'w') as csvfile:
         writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
         for row in table:
-            # print(row)
             writer.writerow(row)
-
     logger.debug("generate csv %s" % csv_dest)
 
 
@@ -53,7 +49,7 @@ def export_files_to_csv(t2dv2_dir, dest_dir):
         for row in reader:
             json_fname = row[0].strip()[:-6]+"json"
             json_to_csv(json_fname, t2dv2_dir, dest_dir, overwrite=False)
-            logger.info("export: "+json_fname)
+            logger.info("export: " + json_fname)
 
 
 if __name__ == "__main__":

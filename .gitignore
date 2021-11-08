@@ -1,3 +1,4 @@
+.cache
 .idea*
 local*
 .DS_Store

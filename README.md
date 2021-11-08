@@ -47,3 +47,6 @@ script.
 ### Manual
 * [T2Dv2_typology.csv](https://github.com/oeg-upm/ttla/blob/master/meta/T2Dv2_typology.csv)
 * [T2Dv2](http://webdatacommons.org/webtables/extended_instance_goldstandard.tar.gz)
+
+### Extra preprocessing
+The application expects to have a folder named `csv` inside the T2Dv2 which includes the files in csv format. You can use the script `scripts/json_to_csv.py` to do that.
