@@ -175,6 +175,7 @@ def annotate_file(fdir, class_uri, endpoint, remove_outliers, data_dir, min_objs
     :param data_dir:
     :param cols: list of int - the ids of the numeric columns. If nothing is passed, the function will detect
     numeric columns
+    :param min_objs:
     :return: dict
      {
         'colid1': errs1,
@@ -242,6 +243,8 @@ def get_columns_data(fdir, ids):
 def annotate_column(col, properties_dirs, remove_outliers):
     print("annotate_column> col:")
     print(col)
+    print("annotate_column> properties_dir: ")
+    print(properties_dirs)
     qqe = QQE(col)
     errs = []
     for prop_f in properties_dirs:

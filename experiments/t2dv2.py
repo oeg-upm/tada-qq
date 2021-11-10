@@ -33,7 +33,7 @@ def annotate_t2dv2(endpoint, remove_outliers):
         csv_fname = row['filename']+".csv"
         fdir = os.path.join(data_dir, csv_fname)
         preds = annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers, endpoint=endpoint,
-                              data_dir=data_dir, min_objs=MIN_NUM_OBJ, cols=[col_id])
+                              data_dir="local_data", min_objs=MIN_NUM_OBJ, cols=[col_id])
         for c in preds:
             res = eval_column(preds[c], correct_uris=trans_uris)
             eval_data.append(res)
