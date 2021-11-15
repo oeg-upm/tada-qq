@@ -229,8 +229,23 @@ def get_columns_data(fdir, ids):
         if colid in ids:
             # pair = (colid, list(df.iloc[:, colid]))
             # df_col = df[df.columns[colid]]
-            df_clean = df[~df[df.columns[colid]].isnull()]
+            h = df.columns[colid]
+            # print(h)
+            # print(df[h])
+            # df_clean = df[~df[df.columns[colid]].isnull()]
+
+            if not is_numeric_dtype(df[h]):
+                df[h] = df[h].str.replace(',', '').astype(float, errors='ignore')
+
+            df_clean = df
+
+            # df['colname'] = df['colname'].str.replace(',', '').astype(float)
+
+            # source: https://stackoverflow.com/questions/42192323/convert-pandas-dataframe-to-float-with-commas-and-negative-numbers
+            # pd.to_numeric(df.str.replace(',',''), errors='coerce')
+            # c = pd.to_numeric(df_clean[h].astype(str).replace(',', ''), errors='coerce')
             c = pd.to_numeric(df_clean[df_clean.columns[colid]], errors='coerce')
+            # print(c)
             c = c[~c.isnull()]
             pair = (colid, list(c))
 
@@ -241,10 +256,10 @@ def get_columns_data(fdir, ids):
 
 
 def annotate_column(col, properties_dirs, remove_outliers):
-    print("annotate_column> col:")
-    print(col)
-    print("annotate_column> properties_dir: ")
-    print(properties_dirs)
+    # print("annotate_column> properties_dir: ")
+    # print(properties_dirs)
+    # print("annotate_column> col:")
+    # print(col)
     qqe = QQE(col)
     errs = []
     for prop_f in properties_dirs:
@@ -274,7 +289,7 @@ def eval_column(p_errs, correct_uris=[]):
     for idx, item in enumerate(p_errs):
         trans_uri = item[1].split('/')[-1][:-4]
         trans_uri = uri_to_fname(trans_uri)
-        if idx<3:
+        if idx < 3:
             logger.info("%d err: %.2f - %s - %s" % (idx+1, item[0], item[1], property_dir_to_uri(item[1])[1]))
             # logger.info(str(idx+1)+" err: "+str(item[0]) + "  - " + item[1] + " - "+property_dir_to_uri(item[1])[1])
         if trans_uri in correct_uris:
