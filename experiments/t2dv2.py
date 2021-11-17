@@ -37,8 +37,8 @@ def annotate_t2dv2(endpoint, remove_outliers):
         for c in preds:
             res = eval_column(preds[c], correct_uris=trans_uris)
             eval_data.append(res)
-            if not res:
-                print(preds)
+            # if not res:
+            #     print(preds)
     # for line in f.readlines():
     #     print(line)
     #     atts = line.split(',')
@@ -56,8 +56,8 @@ def annotate_t2dv2(endpoint, remove_outliers):
     #             eval_data.append(res)
     #             if not res:
     #                 print(preds)
-    print("results: ")
-    print(eval_data)
+    # print("results: ")
+    # print(eval_data)
     compute_scores(eval_data, k=1)
 
 

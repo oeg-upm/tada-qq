@@ -197,7 +197,7 @@ def annotate_file(fdir, class_uri, endpoint, remove_outliers, data_dir, min_objs
     preds = dict()
     for colobj in num_cols:
         colid, coldata = colobj
-        logger.info('%s - (col=%d) ' % (fdir.split('/')[-1], colid))
+        logger.info('\n\n%s - (col=%d) ' % (fdir.split('/')[-1], colid))
         # logger.info('Column: ' + str(colid))
         errs = annotate_column(col=coldata, properties_dirs=properties_dirs, remove_outliers=remove_outliers)
         preds[colid] = errs
@@ -223,6 +223,7 @@ def get_columns_data(fdir, ids):
     :param fdir:
     :return: list of the pair (colid, list)
     """
+    print(fdir)
     df = pd.read_csv(fdir, thousands=',')
     numeric_cols = []
     for colid, col in enumerate(df):
@@ -286,14 +287,25 @@ def eval_column(p_errs, correct_uris=[]):
         Check if prediction is correct or not
     """
     k = -1
+    if len(correct_uris) == 0:
+        print("No correct uris as passed")
+        print(p_errs)
+        raise Exception("No correct uris are passed")
+    print("Correct uris: %s " % str(correct_uris))
     for idx, item in enumerate(p_errs):
         trans_uri = item[1].split('/')[-1][:-4]
         trans_uri = uri_to_fname(trans_uri)
-        if idx < 3:
-            logger.info("%d err: %.2f - %s - %s" % (idx+1, item[0], item[1], property_dir_to_uri(item[1])[1]))
-            # logger.info(str(idx+1)+" err: "+str(item[0]) + "  - " + item[1] + " - "+property_dir_to_uri(item[1])[1])
+        # if idx < 3:
+        #     logger.info("%d err: %.2f - %s - %s" % (idx+1, item[0], item[1], property_dir_to_uri(item[1])[1]))
+        #     # logger.info(str(idx+1)+" err: "+str(item[0]) + "  - " + item[1] + " - "+property_dir_to_uri(item[1])[1])
         if trans_uri in correct_uris:
             k = idx + 1
+            break
+        elif idx < 3:
+            logger.info("%d err: %.2f - <%s> - <%s>" % (idx+1, item[0], trans_uri, property_dir_to_uri(item[1])[1]))
+            # logger.info("%d err: %.2f - <%s> - <%s>" % (idx+1, item[0], item[1], property_dir_to_uri(item[1])[1]))
+        else:
+            k = 999
             break
     return k
 
