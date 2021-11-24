@@ -9,18 +9,17 @@ blocks:
     task:
       prologue:
         commands:
-          # Add --local pip bin to $PATH
-          - export PATH=$HOME/.local/bin:$PATH
+          - 'export PATH=$HOME/.local/bin:$PATH'
           - checkout
           - mkdir .pip_cache
           - cache restore
-          # Use --user to avoid permission conflicts
           - pip install --user --cache-dir .pip_cache -r requirements.txt
           - cache store
       jobs:
         - name: unittest
           commands:
             - sem-version python $PYTHON_VERSION
+            - python -m pip install wheel
             - python -m pip install --upgrade pip
             - pip install -r requirements.txt
             - sh scripts/run_tests.sh
