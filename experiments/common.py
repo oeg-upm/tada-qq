@@ -11,7 +11,8 @@ from qq.dist import get_data
 
 def get_logger(name, level=logging.INFO):
     logger = logging.getLogger(name)
-    formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
+    formatter = logging.Formatter('%(name)-12s>>  %(message)s')
+    # formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
     handler = logging.StreamHandler()
     handler.setFormatter(formatter)
     if not logger.hasHandlers():
@@ -20,8 +21,8 @@ def get_logger(name, level=logging.INFO):
     return logger
 
 
-# logger = get_logger(__name__, level=logging.INFO)
-logger = get_logger(__name__, level=logging.DEBUG)
+logger = get_logger(__name__, level=logging.INFO)
+#logger = get_logger(__name__, level=logging.DEBUG)
 
 
 esparql = easysparqlclass.EasySparql(cache_dir=".cache", logger=logger)
@@ -197,7 +198,7 @@ def annotate_file(fdir, class_uri, endpoint, remove_outliers, data_dir, min_objs
     preds = dict()
     for colobj in num_cols:
         colid, coldata = colobj
-        logger.info('\n\n%s - (col=%d) ' % (fdir.split('/')[-1], colid))
+        # logger.info('\n\n%s - (col=%d) ' % (fdir.split('/')[-1], colid))
         # logger.info('Column: ' + str(colid))
         errs = annotate_column(col=coldata, properties_dirs=properties_dirs, remove_outliers=remove_outliers)
         preds[colid] = errs
@@ -223,7 +224,7 @@ def get_columns_data(fdir, ids):
     :param fdir:
     :return: list of the pair (colid, list)
     """
-    print(fdir)
+    # print(fdir)
     df = pd.read_csv(fdir, thousands=',')
     numeric_cols = []
     for colid, col in enumerate(df):
@@ -291,7 +292,7 @@ def eval_column(p_errs, correct_uris=[]):
         print("No correct uris as passed")
         print(p_errs)
         raise Exception("No correct uris are passed")
-    print("Correct uris: %s " % str(correct_uris))
+    # print("Correct uris: %s " % str(correct_uris))
     for idx, item in enumerate(p_errs):
         trans_uri = item[1].split('/')[-1][:-4]
         trans_uri = uri_to_fname(trans_uri)
@@ -302,7 +303,9 @@ def eval_column(p_errs, correct_uris=[]):
             k = idx + 1
             break
         elif idx < 3:
-            logger.info("%d err: %.2f - <%s> - <%s>" % (idx+1, item[0], trans_uri, property_dir_to_uri(item[1])[1]))
+            if idx == 0:
+                print("\nCorrect uris: %s \t" % str(correct_uris))
+            print("%d err: %.2f - <%s> - <%s>" % (idx+1, item[0], trans_uri, property_dir_to_uri(item[1])[1]))
             # logger.info("%d err: %.2f - <%s> - <%s>" % (idx+1, item[0], item[1], property_dir_to_uri(item[1])[1]))
         else:
             k = 999
@@ -328,7 +331,7 @@ def compute_scores(eval_data, k=1):
         rec = 0
         f1 = 0
     else:
-        prec = corr/ (corr+incorr)
+        prec = corr / (corr+incorr)
         rec = corr / (corr+notf)
         f1 = 2*prec*rec / (prec+rec)
     print("Precision: %.2f\nRecall: %.2f\nF1: %.2f" % (prec, rec, f1))

@@ -18,20 +18,6 @@ data_dir = "local_data"
 MIN_NUM_OBJ = 30
 
 
-def get_logger(name, level=logging.INFO):
-    logger = logging.getLogger(name)
-    formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
-    handler = logging.StreamHandler()
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
-    logger.setLevel(level)
-    return logger
-
-
-# logger = get_logger(__name__, level=logging.DEBUG)
-logger = get_logger(__name__, level=logging.INFO)
-
-
 def annotate_olympic_games(endpoint, remove_outliers, meta_dir):
     """
     endpoint:
@@ -58,7 +44,7 @@ def annotate_olympic_games(endpoint, remove_outliers, meta_dir):
                 eval_data.append(res)
                 if not res:
                     print(preds)
-    print("results: ")
+    print("\nresults: ")
     print(eval_data)
     compute_scores(eval_data, k=1)
 

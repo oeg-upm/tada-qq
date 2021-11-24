@@ -9,8 +9,8 @@
 # tada-num-dist
 TADA for numeric column. It focuses on distributions to label numeric columns in tabular data.
 
-
-## Olympic Games Dataset
+## Datasets
+### Olympic Games Dataset
 
 The data is available here: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1408562.svg)](https://doi.org/10.5281/zenodo.1408562)
 
@@ -39,14 +39,25 @@ You can run it as follows:```sh scripts/olympic-download.sh```
 }
 ```
 
-## T2Dv2
-### Automatic
+### T2Dv2
+#### Automatic
 To download and transform the data automatically, you can use [this](https://github.com/oeg-upm/ttla/blob/master/data/preprocessing.py)
 script. 
 
-### Manual
+#### Manual
 * [T2Dv2_typology.csv](https://github.com/oeg-upm/ttla/blob/master/meta/T2Dv2_typology.csv)
 * [T2Dv2](http://webdatacommons.org/webtables/extended_instance_goldstandard.tar.gz)
 
-### Extra preprocessing
+#### Extra preprocessing
 The application expects to have a folder named `csv` inside the T2Dv2 which includes the files in csv format. You can use the script `scripts/json_to_csv.py` to do that.
+
+## Run Experiments
+### Semantic labelling
+#### Olympic Games
+```
+python -m experiments.olympic
+```
+#### T2Dv2
+```
+python -m experiments.t2dv2
+```
