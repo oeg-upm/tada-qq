@@ -21,7 +21,7 @@ blocks:
             - sem-version python $PYTHON_VERSION
             - python -m pip install wheel
             - python -m pip install --upgrade pip
-            - pip install -r requirements.txt
+            - python -m pip install -r requirements.txt
             - sh scripts/run_tests.sh
           matrix:
             - env_var: PYTHON_VERSION
