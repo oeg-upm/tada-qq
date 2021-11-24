@@ -20,7 +20,6 @@ blocks:
         - name: unittest
           commands:
             - sem-version python $PYTHON_VERSION
-            - python3 -m pip install -r requirements.txt
             - sh scripts/run_tests.sh
           matrix:
             - env_var: PYTHON_VERSION
@@ -31,13 +30,18 @@ blocks:
       env_vars: []
   - name: Coverage
     task:
+      prologue:
+        commands:
+          - checkout
+          - mkdir .pip_cache
+          - cache restore
+          - python3 -m pip install wheel
+          - python3 -m pip install --upgrade pip
+          - python3 -m pip install --user --cache-dir .pip_cache -r requirements.txt
+          - cache store
       jobs:
         - name: Coverage
           commands:
-            - checkout
-            - python -m pip install --upgrade pip
-            - pip install -r requirements.txt
-            - python -m pip install coverage
             - 'export PATH=$PATH:/home/semaphore/.local/bin'
             - coverage run -m unittest discover
             - 'bash <(curl -s https://codecov.io/bash)'
