@@ -12,7 +12,7 @@ blocks:
           - checkout
           - mkdir .pip_cache
           - cache restore
-          - python3 pip install --user --cache-dir .pip_cache -r requirements.txt
+          - python3 -m pip install --user --cache-dir .pip_cache -r requirements.txt
           - cache store
       jobs:
         - name: unittest
