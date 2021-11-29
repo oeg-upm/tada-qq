@@ -48,6 +48,7 @@ def annotate_olympic_games(endpoint, remove_outliers, meta_dir):
     print(eval_data)
     compute_scores(eval_data, k=1)
 
+
 a = datetime.now()
 
 annotate_olympic_games(endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql', remove_outliers=True,
