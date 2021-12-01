@@ -51,6 +51,7 @@ script.
 #### Extra preprocessing
 The application expects to have a folder named `csv` inside the T2Dv2 which includes the files in csv format. You can use the script `scripts/json_to_csv.py` to do that.
 
+
 ## Run Experiments
 ### Semantic labelling
 #### Olympic Games
@@ -61,3 +62,6 @@ python -m experiments.olympic
 ```
 python -m experiments.t2dv2
 ```
+
+# Results
+![t2dv2.svg](t2dv2.svg) 

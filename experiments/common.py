@@ -4,6 +4,8 @@ import logging
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
 from easysparql import easysparqlclass
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 from qq.qqe import QQE
 from qq.dist import get_data
@@ -321,8 +323,8 @@ def compute_scores(eval_data, k=1):
     notf = 0
     for d in eval_data:
         if d == -1:
-            notf +=1
-        elif d <=k:
+            notf += 1
+        elif d <= k:
             corr += 1
         else:
             incorr += 1
@@ -334,4 +336,61 @@ def compute_scores(eval_data, k=1):
         prec = corr / (corr+incorr)
         rec = corr / (corr+notf)
         f1 = 2*prec*rec / (prec+rec)
-    print("Precision: %.2f\nRecall: %.2f\nF1: %.2f" % (prec, rec, f1))
+    return prec, rec, f1
+    # print("Precision: %.2f\nRecall: %.2f\nF1: %.2f" % (prec, rec, f1))
+
+
+def compute_scores_per_property(eval_pp, fname=None):
+    """
+    eval_pp: dict
+    {
+        "generic property": [1,... ] (k values),
+
+    }
+    """
+    lines = []
+    for p in eval_pp:
+        prec, rec, f1 = compute_scores(eval_pp[p])
+        lines.append([p, 'prec', prec])
+        lines.append([p, 'rec', rec])
+        lines.append([p, 'f1', f1])
+        print("%s: \n\t%f1.2\t%f1.2\t%f1.2" % (p, prec, rec, f1))
+    if fname:
+        generate_diagram(lines, fname)
+
+
+def generate_diagram(acc, draw_fname):
+    """
+    :param acc: acc
+    :param draw_file_base: base of the diagram
+    :return: None
+    """
+    data = pd.DataFrame(acc, columns=['Property Concept', 'Metric', 'Value'])
+    ax = sns.barplot(x="Value", y="Property Concept",
+                     hue="Metric",
+                     data=data, linewidth=1.0,
+                     # palette="colorblind",
+                     palette="Spectral",
+                     # palette="pastel",
+                     # palette="ch:start=.2,rot=-.3",
+                     # palette="YlOrBr",
+                     # palette="Paired",
+                     # palette="Set2",
+                     orient="h")
+    # ax.legend_.remove()
+    # ax.legend(bbox_to_anchor=(1.01, 1), borderaxespad=0)
+    ax.legend(bbox_to_anchor=(1.0, -0.1), borderaxespad=0)
+    # ax.set_xlim(0, 1.0)
+    # ax.set_ylim(0, 0.7)
+    # Horizontal
+    ticks = ax.get_yticks()
+    new_ticks = [t for t in ticks]
+    texts = ax.get_yticklabels()
+    # print(ax.get_yticklabels())
+    labels = [t.get_text() for t in texts]
+    ax.set_yticks(new_ticks)
+    ax.set_yticklabels(labels, fontsize=8)
+    # print(ax.get_yticklabels())
+    plt.setp(ax.lines, color='k')
+    ax.figure.savefig('%s.svg' % draw_fname, bbox_inches="tight")
+    ax.figure.clf()

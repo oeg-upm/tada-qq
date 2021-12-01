@@ -46,7 +46,8 @@ def annotate_olympic_games(endpoint, remove_outliers, meta_dir):
                     print(preds)
     print("\nresults: ")
     print(eval_data)
-    compute_scores(eval_data, k=1)
+    prec, rec, f1 = compute_scores(eval_data, k=1)
+    print("Precision: %.2f\nRecall: %.2f\nF1: %.2f" % (prec, rec, f1))
 
 
 a = datetime.now()
