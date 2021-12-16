@@ -27,6 +27,8 @@ def annotate_t2dv2(endpoint, remove_outliers):
     df = pd.read_csv(meta_dir)
     df = df[df.property.notnull()]
     df = df[df["concept"].notnull()]
+    df = df[df["pconcept"].notnull()]
+
     eval_per_prop = dict()
     for idx, row in df.iterrows():
         class_uri = 'http://dbpedia.org/ontology/'+row['concept']
@@ -44,8 +46,11 @@ def annotate_t2dv2(endpoint, remove_outliers):
         if pconcept not in eval_per_prop:
             eval_per_prop[pconcept] = []
 
+        diff_name = "%s-%s-%s" % (uri_to_fname(class_uri), uri_to_fname(uris[0]), fdir.split(os.sep)[-1])
+
         for c in preds:
-            res = eval_column(preds[c], correct_uris=trans_uris)
+            res = eval_column(preds[c], correct_uris=trans_uris, class_uri=class_uri, col_id=col_id, fdir=fdir,
+                              diff_diagram=os.path.join("experiments", "diffs", "t2dv2", diff_name))
             eval_data.append(res)
             eval_per_prop[pconcept].append(res)
 

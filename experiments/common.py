@@ -6,6 +6,7 @@ from pandas.api.types import is_numeric_dtype
 from easysparql import easysparqlclass
 import seaborn as sns
 import matplotlib.pyplot as plt
+from pcake import pcake
 
 from qq.qqe import QQE
 from qq.dist import get_data
@@ -198,10 +199,13 @@ def annotate_file(fdir, class_uri, endpoint, remove_outliers, data_dir, min_objs
     properties_dirs = [os.path.join(class_dir, pf) for pf in properties_files]
     # logger.info("File: "+fdir.split('/')[-1])
     preds = dict()
+    print("\n\n=================")
+    print(class_uri)
+    print(fdir)
     for colobj in num_cols:
         colid, coldata = colobj
         # logger.info('\n\n%s - (col=%d) ' % (fdir.split('/')[-1], colid))
-        # logger.info('Column: ' + str(colid))
+        print('Column: ' + str(colid))
         errs = annotate_column(col=coldata, properties_dirs=properties_dirs, remove_outliers=remove_outliers)
         preds[colid] = errs
     return preds
@@ -282,12 +286,17 @@ def property_dir_to_uri(fdir):
     return class_uri, property_uri
 
 
-def eval_column(p_errs, correct_uris=[]):
+def eval_column(p_errs, correct_uris=[], diff_diagram=None, class_uri=None, col_id=None, fdir=None):
     """
     p_errs: a list of pairs. each pair starts with the error/distance and the filename
         (e.g., <0.1, dbo-Person-abc/dbp-xyz.txt>)
-    k: consider the prediction correct if it is in the top k.
-        Check if prediction is correct or not
+    correct_uris: a list of correct uris
+    diff_diagram: the name of the output diagram showing the difference between the distributions
+    The following parameters are only needed for the diff diagram
+    class_uri:
+    col_id:
+    fdir:
+
     """
     k = -1
     if len(correct_uris) == 0:
@@ -303,14 +312,34 @@ def eval_column(p_errs, correct_uris=[]):
         #     # logger.info(str(idx+1)+" err: "+str(item[0]) + "  - " + item[1] + " - "+property_dir_to_uri(item[1])[1])
         if trans_uri in correct_uris:
             k = idx + 1
+            print("Match: %.2f - <%s> - <%s>" % (item[0], trans_uri, property_dir_to_uri(item[1])[1]))
+            if idx > 0:
+                if diff_diagram:
+                    data = get_columns_data(fdir, [col_id])[0][1]
+                    prev_property_uri = property_dir_to_uri(p_errs[idx-1][1])[1]
+                    print("property dir to uri:")
+                    print(item[1])
+                    pcake.compare(class_uri, property_dir_to_uri(item[1])[1], prev_property_uri, label1a=" (correct)",
+                                  label2a=" (incorrect)", data=data, data_label="data", outfile=diff_diagram)
             break
         elif idx < 3:
             if idx == 0:
-                print("\nCorrect uris: %s \t" % str(correct_uris))
+                print("Correct uris: %s \t" % str(correct_uris))
             print("%d err: %.2f - <%s> - <%s>" % (idx+1, item[0], trans_uri, property_dir_to_uri(item[1])[1]))
             # logger.info("%d err: %.2f - <%s> - <%s>" % (idx+1, item[0], item[1], property_dir_to_uri(item[1])[1]))
         else:
             k = 999
+            data = get_columns_data(fdir, [col_id])[0][1]
+            prev_property_uri = property_dir_to_uri(p_errs[0][1])[1]
+            base_a = os.sep.join(p_errs[0][1].split(os.sep)[:-1])
+            corr_uri = os.path.join(base_a, correct_uris[0]+".txt")
+            print("property dir to uri: ***")
+            print(corr_uri)
+            try:
+                pcake.compare(class_uri, property_dir_to_uri(corr_uri)[1], prev_property_uri, label1a=" (correct*)",
+                              label2a=" (incorrect)", data=data, data_label="data", outfile=diff_diagram)
+            except:
+                pass
             break
     return k
 

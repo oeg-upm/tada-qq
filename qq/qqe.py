@@ -98,7 +98,6 @@ class QQE:
         :param data_point: float
         :return: quantile: float
         """
-
         # For quantile < (0.5)/n
         if data_point < self.sample_base[0]:
             m = self.ms[0]
