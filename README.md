@@ -65,3 +65,6 @@ python -m experiments.t2dv2
 
 # Results
 ![t2dv2.svg](t2dv2.svg) 
+
+## Diffs
+[diffs](experiments/diffs/t2dv2/README.md)
