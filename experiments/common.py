@@ -61,7 +61,7 @@ def get_candidate_properties(class_uri, sample_data, data_dir):
     for f in fnames:
         prop_dir = os.path.join(class_dir, f)
         prop_data = get_data(prop_dir)
-        err = qqe.predict_and_get_sq_mean_error(prop_data, remove_outliers=True)
+        err = qqe.predict_and_get_mean_sq_error(prop_data, remove_outliers=True)
         # err = qqe.predict_and_get_mean_error(prop_data, remove_outliers=True)
         item = (err, f)
         errs.append(item)
@@ -171,7 +171,7 @@ def fname_to_uri(fname, replace_sep=True):
     return uri
 
 
-def annotate_file(fdir, class_uri, endpoint, remove_outliers, data_dir, min_objs, cols=[]):
+def annotate_file(fdir, class_uri, endpoint, remove_outliers, data_dir, min_objs, cols=[], err_meth="mean_err"):
     """
     :param fdir: of the csv file to be annotated
     :param class_uri:
@@ -181,6 +181,7 @@ def annotate_file(fdir, class_uri, endpoint, remove_outliers, data_dir, min_objs
     :param cols: list of int - the ids of the numeric columns. If nothing is passed, the function will detect
     numeric columns
     :param min_objs:
+    :param err_meth:
     :return: dict
      {
         'colid1': errs1,
@@ -207,7 +208,8 @@ def annotate_file(fdir, class_uri, endpoint, remove_outliers, data_dir, min_objs
         colid, coldata = colobj
         # logger.info('\n\n%s - (col=%d) ' % (fdir.split('/')[-1], colid))
         print('Column: ' + str(colid))
-        errs = annotate_column(col=coldata, properties_dirs=properties_dirs, remove_outliers=remove_outliers)
+        errs = annotate_column(col=coldata, properties_dirs=properties_dirs, remove_outliers=remove_outliers,
+                               err_meth=err_meth)
         preds[colid] = errs
     return preds
 
@@ -264,7 +266,13 @@ def get_columns_data(fdir, ids):
     return numeric_cols
 
 
-def annotate_column(col, properties_dirs, remove_outliers):
+def annotate_column(col, properties_dirs, remove_outliers, err_meth="mean_err"):
+    """
+    col:
+    properties_dirs:
+    remove_outliers:
+    err_meth
+    """
     # print("annotate_column> properties_dir: ")
     # print(properties_dirs)
     # print("annotate_column> col:")
@@ -273,7 +281,12 @@ def annotate_column(col, properties_dirs, remove_outliers):
     errs = []
     for prop_f in properties_dirs:
         objects = get_data(prop_f)
-        err = qqe.predict_and_get_sq_mean_error(objects, remove_outliers=remove_outliers)
+        if err_meth == "mean_err":
+            err = qqe.predict_and_get_mean_error(objects, remove_outliers=remove_outliers)
+        elif err_meth == "mean_sq_err":
+            err = qqe.predict_and_get_mean_sq_error(objects, remove_outliers=remove_outliers)
+        else:
+            raise Exception("Unknown err_meth")
         # err = qqe.predict_and_get_mean_error(objects, remove_outliers=remove_outliers)
         item = (err, prop_f)
         errs.append(item)

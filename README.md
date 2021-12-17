@@ -59,8 +59,20 @@ The application expects to have a folder named `csv` inside the T2Dv2 which incl
 python -m experiments.olympic
 ```
 #### T2Dv2
+
+Arguments
 ```
-python -m experiments.t2dv2
+optional arguments:
+  -h, --help            show this help message and exit
+  -e {mean_err,mean_sq_err}, --err-meth {mean_err,mean_sq_err}
+                        Functions to computer errors.
+  -o {true,false}, --outlier-removal {true,false}
+                        Whether to remove outliers or not
+```
+
+Sample:
+```
+python -m experiments.t2dv2 -e mean_err -o true
 ```
 
 # Results
@@ -70,6 +82,12 @@ python -m experiments.t2dv2
 ## T2Dv2 Mean Square Error
 ![t2dv2.svg](t2dv2-mean-sq-err.svg) 
 
+
+## Comparison of both
+|err_meth| Precision | Recall | F1 |
+|:------:|:---------:|:------:|:---:|
+| mean error | 0.45 | 0.84 | 0.59 |
+| mean square error | 0.46 | 0.85 | 0.60 |
 
 ## Diffs
 

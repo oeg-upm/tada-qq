@@ -192,7 +192,7 @@ class QQE:
         err = errors_mean(y, x)
         return err
 
-    def compute_normalized_sq_mean_of_error(self, predicted_quantiles):
+    def compute_normalized_mean_of_sq_error(self, predicted_quantiles):
         y = predicted_quantiles
         x = self.get_adjusted_base_quantiles(len(predicted_quantiles))
         err = errors_sq_mean(y, x)
@@ -213,7 +213,7 @@ class QQE:
         predicted_quantiles = self.estimate_sample_quantiles(clean_sample)
         return self.compute_normalized_mean_of_error(predicted_quantiles)
 
-    def predict_and_get_sq_mean_error(self, sample, remove_outliers=True):
+    def predict_and_get_mean_sq_error(self, sample, remove_outliers=True):
         """
         sample: list of data points
         remove_outliers: bool whether to outliers are to be removed
@@ -226,4 +226,4 @@ class QQE:
         else:
             clean_sample = sample
         predicted_quantiles = self.estimate_sample_quantiles(clean_sample)
-        return self.compute_normalized_sq_mean_of_error(predicted_quantiles)
+        return self.compute_normalized_mean_of_sq_error(predicted_quantiles)

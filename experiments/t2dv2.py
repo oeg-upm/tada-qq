@@ -1,5 +1,6 @@
 from datetime import datetime
 import os
+import argparse
 
 import numpy as np
 
@@ -17,7 +18,7 @@ properties_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_properties.csv')
 MIN_NUM_OBJ = 30
 
 
-def annotate_t2dv2(endpoint, remove_outliers):
+def annotate_t2dv2(endpoint, remove_outliers, err_meth):
     """
     endpoint:
     remove_outliers: bool
@@ -28,6 +29,11 @@ def annotate_t2dv2(endpoint, remove_outliers):
     df = df[df.property.notnull()]
     df = df[df["concept"].notnull()]
     df = df[df["pconcept"].notnull()]
+    folder_name = None
+    if err_meth == "mean_err":
+        folder_name = "t2dv2-mean-err"
+    elif err_meth == "mean_sq_err":
+        folder_name = "t2dv2-mean-sq-err"
 
     eval_per_prop = dict()
     for idx, row in df.iterrows():
@@ -38,7 +44,7 @@ def annotate_t2dv2(endpoint, remove_outliers):
         csv_fname = row['filename']+".csv"
         fdir = os.path.join(data_dir, csv_fname)
         preds = annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers, endpoint=endpoint,
-                              data_dir="local_data", min_objs=MIN_NUM_OBJ, cols=[col_id])
+                              data_dir="local_data", min_objs=MIN_NUM_OBJ, cols=[col_id], err_meth=err_meth)
         pconcept = row['pconcept']
         if pconcept in [None, np.nan, np.NaN]:
             print("is none")
@@ -49,7 +55,7 @@ def annotate_t2dv2(endpoint, remove_outliers):
         diff_name = "%s-%s-%s" % (uri_to_fname(class_uri), uri_to_fname(uris[0]), fdir.split(os.sep)[-1])
         for c in preds:
             res = eval_column(preds[c], correct_uris=trans_uris, class_uri=class_uri, col_id=col_id, fdir=fdir,
-                              diff_diagram=os.path.join("experiments", "diffs", "t2dv2", diff_name))
+                              diff_diagram=os.path.join("experiments", "diffs", folder_name, diff_name))
             eval_data.append(res)
             eval_per_prop[pconcept].append(res)
 
@@ -58,9 +64,25 @@ def annotate_t2dv2(endpoint, remove_outliers):
     compute_scores_per_property(eval_per_prop, "t2dv2")
 
 
+def parse_arguments():
+    """
+    Parse command line arguments
+    """
+    parser = argparse.ArgumentParser(description='Parameters for the experiment')
+    parser.add_argument('-e', '--err-meth', default="mean_err", choices=["mean_err", "mean_sq_err"],
+                        help="Functions to computer errors. ")
+    parser.add_argument('-o', '--outlier-removal', default="true", choices=["true", "false"],
+                        help="Whether to remove outliers or not")
+    args = parser.parse_args()
+    # parser.print_help()
+    # raise Exception("")
+    return args.err_meth, args.outlier_removal == "true"
+
+
 if __name__ == '__main__':
     a = datetime.now()
-    annotate_t2dv2(endpoint=SPARQL_ENDPOINT, remove_outliers=True)
+    err_meth, outlier_removal = parse_arguments()
+    annotate_t2dv2(endpoint=SPARQL_ENDPOINT, remove_outliers=outlier_removal, err_meth=err_meth)
     b = datetime.now()
     print("Time it took")
     print((b-a).total_seconds())
