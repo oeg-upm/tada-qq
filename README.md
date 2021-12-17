@@ -72,4 +72,7 @@ python -m experiments.t2dv2
 
 
 ## Diffs
-[diffs](experiments/diffs/t2dv2-mean-err/README.md)
+
+[using mean error](experiments/diffs/t2dv2-mean-err/README.md)
+
+[using square mean error](experiments/diffs/t2dv2-mean-sq-err/README.md)
