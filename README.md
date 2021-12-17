@@ -64,7 +64,12 @@ python -m experiments.t2dv2
 ```
 
 # Results
-![t2dv2.svg](t2dv2.svg) 
+## T2Dv2 Mean Error
+![t2dv2.svg](t2dv2-mean-err.svg) 
+
+## T2Dv2 Mean Square Error
+![t2dv2.svg](t2dv2-mean-sq-err.svg) 
+
 
 ## Diffs
-[diffs](experiments/diffs/t2dv2/README.md)
+[diffs](experiments/diffs/t2dv2-mean-err/README.md)

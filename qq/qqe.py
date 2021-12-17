@@ -1,7 +1,7 @@
 try:
-    from qq.util import errors_mean
+    from qq.util import errors_mean, errors_sq_mean
 except:
-    from util import errors_mean
+    from util import errors_mean, errors_sq_mean
 import numpy as np
 
 
@@ -192,6 +192,12 @@ class QQE:
         err = errors_mean(y, x)
         return err
 
+    def compute_normalized_sq_mean_of_error(self, predicted_quantiles):
+        y = predicted_quantiles
+        x = self.get_adjusted_base_quantiles(len(predicted_quantiles))
+        err = errors_sq_mean(y, x)
+        return err
+
     def predict_and_get_mean_error(self, sample, remove_outliers=True):
         """
         sample: list of data points
@@ -206,3 +212,18 @@ class QQE:
             clean_sample = sample
         predicted_quantiles = self.estimate_sample_quantiles(clean_sample)
         return self.compute_normalized_mean_of_error(predicted_quantiles)
+
+    def predict_and_get_sq_mean_error(self, sample, remove_outliers=True):
+        """
+        sample: list of data points
+        remove_outliers: bool whether to outliers are to be removed
+
+        Return:
+                return the mean of error
+        """
+        if remove_outliers:
+            clean_sample = self.remove_outliers(sample)
+        else:
+            clean_sample = sample
+        predicted_quantiles = self.estimate_sample_quantiles(clean_sample)
+        return self.compute_normalized_sq_mean_of_error(predicted_quantiles)

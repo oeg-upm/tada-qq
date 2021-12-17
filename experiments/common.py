@@ -61,7 +61,8 @@ def get_candidate_properties(class_uri, sample_data, data_dir):
     for f in fnames:
         prop_dir = os.path.join(class_dir, f)
         prop_data = get_data(prop_dir)
-        err = qqe.predict_and_get_mean_error(prop_data, remove_outliers=True)
+        err = qqe.predict_and_get_sq_mean_error(prop_data, remove_outliers=True)
+        # err = qqe.predict_and_get_mean_error(prop_data, remove_outliers=True)
         item = (err, f)
         errs.append(item)
 
@@ -272,7 +273,8 @@ def annotate_column(col, properties_dirs, remove_outliers):
     errs = []
     for prop_f in properties_dirs:
         objects = get_data(prop_f)
-        err = qqe.predict_and_get_mean_error(objects, remove_outliers=remove_outliers)
+        err = qqe.predict_and_get_sq_mean_error(objects, remove_outliers=remove_outliers)
+        # err = qqe.predict_and_get_mean_error(objects, remove_outliers=remove_outliers)
         item = (err, prop_f)
         errs.append(item)
     errs.sort()
