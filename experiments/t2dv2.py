@@ -47,7 +47,6 @@ def annotate_t2dv2(endpoint, remove_outliers):
             eval_per_prop[pconcept] = []
 
         diff_name = "%s-%s-%s" % (uri_to_fname(class_uri), uri_to_fname(uris[0]), fdir.split(os.sep)[-1])
-
         for c in preds:
             res = eval_column(preds[c], correct_uris=trans_uris, class_uri=class_uri, col_id=col_id, fdir=fdir,
                               diff_diagram=os.path.join("experiments", "diffs", "t2dv2", diff_name))
