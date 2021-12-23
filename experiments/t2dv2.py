@@ -5,6 +5,7 @@ import argparse
 import numpy as np
 
 from experiments.common import annotate_file, eval_column, compute_scores, uri_to_fname, compute_scores_per_property
+from experiments.common import get_num_rows, compute_counts
 import pandas as pd
 
 if 't2dv2_dir' not in os.environ:
@@ -30,11 +31,14 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meth):
     df = df[df["concept"].notnull()]
     df = df[df["pconcept"].notnull()]
     folder_name = None
+
+    test = True
+
     if err_meth == "mean_err":
         folder_name = "t2dv2-mean-err"
     elif err_meth == "mean_sq_err":
         folder_name = "t2dv2-mean-sq-err"
-
+    files_k = dict()
     eval_per_prop = dict()
     for idx, row in df.iterrows():
         class_uri = 'http://dbpedia.org/ontology/'+row['concept']
@@ -52,16 +56,24 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meth):
         if pconcept not in eval_per_prop:
             eval_per_prop[pconcept] = []
 
+        nrows = get_num_rows(fdir)
+
         diff_name = "%s-%s-%s" % (uri_to_fname(class_uri), uri_to_fname(uris[0]), fdir.split(os.sep)[-1])
         for c in preds:
             res = eval_column(preds[c], correct_uris=trans_uris, class_uri=class_uri, col_id=col_id, fdir=fdir,
                               diff_diagram=os.path.join("experiments", "diffs", folder_name, diff_name))
+            # print("\n\n\nres: ")
+            # print(res)
+            files_k[fdir.split(os.sep)[-1]+"-"+str(c)] = (res, nrows)
             eval_data.append(res)
             eval_per_prop[pconcept].append(res)
-
+        # if idx >= 12:
+        #     if test:
+        #         break
     prec, rec, f1 = compute_scores(eval_data, k=1)
     print("Precision: %.2f\nRecall: %.2f\nF1: %.2f" % (prec, rec, f1))
     compute_scores_per_property(eval_per_prop, "t2dv2")
+    compute_counts(files_k, "t2dv2_datapoints")
 
 
 def parse_arguments():

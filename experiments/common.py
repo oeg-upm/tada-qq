@@ -1,11 +1,14 @@
 import os
 import logging
 
+import numpy as np
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
 from easysparql import easysparqlclass
 import seaborn as sns
 import matplotlib.pyplot as plt
+from pandas.api.types import CategoricalDtype
+
 from pcake import pcake
 
 from qq.qqe import QQE
@@ -384,6 +387,11 @@ def compute_scores(eval_data, k=1):
     # print("Precision: %.2f\nRecall: %.2f\nF1: %.2f" % (prec, rec, f1))
 
 
+def get_num_rows(fdir):
+    df = pd.read_csv(fdir)
+    return len(df.index)
+
+
 def compute_scores_per_property(eval_pp, fname=None):
     """
     eval_pp: dict
@@ -437,4 +445,60 @@ def generate_diagram(acc, draw_fname):
     # print(ax.get_yticklabels())
     plt.setp(ax.lines, color='k')
     ax.figure.savefig('%s.svg' % draw_fname, bbox_inches="tight")
+    ax.figure.clf()
+
+
+def compute_counts(files_k, fname):
+    bins = [20, 30, 40, 50, 70, 100, 150, 200]
+    bins_acc = dict()
+    for f in files_k:
+        corr = 1
+        if files_k[f][0] !=1:
+            corr = 0
+        nrows = files_k[f][1]
+        added = False
+        for b in bins:
+            if nrows < b:
+                bs = str(b)
+                if bs not in bins_acc:
+                    bins_acc[bs] = []
+                bins_acc[bs].append(corr)
+                added = True
+        if not added:
+            bs = "%d<" % max(bins)
+            if bs not in bins_acc:
+                bins_acc[bs] = []
+            bins_acc[bs].append(corr)
+    rows = []
+    for bname in bins_acc:
+        rows.append([bname, np.average(bins_acc[bname]), len(bins_acc[bname])])
+    df = pd.DataFrame(rows, columns=['nrows', 'accuracy', 'ncols'])
+    cats = [str(b) for b in bins] + ["%d<" % max(bins)]
+    x_pos = dict()
+    for idx, c in enumerate(cats):
+        x_pos[c] = idx
+    cat_type = CategoricalDtype(categories=cats, ordered=True)
+    df['nrows'] = df['nrows'].astype(cat_type)
+    print(df.dtypes)
+    print(df)
+
+    # p = sns.color_palette("flare", as_cmap=True)
+    # p = sns.color_palette("mako", as_cmap=True)
+    p = sns.dark_palette("#69d", reverse=False, as_cmap=True)
+
+    ax = sns.scatterplot(x="nrows", y="accuracy", data=df, size="ncols", hue="ncols",
+                         palette=p, sizes=(40, 100))
+    legend_labels, leg_oth = ax.get_legend_handles_labels()
+
+    sns.lineplot(data=df, x='nrows', y='accuracy', dashes=True, ax=ax, linestyle="--", linewidth=1, palette=p)
+    ax.legend(legend_labels, leg_oth, title="Number of columns")
+
+    # Draw number of files/columns
+    # for idx, row in df.iterrows():
+    #     nr = row['nrows']
+    #     nr = x_pos[nr]
+    #     plt.text(nr, row['accuracy'], row['ncols'])
+
+    ax.figure.savefig('%s.svg' % fname, bbox_inches="tight")
+    plt.show()
     ax.figure.clf()
