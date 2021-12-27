@@ -31,9 +31,7 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meth):
     df = df[df["concept"].notnull()]
     df = df[df["pconcept"].notnull()]
     folder_name = None
-
     test = True
-
     if err_meth == "mean_err":
         folder_name = "t2dv2-mean-err"
     elif err_meth == "mean_sq_err":
@@ -55,9 +53,7 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meth):
             print(row)
         if pconcept not in eval_per_prop:
             eval_per_prop[pconcept] = []
-
         nrows = get_num_rows(fdir)
-
         diff_name = "%s-%s-%s" % (uri_to_fname(class_uri), uri_to_fname(uris[0]), fdir.split(os.sep)[-1])
         for c in preds:
             res = eval_column(preds[c], correct_uris=trans_uris, class_uri=class_uri, col_id=col_id, fdir=fdir,
@@ -67,7 +63,7 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meth):
             files_k[fdir.split(os.sep)[-1]+"-"+str(c)] = (res, nrows)
             eval_data.append(res)
             eval_per_prop[pconcept].append(res)
-        # if idx >= 12:
+        # if idx >= 5:
         #     if test:
         #         break
     prec, rec, f1 = compute_scores(eval_data, k=1)
@@ -82,9 +78,9 @@ def parse_arguments():
     """
     parser = argparse.ArgumentParser(description='Parameters for the experiment')
     parser.add_argument('-e', '--err-meth', default="mean_err", choices=["mean_err", "mean_sq_err"],
-                        help="Functions to computer errors. ")
+                        help="Functions to computer errors.")
     parser.add_argument('-o', '--outlier-removal', default="true", choices=["true", "false"],
-                        help="Whether to remove outliers or not")
+                        help="Whether to remove outliers or not.")
     args = parser.parse_args()
     # parser.print_help()
     # raise Exception("")

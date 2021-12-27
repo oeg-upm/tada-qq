@@ -75,6 +75,10 @@ Sample:
 python -m experiments.t2dv2 -e mean_err -o true
 ```
 
+```
+python -m experiments.t2dv2 -e mean_sq_err -o true
+```
+
 # Results
 ## T2Dv2 Mean Error
 ![t2dv2.svg](t2dv2-mean-err.svg) 
@@ -89,8 +93,11 @@ python -m experiments.t2dv2 -e mean_err -o true
 | mean error | 0.45 | 0.84 | 0.59 |
 | mean square error | 0.46 | 0.85 | 0.60 |
 
-## Diffs
+## Diffs between the gold standard and predicted properties
 
-[using mean error](experiments/diffs/t2dv2-mean-err/README.md)
+[using mean error](experiments/diffs/t2dv2-mean-err)
 
-[using square mean error](experiments/diffs/t2dv2-mean-sq-err/README.md)
+[using square mean error](experiments/diffs/t2dv2-mean-sq-err)
+
+## Number of data points vs performance score
+![t2dv2_datapoints.svg](t2dv2_datapoints.svg)

@@ -448,50 +448,167 @@ def generate_diagram(acc, draw_fname):
     ax.figure.clf()
 
 
+# def compute_counts(files_k, fname):
+#     bins = [20, 30, 40, 50, 70, 100, 150, 200]
+#     bins_acc = dict()
+#     for f in files_k:
+#         corr = 1
+#         if files_k[f][0] != 1:
+#             corr = 0
+#         nrows = files_k[f][1]
+#         added = False
+#         for b in bins:
+#             if nrows < b:
+#                 bs = str(b)
+#                 if bs not in bins_acc:
+#                     bins_acc[bs] = []
+#                 bins_acc[bs].append(corr)
+#                 added = True
+#         if not added:
+#             bs = "%d<" % max(bins)
+#             if bs not in bins_acc:
+#                 bins_acc[bs] = []
+#             bins_acc[bs].append(corr)
+#     rows = []
+#     for bname in bins_acc:
+#         rows.append([bname, np.average(bins_acc[bname]), len(bins_acc[bname])])
+#     df = pd.DataFrame(rows, columns=['nrows', 'accuracy', 'ncols'])
+#     cats = [str(b) for b in bins] + ["%d<" % max(bins)]
+#     x_pos = dict()
+#     for idx, c in enumerate(cats):
+#         x_pos[c] = idx
+#     cat_type = CategoricalDtype(categories=cats, ordered=True)
+#     df['nrows'] = df['nrows'].astype(cat_type)
+#     print(df.dtypes)
+#     print(df)
+#
+#     # p = sns.color_palette("flare", as_cmap=True)
+#     # p = sns.color_palette("mako", as_cmap=True)
+#     p = sns.dark_palette("#69d", reverse=False, as_cmap=True)
+#
+#     ax = sns.scatterplot(x="nrows", y="accuracy", data=df, size="ncols", hue="ncols",
+#                          palette=p, sizes=(40, 100))
+#     legend_labels, leg_oth = ax.get_legend_handles_labels()
+#
+#     sns.lineplot(data=df, x='nrows', y='accuracy', dashes=True, ax=ax, linestyle="--", linewidth=1, palette=p)
+#     ax.legend(legend_labels, leg_oth, title="Number of columns")
+#
+#     # Draw number of files/columns
+#     # for idx, row in df.iterrows():
+#     #     nr = row['nrows']
+#     #     nr = x_pos[nr]
+#     #     plt.text(nr, row['accuracy'], row['ncols'])
+#
+#     ax.figure.savefig('%s.svg' % fname, bbox_inches="tight")
+#     plt.show()
+#     ax.figure.clf()
+#
+
+
 def compute_counts(files_k, fname):
     bins = [20, 30, 40, 50, 70, 100, 150, 200]
-    bins_acc = dict()
+    bins_score = dict()
     for f in files_k:
         corr = 1
-        if files_k[f][0] !=1:
+        if files_k[f][0] != 1:
             corr = 0
         nrows = files_k[f][1]
         added = False
         for b in bins:
             if nrows < b:
                 bs = str(b)
-                if bs not in bins_acc:
-                    bins_acc[bs] = []
-                bins_acc[bs].append(corr)
+                if bs not in bins_score:
+                    bins_score[bs] = {
+                        'corr': 0,
+                        'notf': 0,
+                        'incorr': 0
+                    }
+                if files_k[f][0] == 1:
+                    bins_score[bs]['corr'] += 1
+                elif files_k[f][0] == -1:
+                    bins_score[bs]['notf'] += 1
+                elif files_k[f][0] > 1:
+                    bins_score[bs]['incorr'] += 1
+                else:
+                    raise Exception("Invalid k")
                 added = True
         if not added:
             bs = "%d<" % max(bins)
-            if bs not in bins_acc:
-                bins_acc[bs] = []
-            bins_acc[bs].append(corr)
+            if bs not in bins_score:
+                bins_score[bs] = {
+                    'corr': 0,
+                    'notf': 0,
+                    'incorr': 0
+                }
+            if files_k[f][0] == 1:
+                bins_score[bs]['corr'] += 1
+            elif files_k[f][0] == -1:
+                bins_score[bs]['notf'] += 1
+            elif files_k[f][0] > 1:
+                bins_score[bs]['incorr'] += 1
+            else:
+                raise Exception("Invalid k")
+
     rows = []
-    for bname in bins_acc:
-        rows.append([bname, np.average(bins_acc[bname]), len(bins_acc[bname])])
-    df = pd.DataFrame(rows, columns=['nrows', 'accuracy', 'ncols'])
+    for bname in bins_score:
+        if bins_score[bname]['corr'] == 0:
+            acc = 0
+            prec = 0
+            recall = 0
+            f1 = 0
+        else:
+            acc = bins_score[bname]['corr'] / (bins_score[bname]['corr'] + bins_score[bname]['incorr'] + bins_score[bname]['notf'])
+            prec = bins_score[bname]['corr'] / (bins_score[bname]['corr'] + bins_score[bname]['incorr'])
+            recall = bins_score[bname]['corr'] / (bins_score[bname]['corr'] + bins_score[bname]['notf'])
+            f1 = 2 * prec * recall / (prec+recall)
+        tot = bins_score[bname]['corr'] + bins_score[bname]['incorr'] + bins_score[bname]['notf']
+        rows.append([bname, acc, 'accuracy', tot])
+        rows.append([bname, prec, 'precision', tot])
+        rows.append([bname, recall, 'recall', tot])
+        rows.append([bname, f1, 'f1', tot])
+
+    #     rows.append([bname, acc, prec, recall, len(bins_score[bname])])
+    # df = pd.DataFrame(rows, columns=['nrows', 'accuracy', 'precision', 'recall', 'ncols'])
+    df = pd.DataFrame(rows, columns=['nrows', 'score', 'metric',  'ncols'])
+
     cats = [str(b) for b in bins] + ["%d<" % max(bins)]
     x_pos = dict()
     for idx, c in enumerate(cats):
         x_pos[c] = idx
     cat_type = CategoricalDtype(categories=cats, ordered=True)
     df['nrows'] = df['nrows'].astype(cat_type)
+
+    cats = ['precision', 'recall', 'accuracy', 'f1']
+    cat_type = CategoricalDtype(categories=cats)
+    df['metric'] = df['metric'].astype(cat_type)
     print(df.dtypes)
     print(df)
 
     # p = sns.color_palette("flare", as_cmap=True)
-    # p = sns.color_palette("mako", as_cmap=True)
-    p = sns.dark_palette("#69d", reverse=False, as_cmap=True)
+    p = sns.color_palette("mako", as_cmap=True)
+    # p = sns.dark_palette("#69d", reverse=False, as_cmap=True)
 
-    ax = sns.scatterplot(x="nrows", y="accuracy", data=df, size="ncols", hue="ncols",
-                         palette=p, sizes=(40, 100))
-    legend_labels, leg_oth = ax.get_legend_handles_labels()
+    ax = sns.scatterplot(x="nrows", y="score", data=df, size="ncols", hue="metric",
+                         #palette=p,
+                         sizes=(40, 100))
+    # legend_labels, leg_oth = ax.get_legend_handles_labels()
+    # ax = sns.scatterplot(x="nrows", y="precision", data=df, size="ncols", hue="ncols",
+    #                      palette=p, sizes=(40, 100), ax=ax)
+    # ax = sns.scatterplot(x="nrows", y="recall", data=df, size="ncols", hue="ncols",
+    #                      palette=p, sizes=(40, 100), ax=ax)
 
-    sns.lineplot(data=df, x='nrows', y='accuracy', dashes=True, ax=ax, linestyle="--", linewidth=1, palette=p)
-    ax.legend(legend_labels, leg_oth, title="Number of columns")
+    # sns.lineplot(data=df, x='nrows', y='accuracy', dashes=True, ax=ax, linestyle="--", linewidth=1, palette=p)
+    # sns.lineplot(data=df, x='nrows', y='score', dashes=True, ax=ax, linestyle="--", linewidth=1, hue="metric")
+    linestyles = ["--", ":", "dashdot", "solid"]
+    for idx, c in enumerate(cats):
+        sns.lineplot(data=df[df.metric == c], x='nrows', y='score', dashes=True, ax=ax, linestyle=linestyles[idx], linewidth=1)
+
+    # sns.move_legend(ax, "lower center", bbox_to_anchor=(.5, 0.5), ncol=2, title=None, frameon=False)
+    # ax.set(ylim=(0, 1))
+    ax.legend(loc=2, fontsize='x-small')
+
+    # ax.legend(bbox_to_anchor=(0.1, 1.0), borderaxespad=0)
+    # ax.legend(legend_labels, leg_oth, title="Number of columns")
 
     # Draw number of files/columns
     # for idx, row in df.iterrows():
@@ -502,3 +619,5 @@ def compute_counts(files_k, fname):
     ax.figure.savefig('%s.svg' % fname, bbox_inches="tight")
     plt.show()
     ax.figure.clf()
+
+
