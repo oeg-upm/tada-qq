@@ -186,14 +186,15 @@ def annotate_file(fdir, class_uri, endpoint, remove_outliers, data_dir, min_objs
     :param min_objs:
     :param err_meth:
     :return: dict
-     {
+    {
         'colid1': errs1,
         'colid2': errs1,
-     }
+    }
 
     errs => list of pairs
         a pair is composed of <distance or error val, fname>
     """
+
     collect_numeric_data(class_uri=class_uri, endpoint=endpoint, data_dir=data_dir, min_objs=min_objs)
     if not cols:
         num_cols = get_numeric_columns(fdir)
@@ -354,8 +355,9 @@ def eval_column(p_errs, correct_uris=[], diff_diagram=None, class_uri=None, col_
             print("property dir to uri: ***")
             print(corr_uri)
             try:
-                pcake.compare(class_uri, property_dir_to_uri(corr_uri)[1], prev_property_uri, label1a=" (correct*)",
-                              label2a=" (incorrect)", data=data, data_label="data", outfile=diff_diagram)
+                if diff_diagram:
+                    pcake.compare(class_uri, property_dir_to_uri(corr_uri)[1], prev_property_uri, label1a=" (correct*)",
+                                  label2a=" (incorrect)", data=data, data_label="data", outfile=diff_diagram)
             except:
                 pass
             break
@@ -585,7 +587,7 @@ def compute_counts(files_k, fname):
     print(df)
 
     # p = sns.color_palette("flare", as_cmap=True)
-    p = sns.color_palette("mako", as_cmap=True)
+    # p = sns.color_palette("mako", as_cmap=True)
     # p = sns.dark_palette("#69d", reverse=False, as_cmap=True)
 
     ax = sns.scatterplot(x="nrows", y="score", data=df, size="ncols", hue="metric",

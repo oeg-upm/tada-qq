@@ -79,7 +79,7 @@ python -m experiments.t2dv2 -e mean_err -o true
 python -m experiments.t2dv2 -e mean_sq_err -o true
 ```
 
-# Results
+# Results - T2Dv2
 ## T2Dv2 Mean Error
 ![t2dv2.svg](t2dv2-mean-err.svg) 
 
