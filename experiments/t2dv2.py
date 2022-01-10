@@ -65,11 +65,15 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meth):
             eval_per_prop[pconcept].append(res)
         # if idx >= 5:
         #     if test:
+        #         print("res: ")
+        #         print(res)
         #         break
     prec, rec, f1 = compute_scores(eval_data, k=1)
     print("Precision: %.2f\nRecall: %.2f\nF1: %.2f" % (prec, rec, f1))
     compute_scores_per_property(eval_per_prop, "t2dv2")
-    compute_counts(files_k, "t2dv2_datapoints")
+
+    # Commented for testing only
+    # compute_counts(files_k, "t2dv2_datapoints")
 
 
 def parse_arguments():
