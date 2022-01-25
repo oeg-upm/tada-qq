@@ -117,16 +117,18 @@ python -m experiments.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --es
 |exact	|mean_sqroot_err	|0.50	|0.84	|0.63	|
 
 
-
+<!--
 ## Diffs between the gold standard and predicted properties
 
 [using mean error](experiments/diffs/t2dv2-mean-err)
 
 [using square mean error](experiments/diffs/t2dv2-mean-sq-err)
 
-## Number of data points vs performance score
-### Mean Square Error
-![datapoints.svg](datapoints-t2dv2-mean-sq-err.svg)
+-->
 
-### Mean Error
-![datapoints.svg](datapoints-t2dv2-mean-err.svg)
+## Number of data points vs performance score
+### Outlier Removal
+![datapoints.svg](t2dv2-err-methods.svg)
+
+### Raw
+![datapoints.svg](t2dv2-err-methods-raw.svg)
