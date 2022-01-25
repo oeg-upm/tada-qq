@@ -79,6 +79,12 @@ python -m experiments.t2dv2 -e mean_err -o true
 python -m experiments.t2dv2 -e mean_sq_err -o true
 ```
 
+
+```
+python -m experiments.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False
+```
+
+
 # Results - T2Dv2
 ## T2Dv2 Mean Error
 ![t2dv2.svg](t2dv2-mean-err.svg) 
@@ -88,10 +94,29 @@ python -m experiments.t2dv2 -e mean_sq_err -o true
 
 
 ## Comparison of both
-|err_meth| Precision | Recall | F1 |
-|:------:|:---------:|:------:|:---:|
-| mean error | 0.45 | 0.84 | 0.59 |
-| mean square error | 0.46 | 0.85 | 0.60 |
+
+## Remove Outliers
+|Quantile Prediction	|Error Function	|Precision	|Recall	|F1	|
+|:------:|:------:|:---------:|:------:|:---:|
+|estimate	|mean_err	|0.49	|0.84	|0.62	|
+|estimate	|mean_sq_err	|0.50	|0.84	|0.63	|
+|estimate	|mean_sqroot_err	|0.51	|0.85	|0.64	|
+|exact	|mean_err	|0.45	|0.83	|0.58	|
+|exact	|mean_sq_err	|0.49	|0.84	|0.62	|
+|exact	|mean_sqroot_err	|0.39	|0.81	|0.53	|
+
+
+## Raw
+|Quantile Prediction	|Error Function	|Precision	|Recall	|F1	|
+|:------:|:------:|:---------:|:------:|:---:|
+|estimate	|mean_err	|0.53	|0.85	|0.65	|
+|estimate	|mean_sq_err	|0.53	|0.85	|0.65	|
+|estimate	|mean_sqroot_err	|0.53	|0.85	|0.65	|
+|exact	|mean_err	|0.53	|0.85	|0.65	|
+|exact	|mean_sq_err	|0.53	|0.85	|0.65	|
+|exact	|mean_sqroot_err	|0.50	|0.84	|0.63	|
+
+
 
 ## Diffs between the gold standard and predicted properties
 
@@ -100,4 +125,8 @@ python -m experiments.t2dv2 -e mean_sq_err -o true
 [using square mean error](experiments/diffs/t2dv2-mean-sq-err)
 
 ## Number of data points vs performance score
-![t2dv2_datapoints.svg](t2dv2_datapoints.svg)
+### Mean Square Error
+![datapoints.svg](datapoints-t2dv2-mean-sq-err.svg)
+
+### Mean Error
+![datapoints.svg](datapoints-t2dv2-mean-err.svg)

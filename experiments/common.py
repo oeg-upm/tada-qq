@@ -14,6 +14,8 @@ from pcake import pcake
 from qq.qqe import QQE
 from qq.dist import get_data
 
+PRINT_DIFF = False
+
 
 def get_logger(name, level=logging.INFO):
     logger = logging.getLogger(name)
@@ -174,7 +176,8 @@ def fname_to_uri(fname, replace_sep=True):
     return uri
 
 
-def annotate_file(fdir, class_uri, endpoint, remove_outliers, data_dir, min_objs, cols=[], err_meth="mean_err"):
+def annotate_file(fdir, class_uri, endpoint, remove_outliers, data_dir, min_objs, cols=[], estimate=True,
+                  err_meth="mean_err"):
     """
     :param fdir: of the csv file to be annotated
     :param class_uri:
@@ -185,6 +188,7 @@ def annotate_file(fdir, class_uri, endpoint, remove_outliers, data_dir, min_objs
     numeric columns
     :param min_objs:
     :param err_meth:
+    :param estimate: bool
     :return: dict
     {
         'colid1': errs1,
@@ -194,7 +198,6 @@ def annotate_file(fdir, class_uri, endpoint, remove_outliers, data_dir, min_objs
     errs => list of pairs
         a pair is composed of <distance or error val, fname>
     """
-
     collect_numeric_data(class_uri=class_uri, endpoint=endpoint, data_dir=data_dir, min_objs=min_objs)
     if not cols:
         num_cols = get_numeric_columns(fdir)
@@ -205,15 +208,18 @@ def annotate_file(fdir, class_uri, endpoint, remove_outliers, data_dir, min_objs
     properties_dirs = [os.path.join(class_dir, pf) for pf in properties_files]
     # logger.info("File: "+fdir.split('/')[-1])
     preds = dict()
-    print("\n\n=================")
-    print(class_uri)
-    print(fdir)
+    if PRINT_DIFF:
+        print("\n\n=================")
+        print(class_uri)
+        print(fdir)
     for colobj in num_cols:
         colid, coldata = colobj
         # logger.info('\n\n%s - (col=%d) ' % (fdir.split('/')[-1], colid))
-        print('Column: ' + str(colid))
+        if PRINT_DIFF:
+            print('Column: ' + str(colid))
+            print("annotate_column")
         errs = annotate_column(col=coldata, properties_dirs=properties_dirs, remove_outliers=remove_outliers,
-                               err_meth=err_meth)
+                               err_meth=err_meth, estimate=estimate)
         preds[colid] = errs
     return preds
 
@@ -237,7 +243,6 @@ def get_columns_data(fdir, ids):
     :param fdir:
     :return: list of the pair (colid, list)
     """
-    # print(fdir)
     df = pd.read_csv(fdir, thousands=',')
     numeric_cols = []
     for colid, col in enumerate(df):
@@ -245,8 +250,7 @@ def get_columns_data(fdir, ids):
             # pair = (colid, list(df.iloc[:, colid]))
             # df_col = df[df.columns[colid]]
             h = df.columns[colid]
-            # print(h)
-            # print(df[h])
+
             # df_clean = df[~df[df.columns[colid]].isnull()]
 
             if not is_numeric_dtype(df[h]):
@@ -260,7 +264,6 @@ def get_columns_data(fdir, ids):
             # pd.to_numeric(df.str.replace(',',''), errors='coerce')
             # c = pd.to_numeric(df_clean[h].astype(str).replace(',', ''), errors='coerce')
             c = pd.to_numeric(df_clean[df_clean.columns[colid]], errors='coerce')
-            # print(c)
             c = c[~c.isnull()]
             pair = (colid, list(c))
 
@@ -270,28 +273,24 @@ def get_columns_data(fdir, ids):
     return numeric_cols
 
 
-def annotate_column(col, properties_dirs, remove_outliers, err_meth="mean_err"):
+def annotate_column(col, properties_dirs, remove_outliers, estimate=True, err_meth="mean_err"):
     """
     col:
     properties_dirs:
     remove_outliers:
     err_meth
     """
-    # print("annotate_column> properties_dir: ")
-    # print(properties_dirs)
-    # print("annotate_column> col:")
-    # print(col)
-    qqe = QQE(col)
+    qqe = QQE(col, estimate_quantile=estimate, remove_outliers=remove_outliers)
     errs = []
     for prop_f in properties_dirs:
         objects = get_data(prop_f)
-        if err_meth == "mean_err":
-            err = qqe.predict_and_get_mean_error(objects, remove_outliers=remove_outliers)
-        elif err_meth == "mean_sq_err":
-            err = qqe.predict_and_get_mean_sq_error(objects, remove_outliers=remove_outliers)
-        else:
-            raise Exception("Unknown err_meth")
-        # err = qqe.predict_and_get_mean_error(objects, remove_outliers=remove_outliers)
+        err = qqe.predict_and_get_error(objects, method=err_meth, remove_outliers=remove_outliers)
+        # if err_meth == "mean_err":
+        #     err = qqe.predict_and_get_mean_error(objects, remove_outliers=remove_outliers)
+        # elif err_meth == "mean_sq_err":
+        #     err = qqe.predict_and_get_mean_sq_error(objects, remove_outliers=remove_outliers)
+        # else:
+        #     raise Exception("Unknown err_meth")
         item = (err, prop_f)
         errs.append(item)
     errs.sort()
@@ -322,7 +321,6 @@ def eval_column(p_errs, correct_uris=[], diff_diagram=None, class_uri=None, col_
         print("No correct uris as passed")
         print(p_errs)
         raise Exception("No correct uris are passed")
-    # print("Correct uris: %s " % str(correct_uris))
     for idx, item in enumerate(p_errs):
         trans_uri = item[1].split('/')[-1][:-4]
         trans_uri = uri_to_fname(trans_uri)
@@ -331,20 +329,24 @@ def eval_column(p_errs, correct_uris=[], diff_diagram=None, class_uri=None, col_
         #     # logger.info(str(idx+1)+" err: "+str(item[0]) + "  - " + item[1] + " - "+property_dir_to_uri(item[1])[1])
         if trans_uri in correct_uris:
             k = idx + 1
-            print("Match: %.2f - <%s> - <%s>" % (item[0], trans_uri, property_dir_to_uri(item[1])[1]))
+            if PRINT_DIFF:
+                print("Match: %.2f - <%s> - <%s>" % (item[0], trans_uri, property_dir_to_uri(item[1])[1]))
             if idx > 0:
                 if diff_diagram:
                     data = get_columns_data(fdir, [col_id])[0][1]
                     prev_property_uri = property_dir_to_uri(p_errs[idx-1][1])[1]
-                    print("property dir to uri:")
-                    print(item[1])
+                    if PRINT_DIFF:
+                        print("property dir to uri:")
+                        print(item[1])
                     pcake.compare(class_uri, property_dir_to_uri(item[1])[1], prev_property_uri, label1a=" (correct)",
                                   label2a=" (incorrect)", data=data, data_label="data", outfile=diff_diagram)
             break
         elif idx < 3:
             if idx == 0:
-                print("Correct uris: %s \t" % str(correct_uris))
-            print("%d err: %.2f - <%s> - <%s>" % (idx+1, item[0], trans_uri, property_dir_to_uri(item[1])[1]))
+                if PRINT_DIFF:
+                    print("Correct uris: %s \t" % str(correct_uris))
+            if PRINT_DIFF:
+                print("%d err: %.2f - <%s> - <%s>" % (idx+1, item[0], trans_uri, property_dir_to_uri(item[1])[1]))
             # logger.info("%d err: %.2f - <%s> - <%s>" % (idx+1, item[0], item[1], property_dir_to_uri(item[1])[1]))
         else:
             k = 999
@@ -352,8 +354,9 @@ def eval_column(p_errs, correct_uris=[], diff_diagram=None, class_uri=None, col_
             prev_property_uri = property_dir_to_uri(p_errs[0][1])[1]
             base_a = os.sep.join(p_errs[0][1].split(os.sep)[:-1])
             corr_uri = os.path.join(base_a, correct_uris[0]+".txt")
-            print("property dir to uri: ***")
-            print(corr_uri)
+            if PRINT_DIFF:
+                print("property dir to uri: ***")
+                print(corr_uri)
             try:
                 if diff_diagram:
                     pcake.compare(class_uri, property_dir_to_uri(corr_uri)[1], prev_property_uri, label1a=" (correct*)",
@@ -408,7 +411,8 @@ def compute_scores_per_property(eval_pp, fname=None):
         lines.append([p, 'prec', prec])
         lines.append([p, 'rec', rec])
         lines.append([p, 'f1', f1])
-        print("%s: \n\t%f1.2\t%f1.2\t%f1.2" % (p, prec, rec, f1))
+        if PRINT_DIFF:
+            print("%s: \n\t%f1.2\t%f1.2\t%f1.2" % (p, prec, rec, f1))
     if fname:
         generate_diagram(lines, fname)
 
@@ -583,8 +587,8 @@ def compute_counts(files_k, fname):
     cats = ['precision', 'recall', 'accuracy', 'f1']
     cat_type = CategoricalDtype(categories=cats)
     df['metric'] = df['metric'].astype(cat_type)
-    print(df.dtypes)
-    print(df)
+    # print(df.dtypes)
+    # print(df)
 
     # p = sns.color_palette("flare", as_cmap=True)
     # p = sns.color_palette("mako", as_cmap=True)
@@ -619,7 +623,109 @@ def compute_counts(files_k, fname):
     #     plt.text(nr, row['accuracy'], row['ncols'])
 
     ax.figure.savefig('%s.svg' % fname, bbox_inches="tight")
+    # plt.show()
+    ax.figure.clf()
+    return df
+
+
+def compute_counts_per_err_meth(scores_dict, fname):
+    """
+    scores_dict: dict
+    {
+        'estimate': {
+            'mean_sq_err': df,
+            'mean_err': df,
+        },
+        'exact': {}
+    }
+
+    sample df:
+                nrows  score     metric  ncols
+            0  200<      0   accuracy      1
+            1  200<      0  precision      1
+            2  200<      0     recall      1
+            3  200<      0         f1      1
+            4   200      0   accuracy      1
+            5   200      0  precision      1
+            6   200      0     recall      1
+            7   200      0         f1      1
+    """
+    # df = pd.DataFrame()
+    dfs = []
+    for e in scores_dict:
+        for m in scores_dict[e]:
+            df1 = scores_dict[e][m]
+            df1['pred'] = [e] * len(df1.index)
+            df1['method'] = [m] * len(df1.index)
+            # print("==============")
+            # print(e)
+            # print(m)
+            # print(df1)
+            # print("\n")
+            dfs.append(df1)
+
+    df = pd.concat(dfs, ignore_index=True)
+    df = df[df.metric == "f1"]
+
+    print("df: ")
+    print(df)
+    # p = sns.color_palette("flare", as_cmap=True)
+    # p = sns.color_palette("mako", as_cmap=True)
+    # p = sns.dark_palette("#69d", reverse=False, as_cmap=True)
+    # p = "mako"
+    # p = sns.color_palette(palette="mako", n_colors=2, desat=None, as_cmap=False)
+    colors = ["#F26B38", "#2F9599"]
+    p = sns.color_palette(palette=colors, n_colors=2, desat=None, as_cmap=True)
+
+    ax = sns.scatterplot(x="nrows", y="score", data=df, hue="pred",
+                         # size="ncols",
+                         palette=p,
+                         style="method")
+                         # sizes=(40, 100))
+    # legend_labels, leg_oth = ax.get_legend_handles_labels()
+    # ax = sns.scatterplot(x="nrows", y="precision", data=df, size="ncols", hue="ncols",
+    #                      palette=p, sizes=(40, 100), ax=ax)
+    # ax = sns.scatterplot(x="nrows", y="recall", data=df, size="ncols", hue="ncols",
+    #                      palette=p, sizes=(40, 100), ax=ax)
+
+
+    # With Pred
+    cats = ['estimate', 'exact']
+    cat_type = CategoricalDtype(categories=cats)
+    df['pred'] = df['pred'].astype(cat_type)
+    # sns.lineplot(data=df, x='nrows', y='accuracy', dashes=True, ax=ax, linestyle="--", linewidth=1, palette=p)
+    # sns.lineplot(data=df, x='nrows', y='score', dashes=True, ax=ax, linestyle="--", linewidth=1, hue="metric")
+    linestyles = ["--",  ":", "dashdot", "solid"]
+    # [".33", ".66"]
+
+    for idx, c in enumerate(scores_dict):
+        # print("cat: %s" % c)
+        for m in scores_dict[e]:
+            sns.lineplot(data=df[(df.pred == c) & (df.method == m)], x='nrows', y='score', dashes=True, ax=ax,
+                         linestyle=linestyles[idx],
+                         color=colors[idx],
+                         #palette=p,
+                         linewidth=2)
+
+    # for idx, c in enumerate(cats):
+    #     print("cat: %s" % c)
+    #     sns.lineplot(data=df[df.pred == c], x='nrows', y='score', dashes=True, ax=ax, linestyle=linestyles[idx], linewidth=1)
+    #     break
+
+    # sns.move_legend(ax, "lower center", bbox_to_anchor=(.5, 0.5), ncol=2, title=None, frameon=False)
+    # ax.set(ylim=(0, 1))
+    ax.legend(loc=2, fontsize='x-small')
+
+    # ax.legend(bbox_to_anchor=(0.1, 1.0), borderaxespad=0)
+    # ax.legend(legend_labels, leg_oth, title="Number of columns")
+
+    # Draw number of files/columns
+    # for idx, row in df.iterrows():
+    #     nr = row['nrows']
+    #     nr = x_pos[nr]
+    #     plt.text(nr, row['accuracy'], row['ncols'])
+
+    ax.figure.savefig('%s.svg' % fname, bbox_inches="tight")
     plt.show()
     ax.figure.clf()
-
 

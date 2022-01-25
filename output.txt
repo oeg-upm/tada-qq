@@ -1,0 +1,976 @@
+
+
+=================
+http://dbpedia.org/ontology/Mountain
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/1146722_1_7558140036342906956.tar.gz.csv
+Column: 6
+Correct uris: ['dbp-elevationM', 'dbo-elevation'] 	
+1 err: 0.03 - <dbp-prominenceM> - <http://dbpedia.org/property/prominenceM>
+2 err: 0.05 - <dbo-prominence> - <http://dbpedia.org/ontology/prominence>
+3 err: 0.09 - <dbp-prominenceFt> - <http://dbpedia.org/property/prominenceFt>
+property dir to uri: ***
+local_data/dbo-Mountain/dbp-elevationM.txt
+len of results: 10000
+len of nums: 9997
+len of results: 4134
+len of nums: 4134
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/11688006_0_8123036130090004213.tar.gz.csv
+Column: 2
+Match: 0.02 - <dbp-populationEstimate> - <http://dbpedia.org/property/populationEstimate>
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/11688006_0_8123036130090004213.tar.gz.csv
+Column: 3
+Correct uris: ['dbp-areaKm', 'dbo-PopulatedPlace-areaTotal'] 	
+1 err: 0.01 - <dbp-statArea> - <http://dbpedia.org/property/statArea>
+2 err: 0.02 - <dbp-populationTotal> - <http://dbpedia.org/property/populationTotal>
+3 err: 0.02 - <dbp-population> - <http://dbpedia.org/property/population>
+Match: 0.03 - <dbp-areaKm> - <http://dbpedia.org/property/areaKm>
+property dir to uri:
+local_data/dbo-Country/dbp-areaKm.txt
+len of results: 435
+len of nums: 435
+len of results: 205
+len of nums: 167
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/11688006_0_8123036130090004213.tar.gz.csv
+Column: 5
+Correct uris: ['dbp-areaSqMi'] 	
+1 err: 0.01 - <dbp-pop> - <http://dbpedia.org/property/pop>
+2 err: 0.01 - <dbp-statArea> - <http://dbpedia.org/property/statArea>
+3 err: 0.01 - <dbp-areaKm> - <http://dbpedia.org/property/areaKm>
+property dir to uri: ***
+local_data/dbo-Country/dbp-areaSqMi.txt
+len of results: 284
+len of nums: 283
+len of results: 1194
+len of nums: 1170
+
+
+=================
+http://dbpedia.org/ontology/Lake
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/13395751_3_369722706637560735.tar.gz.csv
+Column: 3
+Correct uris: ['dbp-height'] 	
+1 err: 0.08 - <dbo-Lake-areaOfCatchment> - <http://dbpedia.org/ontology/Lake/areaOfCatchment>
+2 err: 0.08 - <dbp-imageSize> - <http://dbpedia.org/property/imageSize>
+3 err: 0.08 - <dbp-volume> - <http://dbpedia.org/property/volume>
+property dir to uri: ***
+local_data/dbo-Lake/dbp-height.txt
+len of results: 20
+len of nums: 18
+len of results: 945
+len of nums: 945
+
+
+=================
+http://dbpedia.org/ontology/Mountain
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/14311244_0_7604843865524657408.tar.gz.csv
+Column: 1
+Correct uris: ['dbp-elevationM', 'dbo-elevation'] 	
+1 err: 0.08 - <dbp-elevationFt> - <http://dbpedia.org/property/elevationFt>
+2 err: 0.08 - <dbp-prominence> - <http://dbpedia.org/property/prominence>
+3 err: 0.09 - <dbp-scale> - <http://dbpedia.org/property/scale>
+property dir to uri: ***
+local_data/dbo-Mountain/dbp-elevationM.txt
+len of results: 10000
+len of nums: 9997
+len of results: 2337
+len of nums: 2334
+
+
+=================
+http://dbpedia.org/ontology/Company
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/15700884_0_8204220284166767221.tar.gz.csv
+Column: 2
+Correct uris: ['dbp-employees'] 	
+1 err: 0.03 - <dbp-numLawyers> - <http://dbpedia.org/property/numLawyers>
+2 err: 0.04 - <dbo-numberOfLawyers> - <http://dbpedia.org/ontology/numberOfLawyers>
+3 err: 0.04 - <dbp-locationPlace> - <http://dbpedia.org/property/locationPlace>
+property dir to uri: ***
+local_data/dbo-Company/dbp-employees.txt
+len of results: 534
+len of nums: 491
+len of results: 86
+len of nums: 56
+
+
+=================
+http://dbpedia.org/ontology/Film
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/16767252_0_2409448375013995751.tar.gz.csv
+Column: 2
+Match: 0.01 - <dbp-year> - <http://dbpedia.org/property/year>
+
+
+=================
+http://dbpedia.org/ontology/Film
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/20135078_0_7570343137119682530.tar.gz.csv
+Column: 2
+Match: 0.01 - <dbp-year> - <http://dbpedia.org/property/year>
+
+
+=================
+http://dbpedia.org/ontology/Saint
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/2066887_0_746204117268168398.tar.gz.csv
+Column: 4
+Correct uris: ['dbo-deathYear'] 	
+1 err: 0.10 - <dbo-birthYear> - <http://dbpedia.org/ontology/birthYear>
+Match: 0.13 - <dbo-deathYear> - <http://dbpedia.org/ontology/deathYear>
+property dir to uri:
+local_data/dbo-Saint/dbo-deathYear.txt
+len of results: 2820
+len of nums: 2816
+len of results: 2053
+len of nums: 2047
+
+
+=================
+http://dbpedia.org/ontology/Mountain
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/21337553_0_8832378999628437599.tar.gz.csv
+Column: 2
+Correct uris: ['dbp-elevationM', 'dbo-elevation'] 	
+1 err: 0.07 - <dbp-elevationFt> - <http://dbpedia.org/property/elevationFt>
+2 err: 0.08 - <dbp-prominence> - <http://dbpedia.org/property/prominence>
+3 err: 0.08 - <dbp-elevation> - <http://dbpedia.org/property/elevation>
+property dir to uri: ***
+local_data/dbo-Mountain/dbp-elevationM.txt
+len of results: 10000
+len of nums: 9997
+len of results: 2337
+len of nums: 2334
+
+
+=================
+http://dbpedia.org/ontology/Film
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/21362676_0_6854186738074119688.tar.gz.csv
+Column: 2
+Match: 0.01 - <dbp-year> - <http://dbpedia.org/property/year>
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/24036779_0_5608105867560183058.tar.gz.csv
+Column: 1
+Correct uris: ['dbp-areaKm', 'dbo-PopulatedPlace-areaTotal'] 	
+1 err: 0.01 - <dbp-hdiYear> - <http://dbpedia.org/property/hdiYear>
+2 err: 0.02 - <dbp-statArea> - <http://dbpedia.org/property/statArea>
+3 err: 0.02 - <dbp-population> - <http://dbpedia.org/property/population>
+property dir to uri: ***
+local_data/dbo-Country/dbp-areaKm.txt
+len of results: 435
+len of nums: 435
+len of results: 211
+len of nums: 211
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/24036779_0_5608105867560183058.tar.gz.csv
+Column: 4
+Match: 0.04 - <dbp-populationEstimate> - <http://dbpedia.org/property/populationEstimate>
+
+
+=================
+http://dbpedia.org/ontology/BaseballPlayer
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/24417511_0_3058323105166963431.tar.gz.csv
+Column: 0
+Match: 0.00 - <dbp-hofdate> - <http://dbpedia.org/property/hofdate>
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/24850757_0_5978004733768297283.tar.gz.csv
+Column: 1
+Correct uris: ['dbo-populationTotal', 'dbp-populationEstimate', 'dbp-pop', 'dbp-populationCensus'] 	
+1 err: 0.01 - <dbp-area> - <http://dbpedia.org/property/area>
+2 err: 0.01 - <dbp-hdiYear> - <http://dbpedia.org/property/hdiYear>
+3 err: 0.02 - <dbp-postalCode> - <http://dbpedia.org/property/postalCode>
+property dir to uri: ***
+local_data/dbo-Country/dbo-populationTotal.txt
+len of results: 475
+len of nums: 475
+len of results: 105
+len of nums: 78
+
+
+=================
+http://dbpedia.org/ontology/Film
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/25404227_0_2240631045609013057.tar.gz.csv
+Column: 2
+Correct uris: ['dbp-released'] 	
+1 err: 0.00 - <dbp-year> - <http://dbpedia.org/property/year>
+2 err: 0.02 - <dbp-established> - <http://dbpedia.org/property/established>
+3 err: 0.04 - <dbp-recorded> - <http://dbpedia.org/property/recorded>
+property dir to uri: ***
+local_data/dbo-Film/dbp-released.txt
+len of results: 10000
+len of nums: 3398
+len of results: 72
+len of nums: 72
+
+
+=================
+http://dbpedia.org/ontology/Monarch
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/26270372_1_3774607938887520564.tar.gz.csv
+Column: 2
+Correct uris: ['dbp-years', 'dbp-reign'] 	
+1 err: 0.25 - <dbp-rows> - <http://dbpedia.org/property/rows>
+2 err: 0.32 - <dbo-activeYearsEndYear> - <http://dbpedia.org/ontology/activeYearsEndYear>
+Match: 0.32 - <dbp-reign> - <http://dbpedia.org/property/reign>
+property dir to uri:
+local_data/dbo-Monarch/dbp-reign.txt
+len of results: 1940
+len of nums: 1222
+len of results: 1591
+len of nums: 1467
+
+
+=================
+http://dbpedia.org/ontology/Currency
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/26310680_0_5150772059999313798.tar.gz.csv
+Column: 3
+Match: 0.01 - <dbp-isoNumber> - <http://dbpedia.org/property/isoNumber>
+
+
+=================
+http://dbpedia.org/ontology/VideoGame
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/27466715_0_3913547177671701530.tar.gz.csv
+Column: 1
+
+
+=================
+http://dbpedia.org/ontology/Mountain
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/28036255_0_5705563063166785494.tar.gz.csv
+Column: 1
+Match: 0.04 - <dbp-elevationM> - <http://dbpedia.org/property/elevationM>
+
+
+=================
+http://dbpedia.org/ontology/PoliticalParty
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/28154036_0_909001972154294543.tar.gz.csv
+Column: 3
+Match: 0.12 - <dbp-seats> - <http://dbpedia.org/property/seats>
+
+
+=================
+http://dbpedia.org/ontology/Mountain
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/28993628_1_6072768612274729703.tar.gz.csv
+Column: 2
+Match: 0.03 - <dbp-elevationM> - <http://dbpedia.org/property/elevationM>
+
+
+=================
+http://dbpedia.org/ontology/VideoGame
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/29414811_12_251152470253168163.tar.gz.csv
+Column: 0
+
+
+=================
+http://dbpedia.org/ontology/VideoGame
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/29414811_13_8724394428539174350.tar.gz.csv
+Column: 0
+
+
+=================
+http://dbpedia.org/ontology/VideoGame
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/29414811_2_4773219892816395776.tar.gz.csv
+Column: 0
+
+
+=================
+http://dbpedia.org/ontology/VideoGame
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/29414811_6_8221428333921653560.tar.gz.csv
+Column: 0
+
+
+=================
+http://dbpedia.org/ontology/Hospital
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/32812626_0_5428724146873158593.tar.gz.csv
+Column: 2
+Correct uris: ['dbp-beds'] 	
+1 err: 0.00 - <dbp-imageSize> - <http://dbpedia.org/property/imageSize>
+2 err: 0.02 - <dbp-width> - <http://dbpedia.org/property/width>
+3 err: 0.03 - <dbp-address> - <http://dbpedia.org/property/address>
+property dir to uri: ***
+local_data/dbo-Hospital/dbp-beds.txt
+len of results: 2020
+len of nums: 1961
+len of results: 384
+len of nums: 378
+
+
+=================
+http://dbpedia.org/ontology/Mountain
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/3389822_6_374624044314151266.tar.gz.csv
+Column: 2
+Match: 0.06 - <dbp-elevationM> - <http://dbpedia.org/property/elevationM>
+
+
+=================
+http://dbpedia.org/ontology/Film
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/35188621_0_6058553107571275232.tar.gz.csv
+Column: 2
+Match: 0.01 - <dbp-year> - <http://dbpedia.org/property/year>
+
+
+=================
+http://dbpedia.org/ontology/Mountain
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/36039980_4_4283009829602711082.tar.gz.csv
+Column: 2
+Match: 0.05 - <dbp-elevationM> - <http://dbpedia.org/property/elevationM>
+
+
+=================
+http://dbpedia.org/ontology/Film
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/38428277_0_1311643810102462607.tar.gz.csv
+Column: 2
+Match: 0.01 - <dbp-established> - <http://dbpedia.org/property/established>
+
+
+=================
+http://dbpedia.org/ontology/Lake
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/3887681_0_7938589465814037992.tar.gz.csv
+Column: 3
+Match: 0.01 - <dbo-buildingStartDate> - <http://dbpedia.org/ontology/buildingStartDate>
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/3917335_0_7791699395300625164.tar.gz.csv
+Column: 2
+Correct uris: ['dbp-areaKm', 'dbo-PopulatedPlace-areaTotal'] 	
+1 err: 0.01 - <dbp-statArea> - <http://dbpedia.org/property/statArea>
+Match: 0.01 - <dbp-areaKm> - <http://dbpedia.org/property/areaKm>
+property dir to uri:
+local_data/dbo-Country/dbp-areaKm.txt
+len of results: 435
+len of nums: 435
+len of results: 711
+len of nums: 711
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/3917335_0_7791699395300625164.tar.gz.csv
+Column: 3
+Match: 0.00 - <dbp-populationEstimate> - <http://dbpedia.org/property/populationEstimate>
+
+
+=================
+http://dbpedia.org/ontology/Film
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/39173938_0_7916056990138658530.tar.gz.csv
+Column: 2
+Match: 0.01 - <dbp-established> - <http://dbpedia.org/property/established>
+
+
+=================
+http://dbpedia.org/ontology/Film
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/39759273_0_1427898308030295194.tar.gz.csv
+Column: 2
+Match: 0.00 - <dbp-recorded> - <http://dbpedia.org/property/recorded>
+
+
+=================
+http://dbpedia.org/ontology/Film
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/39759273_0_1427898308030295194.tar.gz.csv
+Column: 5
+Match: 0.01 - <dbp-imdb> - <http://dbpedia.org/property/imdb>
+
+
+=================
+http://dbpedia.org/ontology/Film
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/40844462_1_6230938203735169234.tar.gz.csv
+Column: 2
+Match: 0.00 - <dbp-year> - <http://dbpedia.org/property/year>
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/41194422_0_7231546114369966811.tar.gz.csv
+Column: 0
+Match: 0.00 - <dbp-populationDensityRank> - <http://dbpedia.org/property/populationDensityRank>
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/41194422_0_7231546114369966811.tar.gz.csv
+Column: 2
+Match: 0.01 - <dbp-populationCensus> - <http://dbpedia.org/property/populationCensus>
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/41194422_1_1172256090552737974.tar.gz.csv
+Column: 0
+Correct uris: ['dbp-populationEstimateRank'] 	
+1 err: 0.00 - <dbp-populationDensityRank> - <http://dbpedia.org/property/populationDensityRank>
+2 err: 0.00 - <dbp-areaRank> - <http://dbpedia.org/property/areaRank>
+Match: 0.00 - <dbp-populationEstimateRank> - <http://dbpedia.org/property/populationEstimateRank>
+property dir to uri:
+local_data/dbo-Country/dbp-populationEstimateRank.txt
+len of results: 179
+len of nums: 175
+len of results: 254
+len of nums: 251
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/41194422_1_1172256090552737974.tar.gz.csv
+Column: 2
+Match: 0.01 - <dbp-populationCensus> - <http://dbpedia.org/property/populationCensus>
+
+
+=================
+http://dbpedia.org/ontology/GolfPlayer
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/44206774_0_3810538885942465703.tar.gz.csv
+Column: 4
+Correct uris: ['dbp-jlpgawins'] 	
+1 err: 0.33 - <dbp-chalwins> - <http://dbpedia.org/property/chalwins>
+2 err: 0.33 - <dbp-majorwins> - <http://dbpedia.org/property/majorwins>
+3 err: 0.33 - <dbp-nwidewins> - <http://dbpedia.org/property/nwidewins>
+property dir to uri: ***
+local_data/dbo-GolfPlayer/dbp-jlpgawins.txt
+len of results: 55
+len of nums: 55
+len of results: 278
+len of nums: 278
+
+
+=================
+http://dbpedia.org/ontology/Currency
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/49087820_0_461228320225084868.tar.gz.csv
+Column: 3
+Correct uris: ['dbp-isoNumber'] 	
+1 err: 0.11 - <dbp-rarelyUsedBanknotes> - <http://dbpedia.org/property/rarelyUsedBanknotes>
+2 err: 0.11 - <dbp-frequentlyUsedCoins> - <http://dbpedia.org/property/frequentlyUsedCoins>
+3 err: 0.13 - <dbp-rarelyUsedCoins> - <http://dbpedia.org/property/rarelyUsedCoins>
+Match: 0.14 - <dbp-isoNumber> - <http://dbpedia.org/property/isoNumber>
+property dir to uri:
+local_data/dbo-Currency/dbp-isoNumber.txt
+len of results: 36
+len of nums: 36
+len of results: 59
+len of nums: 47
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/49772588_0_6549847739640234347.tar.gz.csv
+Column: 2
+Match: 0.04 - <dbp-populationCensus> - <http://dbpedia.org/property/populationCensus>
+
+
+=================
+http://dbpedia.org/ontology/Mountain
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/49801939_0_6964113429298874283.tar.gz.csv
+Column: 1
+Match: 0.08 - <dbp-elevationFt> - <http://dbpedia.org/property/elevationFt>
+
+
+=================
+http://dbpedia.org/ontology/Film
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/50245608_0_871275842592178099.tar.gz.csv
+Column: 1
+Match: 0.00 - <dbp-recorded> - <http://dbpedia.org/property/recorded>
+
+
+=================
+http://dbpedia.org/ontology/Film
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/50245608_0_871275842592178099.tar.gz.csv
+Column: 5
+Correct uris: ['dbp-length'] 	
+1 err: 0.00 - <dbp-kg> - <http://dbpedia.org/property/kg>
+2 err: 0.02 - <dbo-numberOfEpisodes> - <http://dbpedia.org/ontology/numberOfEpisodes>
+3 err: 0.02 - <dbp-numEpisodes> - <http://dbpedia.org/property/numEpisodes>
+property dir to uri: ***
+local_data/dbo-Film/dbp-length.txt
+len of results: 10000
+len of nums: 9991
+len of results: 57
+len of nums: 57
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/52299421_0_4473286348258170200.tar.gz.csv
+Column: 6
+Correct uris: ['dbo-populationTotal', 'dbp-populationEstimate', 'dbp-pop', 'dbp-populationCensus'] 	
+1 err: 0.05 - <dbp-areaMagnitude> - <http://dbpedia.org/property/areaMagnitude>
+Match: 0.06 - <dbp-populationEstimate> - <http://dbpedia.org/property/populationEstimate>
+property dir to uri:
+local_data/dbo-Country/dbp-populationEstimate.txt
+len of results: 301
+len of nums: 286
+len of results: 219
+len of nums: 219
+
+
+=================
+http://dbpedia.org/ontology/Film
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/53822652_0_5767892317858575530.tar.gz.csv
+Column: 2
+Match: 0.00 - <dbp-years> - <http://dbpedia.org/property/years>
+
+
+=================
+http://dbpedia.org/ontology/Film
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/54719588_0_8417197176086756912.tar.gz.csv
+Column: 6
+Correct uris: ['dbp-pubDate'] 	
+1 err: 0.00 - <dbp-year> - <http://dbpedia.org/property/year>
+2 err: 0.03 - <dbp-recorded> - <http://dbpedia.org/property/recorded>
+3 err: 0.04 - <dbp-established> - <http://dbpedia.org/property/established>
+property dir to uri: ***
+local_data/dbo-Film/dbp-pubDate.txt
+len of results: 5
+len of nums: 3
+len of results: 72
+len of nums: 72
+
+
+=================
+http://dbpedia.org/ontology/Currency
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/55961337_0_6548713781034932742.tar.gz.csv
+Column: 3
+Correct uris: ['dbp-isoNumber'] 	
+1 err: 0.01 - <dbp-width> - <http://dbpedia.org/property/width>
+2 err: 0.04 - <dbp-imageWidth> - <http://dbpedia.org/property/imageWidth>
+3 err: 0.05 - <dbp-bsize> - <http://dbpedia.org/property/bsize>
+property dir to uri: ***
+local_data/dbo-Currency/dbp-isoNumber.txt
+len of results: 36
+len of nums: 36
+len of results: 52
+len of nums: 52
+
+
+=================
+http://dbpedia.org/ontology/VideoGame
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/57938705_0_8737506792349461963.tar.gz.csv
+Column: 3
+
+
+=================
+http://dbpedia.org/ontology/Film
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/58891288_0_1117541047012405958.tar.gz.csv
+Column: 2
+Correct uris: ['dbp-released'] 	
+1 err: 0.01 - <dbp-established> - <http://dbpedia.org/property/established>
+2 err: 0.02 - <dbp-year> - <http://dbpedia.org/property/year>
+3 err: 0.07 - <dbp-recorded> - <http://dbpedia.org/property/recorded>
+property dir to uri: ***
+local_data/dbo-Film/dbp-released.txt
+len of results: 10000
+len of nums: 3398
+len of results: 43
+len of nums: 37
+
+
+=================
+http://dbpedia.org/ontology/Currency
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/61069974_0_1894536874590565102.tar.gz.csv
+Column: 3
+Correct uris: ['dbp-isoNumber'] 	
+1 err: 0.08 - <dbp-rarelyUsedBanknotes> - <http://dbpedia.org/property/rarelyUsedBanknotes>
+Match: 0.08 - <dbp-isoNumber> - <http://dbpedia.org/property/isoNumber>
+property dir to uri:
+local_data/dbo-Currency/dbp-isoNumber.txt
+len of results: 36
+len of nums: 36
+len of results: 49
+len of nums: 34
+
+
+=================
+http://dbpedia.org/ontology/VideoGame
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/66329615_0_3585856495110277641.tar.gz.csv
+Column: 0
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/67865873_0_8259587610208037357.tar.gz.csv
+Column: 2
+Match: 0.01 - <dbp-populationEstimate> - <http://dbpedia.org/property/populationEstimate>
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/69537082_0_7789694313271016902.tar.gz.csv
+Column: 0
+Correct uris: ['dbp-populationEstimateRank'] 	
+1 err: 0.00 - <dbp-populationDensityRank> - <http://dbpedia.org/property/populationDensityRank>
+2 err: 0.00 - <dbp-areaRank> - <http://dbpedia.org/property/areaRank>
+Match: 0.00 - <dbp-populationEstimateRank> - <http://dbpedia.org/property/populationEstimateRank>
+property dir to uri:
+local_data/dbo-Country/dbp-populationEstimateRank.txt
+len of results: 179
+len of nums: 175
+len of results: 254
+len of nums: 251
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/69537082_0_7789694313271016902.tar.gz.csv
+Column: 2
+Match: 0.00 - <dbp-populationCensus> - <http://dbpedia.org/property/populationCensus>
+
+
+=================
+http://dbpedia.org/ontology/Film
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/69881946_0_1105130426898457358.tar.gz.csv
+Column: 2
+Match: 0.01 - <dbp-year> - <http://dbpedia.org/property/year>
+
+
+=================
+http://dbpedia.org/ontology/Film
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/73988811_0_2775758476756716904.tar.gz.csv
+Column: 2
+Match: 0.00 - <dbp-recorded> - <http://dbpedia.org/property/recorded>
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/76275868_0_4528346580716713695.tar.gz.csv
+Column: 1
+Match: 0.02 - <dbp-populationEstimate> - <http://dbpedia.org/property/populationEstimate>
+
+
+=================
+http://dbpedia.org/ontology/Film
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/77694908_0_6083291340991074532.tar.gz.csv
+Column: 2
+Match: 0.00 - <dbp-year> - <http://dbpedia.org/property/year>
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/8009320_0_5507755752653817624.tar.gz.csv
+Column: 1
+Correct uris: ['dbo-populationDensity'] 	
+1 err: 0.00 - <dbp-giniRank> - <http://dbpedia.org/property/giniRank>
+2 err: 0.01 - <dbp-gdpNominalRank> - <http://dbpedia.org/property/gdpNominalRank>
+3 err: 0.01 - <dbp-gdpNominalPerCapitaRank> - <http://dbpedia.org/property/gdpNominalPerCapitaRank>
+property dir to uri: ***
+local_data/dbo-Country/dbo-populationDensity.txt
+len of results: 590
+len of nums: 590
+len of results: 37
+len of nums: 37
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/8009320_0_5507755752653817624.tar.gz.csv
+Column: 2
+Correct uris: ['dbp-areaKm', 'dbo-PopulatedPlace-areaTotal'] 	
+1 err: 0.01 - <dbp-population> - <http://dbpedia.org/property/population>
+2 err: 0.02 - <dbo-populationTotal> - <http://dbpedia.org/ontology/populationTotal>
+3 err: 0.03 - <dbp-statArea> - <http://dbpedia.org/property/statArea>
+property dir to uri: ***
+local_data/dbo-Country/dbp-areaKm.txt
+len of results: 435
+len of nums: 435
+len of results: 205
+len of nums: 167
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/8009320_0_5507755752653817624.tar.gz.csv
+Column: 3
+Match: 0.03 - <dbp-populationEstimate> - <http://dbpedia.org/property/populationEstimate>
+
+
+=================
+http://dbpedia.org/ontology/Film
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/84548468_0_5955155464119382182.tar.gz.csv
+Column: 2
+Match: 0.00 - <dbp-year> - <http://dbpedia.org/property/year>
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/86297395_0_6919201319699354263.tar.gz.csv
+Column: 1
+Correct uris: ['dbp-areaKm', 'dbo-PopulatedPlace-areaTotal'] 	
+1 err: 0.00 - <dbo-foundingYear> - <http://dbpedia.org/ontology/foundingYear>
+2 err: 0.00 - <dbp-yearStart> - <http://dbpedia.org/property/yearStart>
+3 err: 0.00 - <dbp-dateEvent> - <http://dbpedia.org/property/dateEvent>
+property dir to uri: ***
+local_data/dbo-Country/dbp-areaKm.txt
+len of results: 435
+len of nums: 435
+len of results: 2449
+len of nums: 2320
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/86297395_0_6919201319699354263.tar.gz.csv
+Column: 4
+Match: 0.04 - <dbp-populationEstimate> - <http://dbpedia.org/property/populationEstimate>
+
+
+=================
+http://dbpedia.org/ontology/Lake
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/86627271_6_2239821927452848323.tar.gz.csv
+Column: 2
+Correct uris: ['dbp-areaKm'] 	
+1 err: 0.06 - <dbo-width> - <http://dbpedia.org/ontology/width>
+2 err: 0.06 - <dbo-elevation> - <http://dbpedia.org/ontology/elevation>
+3 err: 0.08 - <dbp-volume> - <http://dbpedia.org/property/volume>
+property dir to uri: ***
+local_data/dbo-Lake/dbp-areaKm.txt
+len of results: 391
+len of nums: 390
+len of results: 2774
+len of nums: 2774
+
+
+=================
+http://dbpedia.org/ontology/Lake
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/86627271_6_2239821927452848323.tar.gz.csv
+Column: 3
+Match: 0.01 - <dbp-elevationM> - <http://dbpedia.org/property/elevationM>
+
+
+=================
+http://dbpedia.org/ontology/Mountain
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/88353875_0_4876234304797064286.tar.gz.csv
+Column: 2
+Correct uris: ['dbp-elevationFt'] 	
+1 err: 0.04 - <dbo-elevation> - <http://dbpedia.org/ontology/elevation>
+2 err: 0.04 - <dbp-elevationM> - <http://dbpedia.org/property/elevationM>
+3 err: 0.08 - <dbo-firstAscentYear> - <http://dbpedia.org/ontology/firstAscentYear>
+property dir to uri: ***
+local_data/dbo-Mountain/dbp-elevationFt.txt
+len of results: 2337
+len of nums: 2334
+len of results: 10000
+len of nums: 10000
+
+
+=================
+http://dbpedia.org/ontology/BaseballPlayer
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/88732174_0_7321365014357502211.tar.gz.csv
+Column: 0
+Match: 0.00 - <dbp-year> - <http://dbpedia.org/property/year>
+
+
+=================
+http://dbpedia.org/ontology/Mountain
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/90593344_0_8311455501234425088.tar.gz.csv
+Column: 3
+Correct uris: ['dbp-elevationFt'] 	
+1 err: 0.04 - <dbo-elevation> - <http://dbpedia.org/ontology/elevation>
+2 err: 0.04 - <dbp-elevationM> - <http://dbpedia.org/property/elevationM>
+3 err: 0.08 - <dbo-firstAscentYear> - <http://dbpedia.org/ontology/firstAscentYear>
+property dir to uri: ***
+local_data/dbo-Mountain/dbp-elevationFt.txt
+len of results: 2337
+len of nums: 2334
+len of results: 10000
+len of nums: 10000
+
+
+=================
+http://dbpedia.org/ontology/Country
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/9206866_1_8114610355671172497.tar.gz.csv
+Column: 4
+Match: 0.03 - <dbp-populationEstimate> - <http://dbpedia.org/property/populationEstimate>
+
+
+=================
+http://dbpedia.org/ontology/TelevisionShow
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/9475172_1_1023126399856690702.tar.gz.csv
+Column: 2
+Match: 0.01 - <dbp-numSeries> - <http://dbpedia.org/property/numSeries>
+
+
+=================
+http://dbpedia.org/ontology/Currency
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/97941125_0_8220652154649529701.tar.gz.csv
+Column: 3
+Correct uris: ['dbp-isoNumber'] 	
+1 err: 0.07 - <dbp-rarelyUsedCoins> - <http://dbpedia.org/property/rarelyUsedCoins>
+2 err: 0.10 - <dbp-frequentlyUsedCoins> - <http://dbpedia.org/property/frequentlyUsedCoins>
+3 err: 0.11 - <dbp-rarelyUsedBanknotes> - <http://dbpedia.org/property/rarelyUsedBanknotes>
+property dir to uri: ***
+local_data/dbo-Currency/dbp-isoNumber.txt
+len of results: 36
+len of nums: 36
+len of results: 59
+len of nums: 47
+
+
+=================
+http://dbpedia.org/ontology/Mountain
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/99070098_0_2074872741302696997.tar.gz.csv
+Column: 2
+Correct uris: ['dbp-elevationFt'] 	
+1 err: 0.04 - <dbo-elevation> - <http://dbpedia.org/ontology/elevation>
+2 err: 0.04 - <dbp-elevationM> - <http://dbpedia.org/property/elevationM>
+3 err: 0.08 - <dbo-firstAscentYear> - <http://dbpedia.org/ontology/firstAscentYear>
+property dir to uri: ***
+local_data/dbo-Mountain/dbp-elevationFt.txt
+len of results: 2337
+len of nums: 2334
+len of results: 10000
+len of nums: 10000
+
+
+=================
+http://dbpedia.org/ontology/Mountain
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/1146722_1_7558140036342906956.tar.gz.csv
+Column: 5
+Correct uris: ['dbp-elevationFt'] 	
+1 err: 0.04 - <dbo-elevation> - <http://dbpedia.org/ontology/elevation>
+2 err: 0.04 - <dbp-elevationM> - <http://dbpedia.org/property/elevationM>
+3 err: 0.08 - <dbo-firstAscentYear> - <http://dbpedia.org/ontology/firstAscentYear>
+property dir to uri: ***
+local_data/dbo-Mountain/dbp-elevationFt.txt
+len of results: 2337
+len of nums: 2334
+len of results: 10000
+len of nums: 10000
+
+
+=================
+http://dbpedia.org/ontology/Mountain
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/88353875_0_4876234304797064286.tar.gz.csv
+Column: 1
+Correct uris: ['dbp-elevationM', 'dbo-elevation'] 	
+1 err: 0.03 - <dbp-prominenceM> - <http://dbpedia.org/property/prominenceM>
+2 err: 0.05 - <dbo-prominence> - <http://dbpedia.org/ontology/prominence>
+3 err: 0.09 - <dbp-prominenceFt> - <http://dbpedia.org/property/prominenceFt>
+property dir to uri: ***
+local_data/dbo-Mountain/dbp-elevationM.txt
+len of results: 10000
+len of nums: 9997
+len of results: 4134
+len of nums: 4134
+
+
+=================
+http://dbpedia.org/ontology/Mountain
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/90593344_0_8311455501234425088.tar.gz.csv
+Column: 2
+Correct uris: ['dbp-elevationM', 'dbo-elevation'] 	
+1 err: 0.03 - <dbp-prominenceM> - <http://dbpedia.org/property/prominenceM>
+2 err: 0.05 - <dbo-prominence> - <http://dbpedia.org/ontology/prominence>
+3 err: 0.09 - <dbp-prominenceFt> - <http://dbpedia.org/property/prominenceFt>
+property dir to uri: ***
+local_data/dbo-Mountain/dbp-elevationM.txt
+len of results: 10000
+len of nums: 9997
+len of results: 4134
+len of nums: 4134
+
+
+=================
+http://dbpedia.org/ontology/Mountain
+/Users/aalobaid/workspaces/Datasets/T2Dv2/csv/99070098_0_2074872741302696997.tar.gz.csv
+Column: 3
+Correct uris: ['dbp-elevationM', 'dbo-elevation'] 	
+1 err: 0.03 - <dbp-prominenceM> - <http://dbpedia.org/property/prominenceM>
+2 err: 0.05 - <dbo-prominence> - <http://dbpedia.org/ontology/prominence>
+3 err: 0.09 - <dbp-prominenceFt> - <http://dbpedia.org/property/prominenceFt>
+property dir to uri: ***
+local_data/dbo-Mountain/dbp-elevationM.txt
+len of results: 10000
+len of nums: 9997
+len of results: 4134
+len of nums: 4134
+Precision: 0.53
+Recall: 0.85
+F1: 0.65
+elevation: 
+	0.3529411.2	1.0000001.2	0.5217391.2
+population: 
+	0.8000001.2	1.0000001.2	0.8888891.2
+area: 
+	0.0000001.2	0.0000001.2	0.0000001.2
+number of employees: 
+	0.0000001.2	0.0000001.2	0.0000001.2
+year: 
+	0.8095241.2	0.7083331.2	0.7555561.2
+number of years: 
+	0.0000001.2	0.0000001.2	0.0000001.2
+iso number: 
+	0.2000001.2	1.0000001.2	0.3333331.2
+number of seats: 
+	1.0000001.2	1.0000001.2	1.0000001.2
+number of beds: 
+	0.0000001.2	0.0000001.2	0.0000001.2
+imdb votes: 
+	1.0000001.2	1.0000001.2	1.0000001.2
+population density rank: 
+	1.0000001.2	1.0000001.2	1.0000001.2
+population estimate rank: 
+	0.0000001.2	0.0000001.2	0.0000001.2
+number of wins: 
+	0.0000001.2	0.0000001.2	0.0000001.2
+film length: 
+	0.0000001.2	0.0000001.2	0.0000001.2
+area in Km: 
+	0.0000001.2	0.0000001.2	0.0000001.2
+series number: 
+	1.0000001.2	1.0000001.2	1.0000001.2
+nrows     category
+score      float64
+metric    category
+ncols        int64
+dtype: object
+   nrows     score     metric  ncols
+0   200<  0.466667   accuracy     30
+1   200<  0.482759  precision     30
+2   200<  0.933333     recall     30
+3   200<  0.636364         f1     30
+4    200  0.490566   accuracy     53
+5    200  0.553191  precision     53
+6    200  0.812500     recall     53
+7    200  0.658228         f1     53
+8     20  0.200000   accuracy      5
+9     20  0.333333  precision      5
+10    20  0.333333     recall      5
+11    20  0.333333         f1      5
+12    30  0.300000   accuracy     10
+13    30  0.500000  precision     10
+14    30  0.428571     recall     10
+15    30  0.461538         f1     10
+16    40  0.307692   accuracy     13
+17    40  0.444444  precision     13
+18    40  0.500000     recall     13
+19    40  0.470588         f1     13
+20    50  0.222222   accuracy     18
+21    50  0.307692  precision     18
+22    50  0.444444     recall     18
+23    50  0.363636         f1     18
+24    70  0.240000   accuracy     25
+25    70  0.315789  precision     25
+26    70  0.500000     recall     25
+27    70  0.387097         f1     25
+28   100  0.333333   accuracy     33
+29   100  0.407407  precision     33
+30   100  0.647059     recall     33
+31   100  0.500000         f1     33
+32   150  0.444444   accuracy     45
+33   150  0.512821  precision     45
+34   150  0.769231     recall     45
+35   150  0.615385         f1     45
+Time it took
+190.015894
+3.166931566666667
