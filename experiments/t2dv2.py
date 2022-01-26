@@ -4,7 +4,7 @@ import argparse
 
 import numpy as np
 
-from experiments.common import annotate_file, eval_column, compute_scores, uri_to_fname, compute_scores_per_property
+from experiments.common import annotate_file, eval_column, compute_scores, uri_to_fname, compute_scores_per_key
 from experiments.common import get_num_rows, compute_counts, compute_counts_per_err_meth
 import pandas as pd
 
@@ -26,8 +26,9 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meths, loose=False, estimate=[
     filename,concept,k,column,property,columnid,kind,sub_kind
     """
     err_meth_scores = dict()
-    print("\n\n|Quantile Prediction\t|Error Function\t|Precision\t|Recall\t|F1\t|")
-    print("|:------:|:------:|:---------:|:------:|:---:|")
+    final_scores_txt = ""
+    final_scores_txt += "\n\n|Quantile Prediction\t|Error Function\t|Precision\t|Recall\t|F1\t|\n"
+    final_scores_txt += "|:------:|:------:|:---------:|:------:|:---:|\n"
     for use_estimate in estimate:
         for err_meth in err_meths:
             eval_data = []
@@ -58,8 +59,12 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meths, loose=False, estimate=[
                 folder_name += "-loose"
             if not remove_outliers:
                 folder_name += "-raw"
+                remove_outliers_txt = "raw"
+            else:
+                remove_outliers_txt = "remove-outliers"
             files_k = dict()
             eval_per_prop = dict()
+            eval_per_sub_kind = dict()
             for idx, row in df.iterrows():
                 class_uri = 'http://dbpedia.org/ontology/'+row['concept']
                 col_id = int(row['columnid'])
@@ -71,11 +76,16 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meths, loose=False, estimate=[
                                       data_dir="local_data", min_objs=MIN_NUM_OBJ, cols=[col_id], err_meth=err_meth,
                                       estimate=use_estimate)
                 pconcept = row['pconcept']
+                sub_kind = row['sub_kind']
+                if sub_kind in [None, np.nan, np.NaN]:
+                    sub_kind = row['kind']
                 if pconcept in [None, np.nan, np.NaN]:
                     print("is none")
                     print(row)
                 if pconcept not in eval_per_prop:
                     eval_per_prop[pconcept] = []
+                if sub_kind not in eval_per_sub_kind:
+                    eval_per_sub_kind[sub_kind] = []
                 nrows = get_num_rows(fdir)
                 diff_name = "%s-%s-%s" % (uri_to_fname(class_uri), uri_to_fname(uris[0]), fdir.split(os.sep)[-1])
                 diff_folder_path = os.path.join("experiments", "diffs", folder_name)
@@ -92,8 +102,9 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meths, loose=False, estimate=[
                     files_k[fdir.split(os.sep)[-1]+"-"+str(c)] = (res, nrows)
                     eval_data.append(res)
                     eval_per_prop[pconcept].append(res)
+                    eval_per_sub_kind[sub_kind].append(res)
                 # Testing
-                # if idx >= 1:
+                # if idx >= 2:
                 #     if test:
                 #         print("res: ")
                 #         print(res)
@@ -101,10 +112,11 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meths, loose=False, estimate=[
             prec, rec, f1 = compute_scores(eval_data, k=1)
             # print("\n\n|Quantile Prediction\t|Error Function\t|Precision\t|Recall\t|F1\t|")
             # print("|:------:|:------:|:---------:|:------:|:---:|")
-            print("|%s\t|%s\t|%.2f\t|%.2f\t|%.2f\t|" % (est_txt, err_meth, prec, rec, f1))
+            final_scores_txt += "|%s\t|%s\t|%.2f\t|%.2f\t|%.2f\t|\n" % (est_txt, err_meth, prec, rec, f1)
             # print("Precision: %.2f\nRecall: %.2f\nF1: %.2f" % (prec, rec, f1))
-            compute_scores_per_property(eval_per_prop, folder_name)
-            # Commented for testing only
+            compute_scores_per_key(eval_per_prop, folder_name)
+            print("\n\n================\n %s + %s + %s" % (est_txt, err_meth, remove_outliers_txt))
+            compute_scores_per_key(eval_per_sub_kind, "sub_kind-%s" % (folder_name), print_scores=True)
             scores_df = compute_counts(files_k, "datapoints-%s" % (folder_name))
 
             if est_txt not in err_meth_scores:
@@ -115,6 +127,7 @@ def annotate_t2dv2(endpoint, remove_outliers, err_meths, loose=False, estimate=[
     if not remove_outliers:
         fname += "-raw"
     compute_counts_per_err_meth(err_meth_scores, fname)
+    print(final_scores_txt)
 
 
 def parse_arguments():

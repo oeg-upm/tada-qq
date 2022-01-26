@@ -397,22 +397,29 @@ def get_num_rows(fdir):
     return len(df.index)
 
 
-def compute_scores_per_property(eval_pp, fname=None):
+def compute_scores_per_key(eval_pp, fname=None, print_scores=False):
     """
     eval_pp: dict
+
+    For example (property as a key)
     {
         "generic property": [1,... ] (k values),
 
     }
     """
     lines = []
+    print("\n\n|Key | Precision | Recall | F1 |")
+    print("|:-----:|:-----:|:-----:|:-----:|")
     for p in eval_pp:
         prec, rec, f1 = compute_scores(eval_pp[p])
         lines.append([p, 'prec', prec])
         lines.append([p, 'rec', rec])
         lines.append([p, 'f1', f1])
-        if PRINT_DIFF:
-            print("%s: \n\t%f1.2\t%f1.2\t%f1.2" % (p, prec, rec, f1))
+        # if PRINT_DIFF:
+        #     print("%s: \n\t%f1.2\t%f1.2\t%f1.2" % (p, prec, rec, f1))
+        if print_scores:
+            print("| %s | %.2f | %.2f | %.2f| " % (p, prec, rec, f1))
+
     if fname:
         generate_diagram(lines, fname)
 
@@ -448,6 +455,7 @@ def generate_diagram(acc, draw_fname):
     labels = [t.get_text() for t in texts]
     ax.set_yticks(new_ticks)
     ax.set_yticklabels(labels, fontsize=8)
+    ax.set(xlabel=None, ylabel=None)
     # print(ax.get_yticklabels())
     plt.setp(ax.lines, color='k')
     ax.figure.savefig('%s.svg' % draw_fname, bbox_inches="tight")

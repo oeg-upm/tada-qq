@@ -86,11 +86,6 @@ python -m experiments.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --es
 
 
 # Results - T2Dv2
-## T2Dv2 Mean Error
-![t2dv2.svg](t2dv2-mean-err.svg) 
-
-## T2Dv2 Mean Square Error
-![t2dv2.svg](t2dv2-mean-sq-err.svg) 
 
 
 ## Comparison of both
@@ -132,3 +127,189 @@ python -m experiments.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --es
 
 ### Raw
 ![datapoints.svg](t2dv2-err-methods-raw.svg)
+
+## Performance and Typology
+
+### Raw
+
+#### estimate + mean_err + raw
+
+![](sub_kind-t2dv2-mean-err-estimate-raw.svg)
+
+|Key | Precision | Recall | F1 |
+|:-----:|:-----:|:-----:|:-----:|
+| other | 0.23 | 1.00 | 0.38| 
+| count | 0.70 | 1.00 | 0.82| 
+| year | 0.76 | 0.70 | 0.73| 
+| random | 0.50 | 1.00 | 0.67| 
+| ordinal | 0.33 | 1.00 | 0.50| 
+
+
+
+
+
+#### estimate + mean_sq_err + raw
+
+![](sub_kind-t2dv2-mean-sq-err-estimate-raw.svg)
+
+|Key | Precision | Recall | F1 |
+|:-----:|:-----:|:-----:|:-----:|
+| other | 0.23 | 1.00 | 0.38| 
+| count | 0.70 | 1.00 | 0.82| 
+| year | 0.76 | 0.70 | 0.73| 
+| random | 0.50 | 1.00 | 0.67| 
+| ordinal | 0.33 | 1.00 | 0.50| 
+
+
+
+#### estimate + mean_sqroot_err + raw
+
+![](sub_kind-t2dv2-mean-sqroot-err-estimate-raw.svg)
+
+
+| Key | Precision | Recall | F1 |
+|:-----:|:-----:|:-----:|:-----:|
+| other | 0.23 | 1.00 | 0.38| 
+| count | 0.70 | 1.00 | 0.82| 
+| year | 0.76 | 0.70 | 0.73| 
+| random | 0.50 | 1.00 | 0.67| 
+| ordinal | 0.33 | 1.00 | 0.50| 
+
+
+
+
+
+#### exact + mean_err + raw
+
+![](sub_kind-t2dv2-mean-err-exact-raw.svg)
+
+|Key | Precision | Recall | F1 |
+|:-----:|:-----:|:-----:|:-----:|
+| other | 0.23 | 1.00 | 0.38| 
+| count | 0.70 | 1.00 | 0.82| 
+| year | 0.76 | 0.70 | 0.73| 
+| random | 0.50 | 1.00 | 0.67| 
+| ordinal | 0.33 | 1.00 | 0.50| 
+
+
+
+
+
+ #### exact + mean_sq_err + raw
+
+![](sub_kind-t2dv2-mean-sq-err-exact-raw.svg)
+
+
+|Key | Precision | Recall | F1 |
+|:-----:|:-----:|:-----:|:-----:|
+| other | 0.23 | 1.00 | 0.38| 
+| count | 0.70 | 1.00 | 0.82| 
+| year | 0.76 | 0.70 | 0.73| 
+| random | 0.50 | 1.00 | 0.67| 
+| ordinal | 0.33 | 1.00 | 0.50| 
+
+
+
+
+
+ #### exact + mean_sqroot_err + raw
+
+![](sub_kind-t2dv2-mean-sqroot-err-exact-raw.svg)
+
+|Key | Precision | Recall | F1 |
+|:-----:|:-----:|:-----:|:-----:|
+| other | 0.19 | 1.00 | 0.32| 
+| count | 0.65 | 1.00 | 0.79| 
+| year | 0.76 | 0.70 | 0.73| 
+| random | 0.50 | 1.00 | 0.67| 
+| ordinal | 0.33 | 1.00 | 0.50| 
+
+
+### Outlier Removal
+
+estimate + mean_err + remove-outliers
+
+![](sub_kind-t2dv2-mean-err-estimate.svg)
+
+|Key | Precision | Recall | F1 |
+|:-----:|:-----:|:-----:|:-----:|
+| other | 0.23 | 1.00 | 0.38| 
+| count | 0.50 | 1.00 | 0.67| 
+| year | 0.76 | 0.70 | 0.73| 
+| random | 0.67 | 1.00 | 0.80| 
+| ordinal | 0.33 | 1.00 | 0.50| 
+
+
+
+ estimate + mean_sq_err + remove-outliers
+
+![](sub_kind-t2dv2-mean-sq-err-estimate.svg)
+
+|Key | Precision | Recall | F1 |
+|:-----:|:-----:|:-----:|:-----:|
+| other | 0.23 | 1.00 | 0.38| 
+| count | 0.60 | 1.00 | 0.75| 
+| year | 0.76 | 0.70 | 0.73| 
+| random | 0.50 | 1.00 | 0.67| 
+| ordinal | 0.33 | 1.00 | 0.50| 
+
+
+
+
+ estimate + mean_sqroot_err + remove-outliers
+
+![](sub_kind-t2dv2-mean-sqroot-err-estimate.svg)
+
+|Key | Precision | Recall | F1 |
+|:-----:|:-----:|:-----:|:-----:|
+| other | 0.23 | 1.00 | 0.38| 
+| count | 0.55 | 1.00 | 0.71| 
+| year | 0.81 | 0.71 | 0.76| 
+| random | 0.67 | 1.00 | 0.80| 
+| ordinal | 0.33 | 1.00 | 0.50| 
+
+
+
+
+ exact + mean_err + remove-outliers
+
+![](sub_kind-t2dv2-mean-err-exact.svg)
+
+|Key | Precision | Recall | F1 |
+|:-----:|:-----:|:-----:|:-----:|
+| other | 0.19 | 1.00 | 0.32| 
+| count | 0.40 | 1.00 | 0.57| 
+| year | 0.81 | 0.71 | 0.76| 
+| random | 0.50 | 1.00 | 0.67| 
+| ordinal | 0.33 | 1.00 | 0.50| 
+
+
+
+ exact + mean_sq_err + remove-outliers
+
+![](sub_kind-t2dv2-mean-sq-err-exact.svg)
+
+|Key | Precision | Recall | F1 |
+|:-----:|:-----:|:-----:|:-----:|
+| other | 0.23 | 1.00 | 0.38| 
+| count | 0.50 | 1.00 | 0.67| 
+| year | 0.81 | 0.71 | 0.76| 
+| random | 0.50 | 1.00 | 0.67| 
+| ordinal | 0.33 | 1.00 | 0.50| 
+
+
+
+
+
+ exact + mean_sqroot_err + remove-outliers
+
+
+![](sub_kind-t2dv2-mean-sqroot-err-exact.svg)
+
+|Key | Precision | Recall | F1 |
+|:-----:|:-----:|:-----:|:-----:|
+| other | 0.12 | 1.00 | 0.21| 
+| count | 0.35 | 1.00 | 0.52| 
+| year | 0.81 | 0.71 | 0.76| 
+| random | 0.33 | 1.00 | 0.50| 
+| ordinal | 0.33 | 1.00 | 0.50| 
