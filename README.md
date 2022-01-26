@@ -241,7 +241,7 @@ estimate + mean_err + remove-outliers
 
 
 
- estimate + mean_sq_err + remove-outliers
+ #### estimate + mean_sq_err + remove-outliers
 
 ![](sub_kind-t2dv2-mean-sq-err-estimate.svg)
 
@@ -256,7 +256,7 @@ estimate + mean_err + remove-outliers
 
 
 
- estimate + mean_sqroot_err + remove-outliers
+ #### estimate + mean_sqroot_err + remove-outliers
 
 ![](sub_kind-t2dv2-mean-sqroot-err-estimate.svg)
 
@@ -271,7 +271,7 @@ estimate + mean_err + remove-outliers
 
 
 
- exact + mean_err + remove-outliers
+ #### exact + mean_err + remove-outliers
 
 ![](sub_kind-t2dv2-mean-err-exact.svg)
 
@@ -285,7 +285,7 @@ estimate + mean_err + remove-outliers
 
 
 
- exact + mean_sq_err + remove-outliers
+ #### exact + mean_sq_err + remove-outliers
 
 ![](sub_kind-t2dv2-mean-sq-err-exact.svg)
 
@@ -301,7 +301,7 @@ estimate + mean_err + remove-outliers
 
 
 
- exact + mean_sqroot_err + remove-outliers
+#### exact + mean_sqroot_err + remove-outliers
 
 
 ![](sub_kind-t2dv2-mean-sqroot-err-exact.svg)
