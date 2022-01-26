@@ -227,7 +227,7 @@ python -m experiments.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --es
 
 ### Outlier Removal
 
-estimate + mean_err + remove-outliers
+#### estimate + mean_err + remove-outliers
 
 ![](sub_kind-t2dv2-mean-err-estimate.svg)
 
