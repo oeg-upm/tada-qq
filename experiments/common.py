@@ -14,7 +14,7 @@ from pcake import pcake
 from qq.qqe import QQE
 from qq.dist import get_data
 
-PRINT_DIFF = False
+PRINT_DIFF = True
 
 
 def get_logger(name, level=logging.INFO):
@@ -30,9 +30,7 @@ def get_logger(name, level=logging.INFO):
 
 
 logger = get_logger(__name__, level=logging.INFO)
-#logger = get_logger(__name__, level=logging.DEBUG)
-
-
+# logger = get_logger(__name__, level=logging.DEBUG)
 esparql = easysparqlclass.EasySparql(cache_dir=".cache", logger=logger)
 
 
@@ -51,28 +49,28 @@ def data_exists(data_dir, class_uri, property_uri):
     return file_exists
 
 
-def get_candidate_properties(class_uri, sample_data, data_dir):
-    """
-    :param class_uri:
-    :param sample_data:
-    :param data_dir:
-    :return: list of pairs. each pair os composed of (mean_err, prop-fname)
-    """
-    class_fname = uri_to_fname(class_uri)
-    class_dir = os.path.join(data_dir, class_fname)
-    qqe = QQE(sample_data)
-    fnames = [f for f in os.listdir(class_dir) if os.path.isfile(os.path.join(class_dir, f))]
-    errs = []
-    for f in fnames:
-        prop_dir = os.path.join(class_dir, f)
-        prop_data = get_data(prop_dir)
-        err = qqe.predict_and_get_mean_sq_error(prop_data, remove_outliers=True)
-        # err = qqe.predict_and_get_mean_error(prop_data, remove_outliers=True)
-        item = (err, f)
-        errs.append(item)
-
-    errs.sort()
-    return errs
+# def get_candidate_properties(class_uri, sample_data, data_dir):
+#     """
+#     :param class_uri:
+#     :param sample_data:
+#     :param data_dir:
+#     :return: list of pairs. each pair os composed of (mean_err, prop-fname)
+#     """
+#     class_fname = uri_to_fname(class_uri)
+#     class_dir = os.path.join(data_dir, class_fname)
+#     qqe = QQE(sample_data)
+#     fnames = [f for f in os.listdir(class_dir) if os.path.isfile(os.path.join(class_dir, f))]
+#     errs = []
+#     for f in fnames:
+#         prop_dir = os.path.join(class_dir, f)
+#         prop_data = get_data(prop_dir)
+#         err = qqe.predict_and_get_mean_sq_error(prop_data, remove_outliers=True)
+#         # err = qqe.predict_and_get_mean_error(prop_data, remove_outliers=True)
+#         item = (err, f)
+#         errs.append(item)
+#
+#     errs.sort()
+#     return errs
 
 
 def collect_numeric_data(class_uri, endpoint, data_dir, min_objs):

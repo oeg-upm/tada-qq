@@ -84,6 +84,10 @@ python -m experiments.t2dv2 -e mean_sq_err -o true
 python -m experiments.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False
 ```
 
+```
+python -m experiments.t2dv2 -e mean_err -o false --estimate True
+```
+
 
 # Results - T2Dv2
 
