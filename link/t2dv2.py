@@ -1,9 +1,10 @@
 import argparse
 import os
+from collections import Counter
 from datetime import datetime
 import pandas as pd
 from qq.qqe import QQE
-from experiments.common import is_numeric_dtype
+from experiments.common import is_numeric_dtype, uri_to_fname
 
 if 't2dv2_dir' not in os.environ:
     print("ERROR: t2dv2_dir no in os.environ")
@@ -15,26 +16,10 @@ meta_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_typology.csv')
 SAVE_MEMORY = False
 
 
-def fetch(method, group):
-    return group[0]
-    # if method == "max":
-    #     max_e = group[0]
-    #     # print("group: ")
-    #     # print(group)
-    #     for e in group[1:]:
-    #         # print(e)
-    #         if e['num'] > max_e['num']:
-    #             max_e = e
-    #     return max_e
-    # else:
-    #     raise Exception("invalid method")
-    #     return None
-
-
 def get_col(fname, colid):
     fpath = os.path.join(data_dir, fname)
     df = pd.read_csv(fpath, thousands=',')
-    col = df[df.columns[colid]]
+    col = df[df.columns[int(colid)]]
 
     if not is_numeric_dtype(col):
         col = col.str.replace(',', '').astype(float, errors='ignore')
@@ -62,7 +47,7 @@ def column_group_matching(groups, ele, fetch_method, err_meth, err_cutoff):
             print("group None")
             raise Exception("group is None")
         # print(g)
-        top_ele = fetch(method=fetch_method, group=g)
+        top_ele = g[0]
         if top_ele is None:
             raise Exception("top_ele is None")
         # print("top ele:")
@@ -113,39 +98,81 @@ def add_col_to_group(ele, group, fetch_method):
     return group
 
 
+def get_class_property_groups(df):
+    d = dict()
+    counts = []
+    for idx, row in df.iterrows():
+        c = row["concept"]
+        ps = row["property"].split(';')
+        prev_identified = None
+        v = "%d-%s-%s" % (idx, c, uri_to_fname(ps[0]))
+        for p in ps:
+            k = c + " " + p
+            if k in d:
+                prev_identified = d[k]
+                break
+            d[k] = v
+
+        if prev_identified:
+            print("picking a prev-identified\t%s\t%d" % (prev_identified, idx))
+            v = prev_identified
+            for p in ps:
+                k = c + " " + p
+                d[k] = prev_identified
+        counts.append(v)
+    return d, Counter(counts)
+
+
+def evaluate(groups, counts):
+    """
+    groups: [ [{}], [{}]]
+    """
+    scores = dict()
+    for g in groups:
+        cluses = [ele['gs_clus'] for ele in g]
+        c = Counter(cluses)
+        clus = c.keys()[0]
+        scores[clus]
+
+
 def workflow(fetch_method, err_meth, err_cutoff):
     df = pd.read_csv(meta_dir)
     df = df[df.property.notnull()]
     df = df[df["concept"].notnull()]
     df = df[df["pconcept"].notnull()]
     df = df[df["loose"] != "yes"]
+    cp_groups, counts = get_class_property_groups(df)
     # fetch_method = "max"
     groups = []
     for idx, row_and_i in enumerate(df.iterrows()):
         i, row = row_and_i
-        if idx >= 9:
-            break
+        # if idx >= 15:
+        #     break
         # print(row)
         col = get_col(fname=row['filename']+".csv", colid=row['columnid'])
         ele = {
             'col_id': row['columnid'],
             'fname': row['filename'],
             'col': col,
-            'num': len(col)
+            'num': len(col),
+            'concept': row['concept'],
+            'property': row['property'].split(';')[0]
         }
 
         column_group_matching(groups, ele, fetch_method, err_meth, err_cutoff)
-        if idx >= 7:
-            print("col %d: " % idx)
-            print(ele)
-            print("groups: ")
-            print(groups[-1])
+        # if idx >= 7:
+        #     print("col %d: " % idx)
+        #     print(ele)
+        #     print("groups: ")
+        #     print(groups[-1])
 
     for idx, g in enumerate(groups):
         print("\n\nGroup %d" % idx)
         print("===========")
         for ele in g:
-            print("%s\t%d" % (ele['fname'], ele['col_id']))
+            k = ele['concept']+" "+ele['property']
+            ele['gs_clus'] = cp_groups[k]
+            print("%s\t%s" % (ele['fname'], ele['gs_clus']))
 
 
 def parse_arguments():
