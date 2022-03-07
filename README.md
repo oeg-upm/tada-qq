@@ -52,7 +52,24 @@ script.
 The application expects to have a folder named `csv` inside the T2Dv2 which includes the files in csv format. You can use the script `scripts/json_to_csv.py` to do that.
 
 
-## Run Experiments
+## Experiments
+
+### Clustering
+Matching similar columns. The main differences between the clustering and the semantic labelling are:
+1. Clustering does not add an annotation to the cluster.
+2. The clustering does not use the knowledge graph.
+3. The clustering does not take into account the subject class/type.
+
+#### Results - T2Dv2
+
+![](results/clustering/t2dv2.svg)
+
+#### T2Dv2
+The command used: 
+```
+python -m link.t2dv2 -c 0.02 0.04 0.06 0.08 0.1 0.12 0.14 0.16 0.18 0.2
+```
+
 ### Semantic labelling
 #### Olympic Games
 ```
@@ -70,7 +87,9 @@ optional arguments:
                         Whether to remove outliers or not
 ```
 
-Sample:
+Used:
+
+<!--
 ```
 python -m experiments.t2dv2 -e mean_err -o true
 ```
@@ -87,14 +106,13 @@ python -m experiments.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --es
 ```
 python -m experiments.t2dv2 -e mean_err -o false --estimate True
 ```
+-->
 
+## Semantic Labelling Results - T2Dv2
 
-# Results - T2Dv2
+### Comparison of both
 
-
-## Comparison of both
-
-## Remove Outliers
+### Remove Outliers
 |Quantile Prediction	|Error Function	|Precision	|Recall	|F1	|
 |:------:|:------:|:---------:|:------:|:---:|
 |estimate	|mean_err	|0.49	|0.84	|0.62	|
@@ -105,7 +123,7 @@ python -m experiments.t2dv2 -e mean_err -o false --estimate True
 |exact	|mean_sqroot_err	|0.39	|0.81	|0.53	|
 
 
-## Raw
+### Raw
 |Quantile Prediction	|Error Function	|Precision	|Recall	|F1	|
 |:------:|:------:|:---------:|:------:|:---:|
 |estimate	|mean_err	|0.53	|0.85	|0.65	|
@@ -125,18 +143,18 @@ python -m experiments.t2dv2 -e mean_err -o false --estimate True
 
 -->
 
-## Number of data points vs performance score
-### Outlier Removal
+### Number of data points vs performance score
+#### Outlier Removal
 ![datapoints.svg](t2dv2-err-methods.svg)
 
-### Raw
+#### Raw
 ![datapoints.svg](t2dv2-err-methods-raw.svg)
 
-## Performance and Typology
+### Performance and Typology
 
-### Raw
+#### Raw
 
-#### estimate + mean_err + raw
+##### estimate + mean_err + raw
 
 ![](sub_kind-t2dv2-mean-err-estimate-raw.svg)
 
@@ -152,7 +170,7 @@ python -m experiments.t2dv2 -e mean_err -o false --estimate True
 
 
 
-#### estimate + mean_sq_err + raw
+##### estimate + mean_sq_err + raw
 
 ![](sub_kind-t2dv2-mean-sq-err-estimate-raw.svg)
 
@@ -166,7 +184,7 @@ python -m experiments.t2dv2 -e mean_err -o false --estimate True
 
 
 
-#### estimate + mean_sqroot_err + raw
+##### estimate + mean_sqroot_err + raw
 
 ![](sub_kind-t2dv2-mean-sqroot-err-estimate-raw.svg)
 
@@ -183,7 +201,7 @@ python -m experiments.t2dv2 -e mean_err -o false --estimate True
 
 
 
-#### exact + mean_err + raw
+##### exact + mean_err + raw
 
 ![](sub_kind-t2dv2-mean-err-exact-raw.svg)
 
@@ -199,7 +217,7 @@ python -m experiments.t2dv2 -e mean_err -o false --estimate True
 
 
 
- #### exact + mean_sq_err + raw
+ ##### exact + mean_sq_err + raw
 
 ![](sub_kind-t2dv2-mean-sq-err-exact-raw.svg)
 
@@ -216,7 +234,7 @@ python -m experiments.t2dv2 -e mean_err -o false --estimate True
 
 
 
- #### exact + mean_sqroot_err + raw
+ ##### exact + mean_sqroot_err + raw
 
 ![](sub_kind-t2dv2-mean-sqroot-err-exact-raw.svg)
 
@@ -229,9 +247,9 @@ python -m experiments.t2dv2 -e mean_err -o false --estimate True
 | ordinal | 0.33 | 1.00 | 0.50| 
 
 
-### Outlier Removal
+#### Outlier Removal
 
-#### estimate + mean_err + remove-outliers
+##### estimate + mean_err + remove-outliers
 
 ![](sub_kind-t2dv2-mean-err-estimate.svg)
 
@@ -245,7 +263,7 @@ python -m experiments.t2dv2 -e mean_err -o false --estimate True
 
 
 
- #### estimate + mean_sq_err + remove-outliers
+ ##### estimate + mean_sq_err + remove-outliers
 
 ![](sub_kind-t2dv2-mean-sq-err-estimate.svg)
 
@@ -260,7 +278,7 @@ python -m experiments.t2dv2 -e mean_err -o false --estimate True
 
 
 
- #### estimate + mean_sqroot_err + remove-outliers
+ ##### estimate + mean_sqroot_err + remove-outliers
 
 ![](sub_kind-t2dv2-mean-sqroot-err-estimate.svg)
 
@@ -275,7 +293,7 @@ python -m experiments.t2dv2 -e mean_err -o false --estimate True
 
 
 
- #### exact + mean_err + remove-outliers
+ ##### exact + mean_err + remove-outliers
 
 ![](sub_kind-t2dv2-mean-err-exact.svg)
 
@@ -289,7 +307,7 @@ python -m experiments.t2dv2 -e mean_err -o false --estimate True
 
 
 
- #### exact + mean_sq_err + remove-outliers
+ ##### exact + mean_sq_err + remove-outliers
 
 ![](sub_kind-t2dv2-mean-sq-err-exact.svg)
 
@@ -305,7 +323,7 @@ python -m experiments.t2dv2 -e mean_err -o false --estimate True
 
 
 
-#### exact + mean_sqroot_err + remove-outliers
+##### exact + mean_sqroot_err + remove-outliers
 
 
 ![](sub_kind-t2dv2-mean-sqroot-err-exact.svg)

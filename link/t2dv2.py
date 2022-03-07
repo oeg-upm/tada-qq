@@ -10,6 +10,8 @@ try:
 except:
     import common
 
+SHOW_LOGS = False
+
 if 't2dv2_dir' not in os.environ:
     print("ERROR: t2dv2_dir no in os.environ")
 
@@ -47,7 +49,7 @@ def get_class_property_groups(df):
             d[k] = v
 
         if prev_identified:
-            print("picking a prev-identified\t%s\t%d" % (prev_identified, idx))
+            # print("picking a prev-identified\t%s\t%d" % (prev_identified, idx))
             v = prev_identified
             for p in ps:
                 k = c + " " + p
@@ -56,7 +58,7 @@ def get_class_property_groups(df):
     return d, Counter(counts)
 
 
-def workflow(fetch_method, err_meth, err_cutoff):
+def clustering_workflow(fetch_method, err_meth, err_cutoff):
     df = pd.read_csv(meta_dir)
     df = df[df.property.notnull()]
     df = df[df["concept"].notnull()]
@@ -66,8 +68,8 @@ def workflow(fetch_method, err_meth, err_cutoff):
     groups = []
     for idx, row_and_i in enumerate(df.iterrows()):
         i, row = row_and_i
-        if idx >= 15:
-            break
+        # if idx >= 15:
+        #     break
         col = get_col(fname=row['filename']+".csv", colid=row['columnid'])
         ele = {
             'col_id': row['columnid'],
@@ -81,14 +83,24 @@ def workflow(fetch_method, err_meth, err_cutoff):
         common.column_group_matching(groups, ele, fetch_method, err_meth, err_cutoff)
 
     for idx, g in enumerate(groups):
-        print("\n\nGroup %d" % idx)
-        print("===========")
+        if SHOW_LOGS:
+            print("\n\nGroup %d" % idx)
+            print("===========")
         for ele in g:
             k = ele['concept']+" "+ele['property']
             ele['gs_clus'] = cp_groups[k]
-            print("%s\t%s" % (ele['fname'], ele['gs_clus']))
+            if SHOW_LOGS:
+                print("%s\t%s" % (ele['fname'], ele['gs_clus']))
 
-    common.evaluate(groups, counts)
+    return common.evaluate(groups, counts)
+
+
+def workflow(fetch_method, err_meth, err_cutoffs):
+    scores = dict()
+    for co in err_cutoffs:
+        scores[co] = clustering_workflow(fetch_method=fetch_method, err_meth=err_meth, err_cutoff=co)
+    if len(err_cutoffs) > 1:
+        common.generate_clus_diagram(scores)
 
 
 def parse_arguments():
@@ -99,17 +111,17 @@ def parse_arguments():
 
     parser.add_argument('-e', '--err-meths', default=["mean_err"], nargs="+",
                         help="Functions to computer errors.")
-    parser.add_argument('-c', '--cutoff', default=0.1,
+    parser.add_argument('-c', '--cutoffs', default=[0.1], nargs="+",
                         help="Error cutoff value.")
     args = parser.parse_args()
-    return args.err_meths, float(args.cutoff)
+    return args.err_meths, [float(co) for co in args.cutoffs]
 
 
 if __name__ == '__main__':
     a = datetime.now()
-    err_meths, cutoff = parse_arguments()
+    err_meths, cutoffs = parse_arguments()
     for err_m in err_meths:
-        workflow(fetch_method="max", err_meth=err_m, err_cutoff=cutoff)
+        workflow(fetch_method="max", err_meth=err_m, err_cutoffs=cutoffs)
     # ["mean_err", "mean_sq_err", "mean_sq1_err"]
     b = datetime.now()
     print("Time it took")
