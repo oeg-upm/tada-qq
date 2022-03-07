@@ -3,8 +3,12 @@ import os
 from collections import Counter
 from datetime import datetime
 import pandas as pd
-from qq.qqe import QQE
 from experiments.common import is_numeric_dtype, uri_to_fname
+
+try:
+    from link import common
+except:
+    import common
 
 if 't2dv2_dir' not in os.environ:
     print("ERROR: t2dv2_dir no in os.environ")
@@ -12,8 +16,6 @@ if 't2dv2_dir' not in os.environ:
 SPARQL_ENDPOINT = "https://en-dbpedia.oeg.fi.upm.es/sparql"
 data_dir = os.path.join(os.environ['t2dv2_dir'], 'csv')
 meta_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_typology.csv')
-
-SAVE_MEMORY = False
 
 
 def get_col(fname, colid):
@@ -29,75 +31,6 @@ def get_col(fname, colid):
     return col
 
 
-def column_group_matching(groups, ele, fetch_method, err_meth, err_cutoff):
-    """
-    Add column to one of the groups (or to a new group)
-    """
-    min_idx = None
-    min_err = 1
-    # print("ele col")
-    # print(list(ele["col"]))
-    qq = QQE(list(ele["col"]))
-    # print("groups: ")
-    # print(groups)
-    for idx, g in enumerate(groups):
-        if g:
-            print("group-> ")
-        else:
-            print("group None")
-            raise Exception("group is None")
-        # print(g)
-        top_ele = g[0]
-        if top_ele is None:
-            raise Exception("top_ele is None")
-        # print("top ele:")
-        # print(top_ele)
-        err = qq.predict_and_get_error(top_ele["col"], method=err_meth, remove_outliers=False)
-        if err < min_err:
-            min_idx = idx
-            min_err = err
-
-    if min_err < err_cutoff:
-        # print("cut off")
-        group = add_col_to_group(ele, groups[min_idx], fetch_method)
-        # print(group)
-        groups[min_idx] = group
-    else:
-        # print("new group")
-        groups.append([ele])
-    if groups[-1] is None:
-        print(ele)
-        raise Exception("Boo")
-
-
-def add_col_to_group(ele, group, fetch_method):
-    """
-    Add ele to group.
-    """
-    if fetch_method == "max":
-        if group[0]["num"] < ele["num"]:
-            group.append(group[0])
-            if SAVE_MEMORY:
-                group[-1]["col"] = []
-            group[0] = ele
-        else:
-            if SAVE_MEMORY:
-                ele["col"] = []
-            group.append(ele)
-    elif fetch_method == "min":
-        if group[0]["num"] > ele["num"]:
-            group.append(group[0])
-            group[-1]["col"] = []
-            group[0] = ele
-        else:
-            if SAVE_MEMORY:
-                ele["col"] = []
-            group.append(ele)
-    else:
-        raise Exception("unknown fetch method")
-    return group
-
-
 def get_class_property_groups(df):
     d = dict()
     counts = []
@@ -106,7 +39,6 @@ def get_class_property_groups(df):
         ps = row["property"].split(';')
         prev_identified = None
         v = "%s/%s" % (c, uri_to_fname(ps[0]).replace('-', ':'))
-        # v = "%d\t%s\t%s" % (idx, c, uri_to_fname(ps[0]).replace('-', ':'))
         for p in ps:
             k = c + " " + p
             if k in d:
@@ -124,53 +56,6 @@ def get_class_property_groups(df):
     return d, Counter(counts)
 
 
-def evaluate(groups, counts):
-    """
-    groups: [ [{}], [{}]]
-    counts: Counter of cluster values. Each value = "idx-concept-shot_property"
-    """
-    print("\n\nEVALUATE\n==============\n")
-    max_per_v = dict()
-    for idx, g in enumerate(groups):
-        vals = [ele['gs_clus'] for ele in g]
-        c = Counter(vals)
-        for k in c:
-            prec = c[k] / len(vals)
-            if k in max_per_v:
-                if (c[k] > max_per_v[k]['num']) or (c[k] == max_per_v[k]['num'] and prec > max_per_v[k]['prec']):
-                    max_per_v[k] = {
-                        'num': c[k],
-                        'prec': prec,
-                        'clus_id': idx
-                    }
-            else:
-                max_per_v[k] = {
-                    'num': c[k],
-                    'prec': prec,
-                    'clus_id': idx
-                }
-
-        # clus = c.keys()[0]
-        # scores[clus]
-    scores = dict()
-    precs = []
-    recs = []
-    f1s = []
-    print("{:<35} {:<5} {:<5} {:<5} {:<5}".format("name", "prec", "rec", "f1", "clus"))
-    for k in max_per_v:
-        prec = max_per_v[k]['prec']
-        rec = max_per_v[k]['num'] / counts[k]
-        f1 = 2 * prec * rec / (prec + rec)
-        scores[k] = {'prec': prec, 'rec': rec, 'f1': f1}
-        precs.append(prec)
-        recs.append(rec)
-        f1s.append(f1)
-        print("{:<35} {:<5} {:<5} {:<5} {:<5}".format(k, round(prec, 3), round(rec, 3), round(f1, 3), max_per_v[k]['clus_id']))
-    p, r, f = sum(precs)/len(precs), sum(recs)/len(recs), sum(f1s)/len(f1s)
-    print("Average: Precision (%.3f), Recall (%.3f), F1 (%.3f)" % (p, r, f))
-    return p, r, f
-
-
 def workflow(fetch_method, err_meth, err_cutoff):
     df = pd.read_csv(meta_dir)
     df = df[df.property.notnull()]
@@ -178,13 +63,11 @@ def workflow(fetch_method, err_meth, err_cutoff):
     df = df[df["pconcept"].notnull()]
     df = df[df["loose"] != "yes"]
     cp_groups, counts = get_class_property_groups(df)
-    # fetch_method = "max"
     groups = []
     for idx, row_and_i in enumerate(df.iterrows()):
         i, row = row_and_i
         if idx >= 15:
             break
-        # print(row)
         col = get_col(fname=row['filename']+".csv", colid=row['columnid'])
         ele = {
             'col_id': row['columnid'],
@@ -195,12 +78,7 @@ def workflow(fetch_method, err_meth, err_cutoff):
             'property': row['property'].split(';')[0]
         }
 
-        column_group_matching(groups, ele, fetch_method, err_meth, err_cutoff)
-        # if idx >= 7:
-        #     print("col %d: " % idx)
-        #     print(ele)
-        #     print("groups: ")
-        #     print(groups[-1])
+        common.column_group_matching(groups, ele, fetch_method, err_meth, err_cutoff)
 
     for idx, g in enumerate(groups):
         print("\n\nGroup %d" % idx)
@@ -210,7 +88,7 @@ def workflow(fetch_method, err_meth, err_cutoff):
             ele['gs_clus'] = cp_groups[k]
             print("%s\t%s" % (ele['fname'], ele['gs_clus']))
 
-    evaluate(groups, counts)
+    common.evaluate(groups, counts)
 
 
 def parse_arguments():
