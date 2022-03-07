@@ -105,7 +105,8 @@ def get_class_property_groups(df):
         c = row["concept"]
         ps = row["property"].split(';')
         prev_identified = None
-        v = "%d-%s-%s" % (idx, c, uri_to_fname(ps[0]))
+        v = "%s/%s" % (c, uri_to_fname(ps[0]).replace('-', ':'))
+        # v = "%d\t%s\t%s" % (idx, c, uri_to_fname(ps[0]).replace('-', ':'))
         for p in ps:
             k = c + " " + p
             if k in d:
@@ -126,13 +127,48 @@ def get_class_property_groups(df):
 def evaluate(groups, counts):
     """
     groups: [ [{}], [{}]]
+    counts: Counter of cluster values. Each value = "idx-concept-shot_property"
     """
+    print("\n\nEVALUATE\n==============\n")
+    max_per_v = dict()
+    for idx, g in enumerate(groups):
+        vals = [ele['gs_clus'] for ele in g]
+        c = Counter(vals)
+        for k in c:
+            prec = c[k] / len(vals)
+            if k in max_per_v:
+                if (c[k] > max_per_v[k]['num']) or (c[k] == max_per_v[k]['num'] and prec > max_per_v[k]['prec']):
+                    max_per_v[k] = {
+                        'num': c[k],
+                        'prec': prec,
+                        'clus_id': idx
+                    }
+            else:
+                max_per_v[k] = {
+                    'num': c[k],
+                    'prec': prec,
+                    'clus_id': idx
+                }
+
+        # clus = c.keys()[0]
+        # scores[clus]
     scores = dict()
-    for g in groups:
-        cluses = [ele['gs_clus'] for ele in g]
-        c = Counter(cluses)
-        clus = c.keys()[0]
-        scores[clus]
+    precs = []
+    recs = []
+    f1s = []
+    print("{:<35} {:<5} {:<5} {:<5} {:<5}".format("name", "prec", "rec", "f1", "clus"))
+    for k in max_per_v:
+        prec = max_per_v[k]['prec']
+        rec = max_per_v[k]['num'] / counts[k]
+        f1 = 2 * prec * rec / (prec + rec)
+        scores[k] = {'prec': prec, 'rec': rec, 'f1': f1}
+        precs.append(prec)
+        recs.append(rec)
+        f1s.append(f1)
+        print("{:<35} {:<5} {:<5} {:<5} {:<5}".format(k, round(prec, 3), round(rec, 3), round(f1, 3), max_per_v[k]['clus_id']))
+    p, r, f = sum(precs)/len(precs), sum(recs)/len(recs), sum(f1s)/len(f1s)
+    print("Average: Precision (%.3f), Recall (%.3f), F1 (%.3f)" % (p, r, f))
+    return p, r, f
 
 
 def workflow(fetch_method, err_meth, err_cutoff):
@@ -146,8 +182,8 @@ def workflow(fetch_method, err_meth, err_cutoff):
     groups = []
     for idx, row_and_i in enumerate(df.iterrows()):
         i, row = row_and_i
-        # if idx >= 15:
-        #     break
+        if idx >= 15:
+            break
         # print(row)
         col = get_col(fname=row['filename']+".csv", colid=row['columnid'])
         ele = {
@@ -173,6 +209,8 @@ def workflow(fetch_method, err_meth, err_cutoff):
             k = ele['concept']+" "+ele['property']
             ele['gs_clus'] = cp_groups[k]
             print("%s\t%s" % (ele['fname'], ele['gs_clus']))
+
+    evaluate(groups, counts)
 
 
 def parse_arguments():
