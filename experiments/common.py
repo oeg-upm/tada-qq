@@ -241,6 +241,8 @@ def get_columns_data(fdir, ids):
     :param fdir:
     :return: list of the pair (colid, list)
     """
+    # print("fdir: ")
+    # print(fdir)
     df = pd.read_csv(fdir, thousands=',')
     numeric_cols = []
     for colid, col in enumerate(df):

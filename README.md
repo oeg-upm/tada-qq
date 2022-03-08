@@ -52,26 +52,27 @@ script.
 The application expects to have a folder named `csv` inside the T2Dv2 which includes the files in csv format. You can use the script `scripts/json_to_csv.py` to do that.
 
 
-## Experiments
+## Clustering Experiments
 
-### Clustering
 Matching similar columns. The main differences between the clustering and the semantic labelling are:
 1. Clustering does not add an annotation to the cluster.
 2. The clustering does not use the knowledge graph.
 3. The clustering does not take into account the subject class/type.
 
-#### Results - T2Dv2
-
-![](results/clustering/t2dv2.svg)
-
-#### T2Dv2
 The command used: 
 ```
 python -m link.t2dv2 -c 0.02 0.04 0.06 0.08 0.1 0.12 0.14 0.16 0.18 0.2
 ```
 
-### Semantic labelling
-#### Olympic Games
+### Clustering Results - T2Dv2
+
+![](results/clustering/t2dv2.svg)
+
+
+
+## Semantic labelling
+### Olympic Games
+Command used:
 ```
 python -m experiments.olympic
 ```

@@ -37,10 +37,12 @@ def annotate_olympic_games(endpoint, remove_outliers, meta_dir):
             uris = atts[3].split(';')
             trans_uris = [uri_to_fname(uri) for uri in uris]
             fdir = os.path.join(olympic_games_data_dir, fname)
+            print("fdir: ")
+            print(fdir)
             preds = annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers, endpoint=endpoint,
                           data_dir=data_dir, min_objs=MIN_NUM_OBJ, cols=[col_id])
             for c in preds:
-                res = eval_column(preds[c], correct_uris=trans_uris)
+                res = eval_column(preds[c], correct_uris=trans_uris, fdir=fdir, col_id=col_id)
                 eval_data.append(res)
                 if not res:
                     print(preds)
