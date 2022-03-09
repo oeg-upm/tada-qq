@@ -76,6 +76,26 @@ Command used:
 ```
 python -m experiments.olympic
 ```
+
+#### Results
+
+|  remove outlier |  estimate |    error method | Precision |    Recall |    F1 |
+|:---------------:|:---------:|:---------------:|:---------:|:---------:|:-----:|
+|            True |  estimate |        mean_err |      0.88 |      1.00 |  0.93 |
+|            True |  estimate |     mean_sq_err |      0.88 |      1.00 |  0.93 |
+|            True |  estimate | mean_sqroot_err |      0.88 |      1.00 |  0.93 |
+|            True |     exact |        mean_err |      0.88 |      1.00 |  0.93 |
+|            True |     exact |     mean_sq_err |      0.88 |      1.00 |  0.93 |
+|            True |     exact | mean_sqroot_err |      0.88 |      1.00 |  0.93 |
+|           False |  estimate |        mean_err |      0.83 |      1.00 |  0.91 |
+|           False |  estimate |     mean_sq_err |      0.83 |      1.00 |  0.91 |
+|           False |  estimate | mean_sqroot_err |      0.88 |      1.00 |  0.93 |
+|           False |     exact |        mean_err |      0.83 |      1.00 |  0.91 |
+|           False |     exact |     mean_sq_err |      0.88 |      1.00 |  0.93 |
+|           False |     exact | mean_sqroot_err |      0.79 |      1.00 |  0.88 |
+
+
+
 #### T2Dv2
 
 Arguments
