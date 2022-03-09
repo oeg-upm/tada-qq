@@ -324,9 +324,6 @@ def eval_column(p_errs, correct_uris=[], diff_diagram=None, class_uri=None, col_
     for idx, item in enumerate(p_errs):
         trans_uri = item[1].split('/')[-1][:-4]
         trans_uri = uri_to_fname(trans_uri)
-        # if idx < 3:
-        #     logger.info("%d err: %.2f - %s - %s" % (idx+1, item[0], item[1], property_dir_to_uri(item[1])[1]))
-        #     # logger.info(str(idx+1)+" err: "+str(item[0]) + "  - " + item[1] + " - "+property_dir_to_uri(item[1])[1])
         if trans_uri in correct_uris:
             k = idx + 1
             if PRINT_DIFF:
@@ -347,7 +344,6 @@ def eval_column(p_errs, correct_uris=[], diff_diagram=None, class_uri=None, col_
                     print("Correct uris: %s \t" % str(correct_uris))
             if PRINT_DIFF:
                 print("%d err: %.2f - <%s> - <%s>" % (idx+1, item[0], trans_uri, property_dir_to_uri(item[1])[1]))
-            # logger.info("%d err: %.2f - <%s> - <%s>" % (idx+1, item[0], item[1], property_dir_to_uri(item[1])[1]))
         else:
             k = 999
             data = get_columns_data(fdir, [col_id])[0][1]
@@ -408,8 +404,8 @@ def compute_scores_per_key(eval_pp, fname=None, print_scores=False):
     }
     """
     lines = []
-    print("\n\n|Key | Precision | Recall | F1 |")
-    print("|:-----:|:-----:|:-----:|:-----:|")
+    print("\n\n| %15s | %15s | %15s | %5s |" % ("Key", "Precision", "Recall", "F1"))
+    print("|:%s:|:%s:|:%s:|:%s:|" % ("-"*15,"-"*15,"-"*15,"-"*5,))
     for p in eval_pp:
         prec, rec, f1 = compute_scores(eval_pp[p])
         lines.append([p, 'prec', prec])
@@ -418,7 +414,7 @@ def compute_scores_per_key(eval_pp, fname=None, print_scores=False):
         # if PRINT_DIFF:
         #     print("%s: \n\t%f1.2\t%f1.2\t%f1.2" % (p, prec, rec, f1))
         if print_scores:
-            print("| %s | %.2f | %.2f | %.2f| " % (p, prec, rec, f1))
+            print("| %15s | %15.2f | %15.2f | %5.2f| " % (p, prec, rec, f1))
 
     if fname:
         generate_diagram(lines, fname)
@@ -734,6 +730,19 @@ def compute_counts_per_err_meth(scores_dict, fname):
     #     plt.text(nr, row['accuracy'], row['ncols'])
 
     ax.figure.savefig('%s.svg' % fname, bbox_inches="tight")
-    plt.show()
+    # plt.show()
     ax.figure.clf()
 
+
+def print_md_scores(scores):
+    print("\n\n| %15s | %9s | %15s | %9s | %9s | %5s |" % (
+    "remove outlier", "estimate", "error method", "Precision", "Recall", "F1"))
+    print("|:%s:|:%s:|:%s:|:%s:|:%s:|:%s:|" % ("-" * 15, "-" * 9, "-" * 15, "-" * 9, "-" * 9, "-" * 5))
+    for sc in scores:
+        ro, est, err_meth, prec, rec, f1 = sc['ro'], sc['est'], sc['err_meth'], sc['prec'], sc['rec'], sc['f1']
+        if est:
+            est_txt = "estimate"
+        else:
+            est_txt = "exact"
+        ro_txt = str(ro)
+        print("| %15s | %9s | %15s | %9.2f | %9.2f | %5.2f |" % (ro_txt, est_txt, err_meth, prec, rec, f1))

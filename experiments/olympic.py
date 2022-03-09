@@ -2,7 +2,7 @@ import os
 import logging
 from datetime import datetime
 from experiments import common
-from experiments.common import annotate_file, eval_column, compute_scores
+from experiments.common import annotate_file, eval_column, compute_scores, print_md_scores
 import pandas as pd
 from pandas.api.types import is_numeric_dtype
 from easysparql import easysparql
@@ -63,26 +63,35 @@ def annotate_olympic_games(endpoint, remove_outliers, meta_dir, err_meth, estima
 if __name__ == '__main__':
     a = datetime.now()
     common.PRINT_DIFF = SHOW_LOGS
-    print("\n\n| %15s | %9s | %15s | %9s | %9s | %5s |" % (
-    "remove outlier", "estimate", "error method", "Precision", "Recall", "F1"))
-    print("|:%s:|:%s:|:%s:|:%s:|:%s:|:%s:|" % ("-" * 15, "-" * 9, "-" * 15, "-" * 9, "-" * 9, "-" * 5))
+    # print("\n\n| %15s | %9s | %15s | %9s | %9s | %5s |" % (
+    # "remove outlier", "estimate", "error method", "Precision", "Recall", "F1"))
+    # print("|:%s:|:%s:|:%s:|:%s:|:%s:|:%s:|" % ("-" * 15, "-" * 9, "-" * 15, "-" * 9, "-" * 9, "-" * 5))
+    scores = []
     for ro in [True, False]:
-        ro_txt = str(ro)
+        # ro_txt = str(ro)
         for est in [True, False]:
-            if est:
-                est_txt = "estimate"
-            else:
-                est_txt = "exact"
+            # if est:
+            #     est_txt = "estimate"
+            # else:
+            #     est_txt = "exact"
             for err_meth in ["mean_err", "mean_sq_err", "mean_sqroot_err"]:
                 prec, rec, f1 = annotate_olympic_games(endpoint='https://en-dbpedia.oeg.fi.upm.es/sparql',
                                                        remove_outliers=ro,
                                                        meta_dir="experiments/olympic_meta.csv", estimate=est,
                                                        err_meth=err_meth)
-                print("| %15s | %9s | %15s | %9.2f | %9.2f | %5.2f |" % (ro_txt, est_txt, err_meth, prec, rec, f1))
+                score = {
+                    'ro': ro,
+                    'est': est,
+                    'err_meth': err_meth,
+                    'prec': prec,
+                    'rec': rec,
+                    'f1': f1
+                }
+                scores.append(score)
+                # print("| %15s | %9s | %15s | %9.2f | %9.2f | %5.2f |" % (ro_txt, est_txt, err_meth, prec, rec, f1))
 
     b = datetime.now()
-
+    print_md_scores(scores)
     print("\n\nTime it took: %f.1 seconds\n\n" % (b - a).total_seconds())
-    # print(b - a)
-    # print("")
-    # print((b - a).total_seconds() / 60.0)
+    # print("\n\nTime it took: %f.1 minutes\n\n" % (b - a).total_seconds() / 60.0)
+

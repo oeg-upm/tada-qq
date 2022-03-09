@@ -96,7 +96,7 @@ python -m experiments.olympic
 
 
 
-#### T2Dv2
+### T2Dv2
 
 Arguments
 ```
@@ -109,68 +109,45 @@ optional arguments:
 ```
 
 Used:
-
-<!--
-```
-python -m experiments.t2dv2 -e mean_err -o true
-```
-
-```
-python -m experiments.t2dv2 -e mean_sq_err -o true
-```
-
-
+1. with outlier removal
 ```
 python -m experiments.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o true --estimate True False
 ```
-
+2. with outliers kept
 ```
-python -m experiments.t2dv2 -e mean_err -o false --estimate True
+python -m experiments.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --estimate True False
 ```
--->
 
-## Semantic Labelling Results - T2Dv2
+#### Results
 
-### Comparison of both
+##### Performance for the different parameters
 
-### Remove Outliers
-|Quantile Prediction	|Error Function	|Precision	|Recall	|F1	|
-|:------:|:------:|:---------:|:------:|:---:|
-|estimate	|mean_err	|0.49	|0.84	|0.62	|
-|estimate	|mean_sq_err	|0.50	|0.84	|0.63	|
-|estimate	|mean_sqroot_err	|0.51	|0.85	|0.64	|
-|exact	|mean_err	|0.45	|0.83	|0.58	|
-|exact	|mean_sq_err	|0.49	|0.84	|0.62	|
-|exact	|mean_sqroot_err	|0.39	|0.81	|0.53	|
-
-
-### Raw
-|Quantile Prediction	|Error Function	|Precision	|Recall	|F1	|
-|:------:|:------:|:---------:|:------:|:---:|
-|estimate	|mean_err	|0.53	|0.85	|0.65	|
-|estimate	|mean_sq_err	|0.53	|0.85	|0.65	|
-|estimate	|mean_sqroot_err	|0.53	|0.85	|0.65	|
-|exact	|mean_err	|0.53	|0.85	|0.65	|
-|exact	|mean_sq_err	|0.53	|0.85	|0.65	|
-|exact	|mean_sqroot_err	|0.50	|0.84	|0.63	|
+|  remove outlier |  estimate |    error method | Precision |    Recall |    F1 |
+|:---------------:|:---------:|:---------------:|:---------:|:---------:|:-----:|
+|            True |  estimate |        mean_err |      0.49 |      0.84 |  0.62 |
+|            True |  estimate |     mean_sq_err |      0.50 |      0.84 |  0.63 |
+|            True |  estimate | mean_sqroot_err |      0.51 |      0.85 |  0.64 |
+|            True |     exact |        mean_err |      0.45 |      0.83 |  0.58 |
+|            True |     exact |     mean_sq_err |      0.49 |      0.84 |  0.62 |
+|            True |     exact | mean_sqroot_err |      0.39 |      0.81 |  0.53 |
+|           False |  estimate |        mean_err |      0.53 |      0.85 |  0.65 |
+|           False |  estimate |     mean_sq_err |      0.53 |      0.85 |  0.65 |
+|           False |  estimate | mean_sqroot_err |      0.53 |      0.85 |  0.65 |
+|           False |     exact |        mean_err |      0.53 |      0.85 |  0.65 |
+|           False |     exact |     mean_sq_err |      0.53 |      0.85 |  0.65 |
+|           False |     exact | mean_sqroot_err |      0.50 |      0.84 |  0.63 |
 
 
-<!--
-## Diffs between the gold standard and predicted properties
-
-[using mean error](experiments/diffs/t2dv2-mean-err)
-
-[using square mean error](experiments/diffs/t2dv2-mean-sq-err)
-
--->
 
 ### Number of data points vs performance score
+
 #### Outlier Removal
-![datapoints.svg](t2dv2-err-methods.svg)
+![datapoints.svg](results/slabelling/t2dv2-err-methods.svg)
 
 #### Raw
-![datapoints.svg](t2dv2-err-methods-raw.svg)
+![datapoints.svg](results/slabelling/t2dv2-err-methods-raw.svg)
 
+<!--
 ### Performance and Typology
 
 #### Raw
@@ -356,3 +333,5 @@ python -m experiments.t2dv2 -e mean_err -o false --estimate True
 | year | 0.81 | 0.71 | 0.76| 
 | random | 0.33 | 1.00 | 0.50| 
 | ordinal | 0.33 | 1.00 | 0.50| 
+
+-->
