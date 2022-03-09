@@ -139,13 +139,68 @@ python -m experiments.t2dv2 -e mean_err mean_sq_err mean_sqroot_err -o false --e
 
 
 
-### Number of data points vs performance score
+### Number of data points vs performance score per evaluation method
 
 #### Outlier Removal
 ![datapoints.svg](results/slabelling/t2dv2-err-methods.svg)
 
 #### Raw
 ![datapoints.svg](results/slabelling/t2dv2-err-methods-raw.svg)
+
+### Number of data points and performance of different metrics
+
+#### mean error
+mean error + estimate + raw
+
+![](results/slabelling/datapoints-t2dv2-mean-err-estimate-raw.svg)
+
+mean error + estimate + outlier removed
+
+![](results/slabelling/datapoints-t2dv2-mean-err-estimate.svg)
+
+mean error + exact + raw
+
+![](results/slabelling/datapoints-t2dv2-mean-err-exact-raw.svg)
+
+mean error + exact + outlier removed
+
+![](results/slabelling/datapoints-t2dv2-mean-err-exact.svg)
+
+#### mean square error
+
+mean square error + estimate + raw
+
+![](results/slabelling/datapoints-t2dv2-mean-sq-err-estimate-raw.svg)
+
+mean square error + estimate + outlier removed
+
+![](results/slabelling/datapoints-t2dv2-mean-sq-err-estimate.svg)
+
+mean square error + exact + raw
+
+![](results/slabelling/datapoints-t2dv2-mean-sq-err-exact-raw.svg)
+
+mean square error + exact + outlier removed
+
+![](results/slabelling/datapoints-t2dv2-mean-sq-err-exact.svg)
+
+#### mean square root 
+
+mean square root + estimate + raw
+
+![](results/slabelling/datapoints-t2dv2-mean-sqroot-err-estimate-raw.svg)
+
+mean square root + estimate + outlier removed
+
+![](results/slabelling/datapoints-t2dv2-mean-sqroot-err-estimate.svg)
+
+mean square root + exact + raw
+
+![](results/slabelling/datapoints-t2dv2-mean-sqroot-err-exact-raw.svg)
+
+mean square root + exact + outlier removed
+
+![](results/slabelling/datapoints-t2dv2-mean-sqroot-err-exact.svg)
 
 <!--
 ### Performance and Typology
