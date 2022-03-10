@@ -60,6 +60,7 @@ blocks:
       jobs:
         - name: install dependencies
           commands:
+            - checkout
             - cache restore
             - pip download --cache-dir .pip_cache -r requirements.txt
             - cache store
