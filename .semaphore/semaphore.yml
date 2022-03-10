@@ -62,5 +62,5 @@ blocks:
           commands:
             - checkout
             - cache restore
-            - pip download --cache-dir .pip_cache -r requirements.txt
+            - python3 -m pip download --cache-dir .pip_cache -r requirements.txt
             - cache store
