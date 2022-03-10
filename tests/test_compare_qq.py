@@ -3,7 +3,7 @@ import os
 import numpy as np
 from qq.qqe import QQE
 from experiments.common import annotate_file, eval_column, uri_to_fname
-from experiments.t2dv2 import SPARQL_ENDPOINT, data_dir, meta_dir, properties_dir, MIN_NUM_OBJ
+from experiments.t2dv2 import SPARQL_ENDPOINT, MIN_NUM_OBJ
 
 
 class CompareQQ(unittest.TestCase):
@@ -16,6 +16,7 @@ class CompareQQ(unittest.TestCase):
         remove_outliers = True
         err_meth = "mean_sq_err"
         # err_meth = "mean_err"
+        data_dir = os.path.join('tests', 'test_files')
         fdir = os.path.join(data_dir, fname)+".csv"
         preds = annotate_file(fdir=fdir, class_uri=class_uri, remove_outliers=remove_outliers,
                               endpoint=SPARQL_ENDPOINT, data_dir="local_data", min_objs=MIN_NUM_OBJ,

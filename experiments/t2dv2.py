@@ -8,13 +8,8 @@ from experiments.common import annotate_file, eval_column, compute_scores, uri_t
 from experiments.common import get_num_rows, compute_counts, compute_counts_per_err_meth, print_md_scores
 import pandas as pd
 
-if 't2dv2_dir' not in os.environ:
-    print("ERROR: t2dv2_dir no in os.environ")
 
 SPARQL_ENDPOINT = "https://en-dbpedia.oeg.fi.upm.es/sparql"
-data_dir = os.path.join(os.environ['t2dv2_dir'], 'csv')
-meta_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_typology.csv')
-properties_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_properties.csv')
 # The minimum number of objects for a numeric property
 MIN_NUM_OBJ = 30
 SHOW_LOGS = False
@@ -164,6 +159,14 @@ def parse_arguments():
 
 
 if __name__ == '__main__':
+
+    if 't2dv2_dir' not in os.environ:
+        print("ERROR: t2dv2_dir no in os.environ")
+
+    data_dir = os.path.join(os.environ['t2dv2_dir'], 'csv')
+    meta_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_typology.csv')
+    properties_dir = os.path.join(os.environ['t2dv2_dir'], 'T2Dv2_properties.csv')
+
     common.PRINT_DIFF = SHOW_LOGS
     a = datetime.now()
     err_meths, outlier_removal, loose, estimate, diffs = parse_arguments()
