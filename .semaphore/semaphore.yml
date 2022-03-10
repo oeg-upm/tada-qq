@@ -20,6 +20,7 @@ blocks:
         - name: unittest
           commands:
             - sem-version python $PYTHON_VERSION
+            - cache restore
             - python3 -m pip install --cache-dir .pip_cache -r requirements.txt
             - sh scripts/run_tests.sh
           matrix:
@@ -29,6 +30,8 @@ blocks:
                 - '3.7'
                 - '3.8'
       env_vars: []
+    dependencies:
+      - pip
   - name: Coverage
     task:
       prologue:
@@ -49,3 +52,14 @@ blocks:
             - 'bash <(curl -s https://codecov.io/bash)'
       secrets:
         - name: tada-qq
+    dependencies:
+      - Automated Tests
+  - name: pip
+    dependencies: []
+    task:
+      jobs:
+        - name: install dependencies
+          commands:
+            - cache restore
+            - pip download --cache-dir .pip_cache -r requirements.txt
+            - cache store
