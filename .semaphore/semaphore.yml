@@ -21,7 +21,7 @@ blocks:
           commands:
             - sem-version python $PYTHON_VERSION
             - cache restore
-            - pip3 install -r requirements.txt
+            - pip3 install -r requirements.txt --cache-dir .pip_cache
             - sh scripts/run_tests.sh
           matrix:
             - env_var: PYTHON_VERSION
