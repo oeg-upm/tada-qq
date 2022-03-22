@@ -39,13 +39,10 @@ class QQE:
         if len(column) < 1:
             return []
         clean_column = []
-        # print("remove_outliers> column")
-        # print(column)
         q1 = np.percentile(column, 25)
         q3 = np.percentile(column, 75)
         # k = 1.5
         k = 2
-        # [Q1 - k(Q3 - Q1), Q3 + k(Q3 - Q1)]
         lower_bound = q1 - k * (q3 - q1)
         upper_bound = q3 + k * (q3 - q1)
         for c in column:
@@ -59,8 +56,6 @@ class QQE:
         Return: list
             data without duplicates
         """
-        # print("remove duplicates: ")
-        # print(data)
         return list(set(data))
 
     def _estimate_base_quantiles(self, sorted_data):
@@ -70,12 +65,9 @@ class QQE:
         """
         n = len(sorted_data) * 1.0
         eq = []  # estimated quantiles
-        # print("Estimated base: ")
         for i0, d in enumerate(sorted_data):
             i = i0 + 1  # as the formula starts from i = 1
             q = (i - 0.5) / n
-            # print("x = %2.2f    y = %2.2f   " % (d, q))
-            #print(q)
             eq.append(q)
         return eq
 
@@ -86,12 +78,9 @@ class QQE:
         """
         n = len(sorted_data)-1 * 1.0
         eq = []  # exact quantiles
-        # print("Estimated base: ")
         for i0, d in enumerate(sorted_data):
             i = i0  # as the formula starts from i = 1
             q = i / n
-            # print("x = %2.2f    y = %2.2f   " % (d, q))
-            # print(q)
             eq.append(q)
         return eq
 
@@ -103,14 +92,9 @@ class QQE:
             of the predicted quantiles
         """
         predicted_quantiles = []
-        # print("estimate_sample_quantiles> data: ")
-        # print(data)
         clean_data = self._remove_duplicates(data)
-        # print("\nPredicted quantiles: ")
         for d in sorted(clean_data):
             y = self.estimate_datum_quantile(d)
-            # print("x = %2.2f    y = %2.2f" % (d, y))
-            # print(y)
             predicted_quantiles.append(y)
         return predicted_quantiles
 
@@ -137,10 +121,6 @@ class QQE:
             for i, d in enumerate(self.sample_base[1:]):
                 if data_point <= d:
                     # # Changed i+1 to i on the 30-8-2021
-                    # # m = self.ms[i+1]
-                    # # b = self.bs[i+1]
-                    # m = self.ms[i]
-                    # b = self.bs[i]
                     # Changed i to i+1 on the 18-1-2021
                     m = self.ms[i+1]
                     b = self.bs[i+1]
@@ -176,12 +156,8 @@ class QQE:
         :param quantiles:
         :return:
         """
-        # data_quantile_pairs = zip(sample_data, quantiles)
-        # m = quantiles[0]/sample_data[0]
         m = 0
         ms = [m, ]
-        # print("\nslopes: ")
-        # ms = []
         for i in range(0, len(sample_data)-1):
             x1 = sample_data[i]
             x2 = sample_data[i+1]
@@ -189,19 +165,14 @@ class QQE:
             y2 = quantiles[i+1]
             dx = (x2 - x1)
             dy = (y2 - y1)
-            #m = (y2 - y1) / (x2 - x1)
             if dx == 0:
-                # logger.error("error: "+str(x2))
                 print("Error: Duplicate value %s " % str(x2))
                 m = (y2 - y1) / (x2 - x1)
             else:
                 m = dy / dx
-            # print("m = %2.2f    x1 = %2.2f   x2 = %2.2f  y1 = %2.2f  y2 = %2.2f" % (m, x1, x2, y1, y2))
-            # print(m)
             ms.append(m)
         ms.append(0)
 
-        # ms = [ms[0]]+ms
         return ms
 
     def _compute_bs(self, sample_data, quantiles, slopes):
@@ -224,8 +195,6 @@ class QQE:
 
     def compute_normalized_mean_of_error(self, predicted_quantiles):
         y = predicted_quantiles
-        # print("compute_normalized_mean_of_error> Predicted quantiles: ")
-        # print(y)
         x = self.get_adjusted_base_quantiles(len(predicted_quantiles))
         err = errors_mean(y, x)
         return err
@@ -275,50 +244,3 @@ class QQE:
             raise Exception("unknown method")
         return err
 
-    # def predict_and_get_mean_error(self, sample, remove_outliers=True):
-    #     """
-    #     sample: list of data points
-    #     remove_outliers: bool whether to outliers are to be removed
-    #
-    #     Return:
-    #             return the mean of error
-    #     """
-    #     if remove_outliers:
-    #         clean_sample = self.remove_outliers(sample)
-    #     else:
-    #         clean_sample = sample
-    #
-    #     predicted_quantiles = self.estimate_sample_quantiles(clean_sample)
-    #     print("in predict_and_get_mean_error> ")
-    #     print(predicted_quantiles)
-    #     return self.compute_normalized_mean_of_error(predicted_quantiles)
-    #
-    # def predict_and_get_mean_sq_error(self, sample, remove_outliers=True):
-    #     """
-    #     sample: list of data points
-    #     remove_outliers: bool whether to outliers are to be removed
-    #
-    #     Return:
-    #             return the mean of error
-    #     """
-    #     if remove_outliers:
-    #         clean_sample = self.remove_outliers(sample)
-    #     else:
-    #         clean_sample = sample
-    #     predicted_quantiles = self.estimate_sample_quantiles(clean_sample)
-    #     return self.compute_normalized_mean_of_sq_error(predicted_quantiles)
-    #
-    # def predict_and_get_mean_sq1_error(self, sample, remove_outliers=True):
-    #     """
-    #     sample: list of data points
-    #     remove_outliers: bool whether to outliers are to be removed
-    #
-    #     Return:
-    #             return the mean of error
-    #     """
-    #     if remove_outliers:
-    #         clean_sample = self.remove_outliers(sample)
-    #     else:
-    #         clean_sample = sample
-    #     predicted_quantiles = self.estimate_sample_quantiles(clean_sample)
-    #     return self.compute_normalized_mean_of_sq1_error(predicted_quantiles)

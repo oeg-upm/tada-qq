@@ -2,3 +2,7 @@
 omit =
     .venv/*
     venv/*
+    tests/*
+
+[report]
+show_missing = True

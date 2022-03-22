@@ -1,0 +1,1 @@
+from .slabel import SLabel
