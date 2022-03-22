@@ -63,7 +63,8 @@ class SLabel:
         if os.path.exists(class_dir):
             return
         util.create_dir(class_dir)
-
+        print("prop query: ")
+        print(prop_query)
         results = self.esparql.run_query(prop_query)
         properties = [r['p']['value'] for r in results]
 
