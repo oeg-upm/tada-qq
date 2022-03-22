@@ -28,7 +28,7 @@ class SLabel:
         if not logger:
             logger = get_logger(__name__, level=logging.INFO)
         self.logger = logger
-        if not endpoint:
+        if endpoint:
             self.esparql.endpoint = endpoint
         self.offline_data_dir = offline_data_dir
         self.min_num_objs = min_num_objs
