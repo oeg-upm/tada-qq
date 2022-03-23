@@ -1,11 +1,12 @@
 import unittest
 import os
 import numpy as np
-from qq.qqe import QQE
-from slabel import util
-from slabel.slabel import SLabel
+from tadaqq.qq.qqe import QQE
+from tadaqq.slabel import util
+from tadaqq.slabel.slabel import SLabel
 
 SPARQL_ENDPOINT = "https://en-dbpedia.oeg.fi.upm.es/sparql"
+
 
 class CompareQQ(unittest.TestCase):
 

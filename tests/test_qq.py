@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from qq.qqe import QQE
+from tadaqq.qq.qqe import QQE
 
 
 class QQTest(unittest.TestCase):

@@ -1,7 +1,4 @@
-try:
-    from qq.util import errors_mean, errors_sq_mean, errors_sqroot_mean
-except:
-    from util import errors_mean, errors_sq_mean, errors_sqroot_mean
+from tadaqq.qq.util import errors_mean, errors_sq_mean, errors_sqroot_mean
 import numpy as np
 
 

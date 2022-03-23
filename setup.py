@@ -13,7 +13,7 @@ with open("README.md") as f:
 # This call to setup() does all the work
 setup(
     name="tada-qq",
-    version="2.0.1",
+    version="2.0.2",
     description="Quantile Quantile Plot with Linear Approximation and Semantic Labelling of Numeric Columns",
     long_description=README,
     long_description_content_type="text/markdown",

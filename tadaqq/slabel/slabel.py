@@ -1,9 +1,9 @@
 import os
 import logging
 from easysparql import easysparqlclass
-from slabel import util
-from qq.qqe import QQE
-from qq.util import get_data
+from tadaqq.slabel import util
+from tadaqq.qq.qqe import QQE
+from tadaqq.qq.util import get_data
 
 import pcake
 
