@@ -29,10 +29,5 @@ setup(
     ],
     packages=["qq", "slabel"],
     include_package_data=True,
-    install_requires=["pandas", "easysparql", "pcake"],
-    # entry_points={
-    #     "console_scripts": [
-    #         "realpython=reader.__main__:main",
-    #     ]
-    # },
+    install_requires=["pandas", "easysparql", "pcake"]
 )
