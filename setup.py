@@ -12,7 +12,7 @@ with open("README.md") as f:
     README = "\n".join(desc_lines)
 # This call to setup() does all the work
 setup(
-    name="qq-plot",
+    name="tada-qq",
     version="2.0.0",
     description="Quantile Quantile Plot with Linear Approximation and Semantic Labelling of Numeric Columns",
     long_description=README,
