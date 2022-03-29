@@ -1,6 +1,20 @@
 import os
-from pandas.api.types import is_numeric_dtype
 import pandas as pd
+from pandas.api.types import is_numeric_dtype
+
+
+def get_data(fname):
+    """
+    :param fname:
+    :return:
+    """
+    a = []
+    f = open(fname)
+    for line in f.readlines():
+        if line.strip() != "":
+            a.append(float(line))
+    f.close()
+    return a
 
 
 def create_dir(adir):
@@ -80,33 +94,18 @@ def get_columns_data(fdir, ids):
     :param fdir:
     :return: list of the pair (colid, list)
     """
-    # print("fdir: ")
-    # print(fdir)
     df = pd.read_csv(fdir, thousands=',')
     numeric_cols = []
     for colid, col in enumerate(df):
         if colid in ids:
-            # pair = (colid, list(df.iloc[:, colid]))
-            # df_col = df[df.columns[colid]]
             h = df.columns[colid]
-
-            # df_clean = df[~df[df.columns[colid]].isnull()]
 
             if not is_numeric_dtype(df[h]):
                 df[h] = df[h].str.replace(',', '').astype(float, errors='ignore')
 
             df_clean = df
-
-            # df['colname'] = df['colname'].str.replace(',', '').astype(float)
-
-            # source: https://stackoverflow.com/questions/42192323/convert-pandas-dataframe-to-float-with-commas-and-negative-numbers
-            # pd.to_numeric(df.str.replace(',',''), errors='coerce')
-            # c = pd.to_numeric(df_clean[h].astype(str).replace(',', ''), errors='coerce')
             c = pd.to_numeric(df_clean[df_clean.columns[colid]], errors='coerce')
             c = c[~c.isnull()]
             pair = (colid, list(c))
-
-            # pair = (colid, list(pd.to_numeric(df_clean[df_clean.columns[colid]], errors='coerce')[~df_clean[df_clean[df_clean.columns[0]]].isnull()]))
-            # pair = (colid, list(pd.to_numeric(df.iloc[:, colid])))
             numeric_cols.append(pair)
     return numeric_cols

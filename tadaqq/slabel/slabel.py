@@ -1,9 +1,9 @@
 import os
 import logging
 from easysparql import easysparqlclass
-from tadaqq.slabel import util
+from tadaqq import util
 from tadaqq.qq.qqe import QQE
-from tadaqq.qq.util import get_data
+from tadaqq.util import get_data
 
 import pcake
 
@@ -93,7 +93,7 @@ class SLabel:
             else:
                 self.logger.debug('less than 30 objects: ' + prop)
 
-    def annotate_column(self, col, class_uri=None, properties_dirs=[], remove_outliers=False, estimate=True, err_meth="mean_err"):
+    def annotate_column(self, col, class_uri=None, properties_dirs=None, remove_outliers=False, estimate=True, err_meth="mean_err"):
         """
         col:
         class_uri:
@@ -101,7 +101,7 @@ class SLabel:
         remove_outliers:
         err_meth
         """
-        if not properties_dirs:
+        if properties_dirs is None:
             if not class_uri:
                 err_msg = "You should either pass the class uri or the properties_dirs"
                 self.logger.error(err_msg)
@@ -175,7 +175,7 @@ class SLabel:
         """
         p_errs: a list of pairs. each pair starts with the error/distance and the filename
             (e.g., <0.1, dbo-Person-abc/dbp-xyz.txt>)
-        correct_uris: a list of correct uris
+        correct_uris: a list of correct uris (transformed to the form e.g., dbp-height)
         diff_diagram: the name of the output diagram showing the difference between the distributions
         The following parameters are only needed for the diff diagram
         class_uri:
@@ -214,7 +214,6 @@ class SLabel:
                     print("%d err: %.2f - <%s> - <%s>" % (idx + 1, item[0], trans_uri, util.property_dir_to_uri(item[1])[1]))
             else:
                 k = 999
-                data = util.get_columns_data(fdir, [col_id])[0][1]
                 prev_property_uri = util.property_dir_to_uri(p_errs[0][1])[1]
                 base_a = os.sep.join(p_errs[0][1].split(os.sep)[:-1])
                 corr_uri = os.path.join(base_a, correct_uris[0] + ".txt")
@@ -223,6 +222,7 @@ class SLabel:
                     print(corr_uri)
                 try:
                     if diff_diagram:
+                        data = util.get_columns_data(fdir, [col_id])[0][1]
                         pcake.compare(class_uri, util.property_dir_to_uri(corr_uri)[1], prev_property_uri,
                                       label1a=" (correct*)",
                                       label2a=" (incorrect)", data=data, data_label="data", outfile=diff_diagram)

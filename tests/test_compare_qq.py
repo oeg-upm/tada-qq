@@ -2,7 +2,7 @@ import unittest
 import os
 import numpy as np
 from tadaqq.qq.qqe import QQE
-from tadaqq.slabel import util
+from tadaqq import util
 from tadaqq.slabel.slabel import SLabel
 
 SPARQL_ENDPOINT = "https://en-dbpedia.oeg.fi.upm.es/sparql"
@@ -20,7 +20,8 @@ class CompareQQ(unittest.TestCase):
         sl = SLabel(endpoint=SPARQL_ENDPOINT, offline_data_dir="local_data")
         data_dir = os.path.join('tests', 'test_files')
         fdir = os.path.join(data_dir, fname)+".csv"
-        preds = sl.annotate_file(fdir=fdir, class_uri=class_uri, cols=[col_id], err_meth=err_meth, remove_outliers=True)
+        preds = sl.annotate_file(fdir=fdir, class_uri=class_uri, cols=[col_id], err_meth=err_meth,
+                                 remove_outliers=remove_outliers)
         trans_p = util.uri_to_fname(p)
         res = sl.eval_column(preds[col_id], correct_uris=[trans_p], class_uri=class_uri, col_id=col_id, fdir=fdir,
                              diff_diagram=None)

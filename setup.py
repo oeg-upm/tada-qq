@@ -4,6 +4,9 @@ from setuptools import setup
 # The directory containing this file
 HERE = pathlib.Path(__file__).parent
 
+description = """Quantile Quantile Plot with Linear Approximation, Clustering, and Semantic Labelling of Numeric Columns
+"""
+
 # The text of the README file
 with open("README.md") as f:
     README = f.read()
@@ -14,7 +17,7 @@ with open("README.md") as f:
 setup(
     name="tada-qq",
     version="2.0.2",
-    description="Quantile Quantile Plot with Linear Approximation and Semantic Labelling of Numeric Columns",
+    description=description,
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/oeg-upm/tada-qq",
@@ -27,7 +30,7 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
     ],
-    packages=["tadaqq.qq", "tadaqq.slabel"],
+    packages=["tadaqq.qq", "tadaqq.slabel", "tadaqq.util"],
     include_package_data=True,
     install_requires=["pandas", "easysparql", "pcake"]
 )

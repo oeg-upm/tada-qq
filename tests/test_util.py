@@ -1,5 +1,5 @@
 import unittest
-from tadaqq.slabel import util
+from tadaqq import util
 import os
 import shutil
 

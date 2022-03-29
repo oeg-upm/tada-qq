@@ -1,20 +1,6 @@
 import math
 
 
-def get_data(fname):
-    """
-    :param fname:
-    :return:
-    """
-    a = []
-    f = open(fname)
-    for line in f.readlines():
-        if line.strip() != "":
-            a.append(float(line))
-    f.close()
-    return a
-
-
 def errors_mean(y_pred, y_real):
     """
     :param y_pred: list of predicted
