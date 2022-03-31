@@ -191,6 +191,7 @@ class SLabel:
         for idx, item in enumerate(p_errs):
             trans_uri = item[1].split('/')[-1][:-4]
             trans_uri = util.uri_to_fname(trans_uri)
+
             if trans_uri in correct_uris:
                 k = idx + 1
                 if print_diff:
@@ -211,7 +212,12 @@ class SLabel:
                     if print_diff:
                         print("Correct uris: %s \t" % str(correct_uris))
                 if print_diff:
-                    print("%d err: %.2f - <%s> - <%s>" % (idx + 1, item[0], trans_uri, util.property_dir_to_uri(item[1])[1]))
+                    print("item: ")
+                    print(item)
+                    if len(item[1]) > 0:
+                        print("%d err: %.2f - <%s> - <%s>" % (idx + 1, item[0], trans_uri, util.property_dir_to_uri(item[1])[1]))
+                    else:
+                        print('empty diff')
             else:
                 k = 999
                 prev_property_uri = util.property_dir_to_uri(p_errs[0][1])[1]
