@@ -30,7 +30,7 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
     ],
-    packages=["tadaqq.qq", "tadaqq.slabel", "tadaqq.util"],
+    packages=["tadaqq.qq", "tadaqq.slabel", "tadaqq.util", 'tadaqq.slabmer'],
     include_package_data=True,
     install_requires=["pandas", "easysparql", "pcake"]
 )

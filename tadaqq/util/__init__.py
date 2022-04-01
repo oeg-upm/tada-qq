@@ -3,6 +3,34 @@ import pandas as pd
 from pandas.api.types import is_numeric_dtype
 
 
+def compute_scores(eval_data, k=1):
+    """
+    """
+    corr = 0
+    incorr = 0
+    notf = 0
+    for d in eval_data:
+        if d == -1:
+            notf += 1
+        elif d <= k:
+            corr += 1
+        elif d < 1:
+            err_msg = "Error: compute_scores> Invalid k <%s>" % str(d)
+            print(err_msg)
+            raise Exception(err_msg)
+        else:
+            incorr += 1
+    if corr == 0:
+        prec = 0
+        rec = 0
+        f1 = 0
+    else:
+        prec = corr / (corr+incorr)
+        rec = corr / (corr+notf)
+        f1 = 2*prec*rec / (prec+rec)
+    return prec, rec, f1
+
+
 def get_data(fname):
     """
     :param fname:

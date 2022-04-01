@@ -16,7 +16,7 @@ class QQTest(unittest.TestCase):
     #     # print("mean sq1 error: %f" % me)
     #     self.assertLess(me, 0.1)
 
-    def test_qq_same_dist_err_sq_and_1(self):
+    def test_qq_same_dist_err_sq_and_1_and_others(self):
         norm_data1 = np.random.normal(size=200)
         norm_data2 = np.random.normal(size=200)
         e = QQE(norm_data1, estimate_quantile=True)
@@ -26,6 +26,12 @@ class QQTest(unittest.TestCase):
         me = e.predict_and_get_error(norm_data2, method="mean_sq1_err")
         # print("mean sq1 error: %f" % me)
         self.assertLess(me, 0.1)
+        me = e.predict_and_get_error(norm_data2, method="mean_err")
+        # print("mean sq1 error: %f" % me)
+        self.assertLess(me, 0.1)
+        me = e.predict_and_get_error(norm_data2, method="mean_sqroot_err")
+        # print("mean sq1 error: %f" % me)
+        self.assertLess(me, 0.16)
 
     def test_qq_same_dist(self):
         norm_data1 = np.random.normal(size=200)
