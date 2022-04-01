@@ -3,6 +3,52 @@ import os
 import pandas as pd
 from tadaqq.clus import Clusterer
 from collections import Counter
+from tadaqq.clus import Clusterer, PMap
+from tadaqq.slabmer import SLabMer
+
+
+def get_test_df():
+    dbp = "http://dbpedia.org/property/"
+    df = pd.DataFrame(
+        [
+            ['AAA', 'fnameaa1', 0, "1,2,3", "%spropa1;%spropa11" % (dbp, dbp)],
+            ['AAA', 'fnameaa2', 0, "1,2,3,4", "%spropa11;%spropa12" % (dbp, dbp)],
+            ['AAA', 'fnameaa3', 1, "1,6,5", "%spropa13;%spropa14;%spropa1" % (dbp, dbp, dbp)],
+
+            ['AAA', 'fnameaa7', 2, "70,60,50", "%spropa3;%spropa31" % (dbp, dbp)],
+            ['AAA', 'fnameaa8', 3, "70,60,50", "%spropa31" % dbp],
+            ['AAA', 'fnameaa9', 1, "80,20,40", "%spropa31;%spropa34;%spropa3" % (dbp, dbp, dbp)],
+
+            ['BBB', 'fnamebb1', 0, "1,2,3", "%spropb1;%spropb11" % (dbp, dbp)],
+            ['BBB', 'fnamebb2', 0, "1,2,3,4", "%spropb11;%spropb12" % (dbp, dbp)],
+            ['BBB', 'fnamebb3', 1, "1,6,5", "%spropb13;%spropb14;%spropb1" % (dbp, dbp, dbp)],
+
+            ['CCC', 'fnamecc1', 0, "1000,2000,3000", "%spropc1;%spropc11" % (dbp, dbp)],
+        ],
+        columns=['concept', 'filename', 'columnid', 'col', 'property']
+    )
+    return df
+
+
+def apply_cluster(df, fetch_method, err_meth, same_class, err_cutoff):
+    clusterer = Clusterer(save_memory=False)
+    pmap = PMap()
+    for idx, row_and_i in enumerate(df.iterrows()):
+        i, row = row_and_i
+        pmap.add(row['property'].split(';'))
+        col = [int(d) for d in row['col'].split(',')]
+        ele = {
+            'class_uri': 'http://dbpedia.org/ontology/' + row['concept'],
+            'col_id': row['columnid'],
+            'fname': row['filename'],
+            'col': col,
+            'num': len(col),
+            'concept': row['concept'],
+            'property': pmap.get(row['property'].split(';')[0]),
+            'properties': row['property'].split(';')
+        }
+        clusterer.column_group_matching(ele, fetch_method, err_meth, err_cutoff, same_class)
+    return clusterer
 
 
 class ClusTest(unittest.TestCase):
@@ -47,14 +93,17 @@ class ClusTest(unittest.TestCase):
         for ele in eles:
             ele['num'] = len(ele['col'])
             clusterer.column_group_matching(ele, fetch_method, err_meth, err_cutoff, False)
-
-        # for g in groups:
-        #     print(g)
-        #     print("=======")
         self.assertEqual(len(groups), 3)
         self.assertEqual(len(groups[0]), 2)
         self.assertEqual(len(groups[1]), 3)
         self.assertEqual(len(groups[2]), 1)
+
+    def test_clusterer(self):
+        df = get_test_df()
+        clusterer = apply_cluster(df, fetch_method="max", err_meth="mean_err", err_cutoff=0.3, same_class=False)
+        self.assertEqual(len(clusterer.groups), 3)
+        clusterer = apply_cluster(df, fetch_method="max", err_meth="mean_err", err_cutoff=0.3, same_class=True)
+        self.assertEqual(len(clusterer.groups), 4)
 
 
 if __name__ == '__main__':
