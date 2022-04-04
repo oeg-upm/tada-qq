@@ -191,7 +191,6 @@ class SLabel:
         for idx, item in enumerate(p_errs):
             trans_uri = item[1].split('/')[-1][:-4]
             trans_uri = util.uri_to_fname(trans_uri)
-
             if trans_uri in correct_uris:
                 k = idx + 1
                 if print_diff:

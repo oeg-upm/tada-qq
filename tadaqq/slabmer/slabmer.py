@@ -64,7 +64,6 @@ class SLabMer:
                 corr_trans_uris = [uri_to_fname(p) for p in ele['properties']]
                 res = self.sl.eval_column([(0.0, ele['candidate'])], correct_uris=corr_trans_uris, print_diff=False)
                 eval_data.append(res)
-
         prec, rec, f1 = compute_scores(eval_data, k=1)
         score = {'prec': prec, 'rec': rec, 'f1': f1}
         return score

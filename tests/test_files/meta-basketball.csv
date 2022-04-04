@@ -1,0 +1,7 @@
+filename,class_uri,columnid,property
+basketballplayers-1.csv,http://dbpedia.org/ontology/BasketballPlayer,1,http://dbpedia.org/ontology/Person/height;http://dbpedia.org/property/height;http://dbpedia.org/property/heightCm
+basketballplayers-1.csv,http://dbpedia.org/ontology/BasketballPlayer,2,http://dbpedia.org/ontology/Person/weight;http://dbpedia.org/property/weight;http://dbpedia.org/property/weightKg
+basketballplayers-2.csv,http://dbpedia.org/ontology/BasketballPlayer,1,http://dbpedia.org/ontology/Person/height;http://dbpedia.org/property/height;http://dbpedia.org/property/heightCm
+basketballplayers-2.csv,http://dbpedia.org/ontology/BasketballPlayer,2,http://dbpedia.org/ontology/Person/weight;http://dbpedia.org/property/weight;http://dbpedia.org/property/weightKg
+basketballplayers-3.csv,http://dbpedia.org/ontology/BasketballPlayer,1,http://dbpedia.org/ontology/Person/height;http://dbpedia.org/property/height;http://dbpedia.org/property/heightCm
+basketballplayers-3.csv,http://dbpedia.org/ontology/BasketballPlayer,2,http://dbpedia.org/ontology/Person/weight;http://dbpedia.org/property/weight;http://dbpedia.org/property/weightKg
