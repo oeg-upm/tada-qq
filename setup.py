@@ -16,7 +16,7 @@ with open("README.md") as f:
 # This call to setup() does all the work
 setup(
     name="tada-qq",
-    version="2.0.3",
+    version="2.1.0",
     description=description,
     long_description=README,
     long_description_content_type="text/markdown",
@@ -30,7 +30,7 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
     ],
-    packages=["tadaqq.qq", "tadaqq.slabel", "tadaqq.util", 'tadaqq.slabmer'],
+    packages=["tadaqq.qq", "tadaqq.slabel", "tadaqq.util", 'tadaqq.slabmer', 'tadaqq.clus'],
     include_package_data=True,
     install_requires=["pandas", "easysparql", "pcake"]
 )
