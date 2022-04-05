@@ -31,7 +31,7 @@ class QQTest(unittest.TestCase):
         self.assertLess(me, 0.1)
         me = e.predict_and_get_error(norm_data2, method="mean_sqroot_err")
         # print("mean sq1 error: %f" % me)
-        self.assertLess(me, 0.2)
+        self.assertLess(me, 0.25)
 
     def test_qq_same_dist(self):
         norm_data1 = np.random.normal(size=200)
