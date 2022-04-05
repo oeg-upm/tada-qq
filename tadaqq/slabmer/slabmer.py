@@ -20,6 +20,7 @@ class SLabMer:
         """
         pred_classes = []
         for ele in group:
+            self.sl.collect_numeric_data(class_uri=ele['class_uri'])
             pred = self.sl.annotate_column(ele['col'], class_uri=ele['class_uri'], remove_outliers=remove_outliers,
                                            estimate=estimate, err_meth=err_meth)
             pred = pred[:k]
