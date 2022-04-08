@@ -25,30 +25,21 @@ class SLabMer:
                                            estimate=estimate, err_meth=err_meth)
             pred = pred[:k]
             ele['preds'] = [perr[1] for perr in pred]
-            # print("preds: ")
-            # print(ele['preds'])
+            ele['candidates'] = []
             for p in ele['preds']:
                 pred_classes.append(p)
         c = Counter(pred_classes)
         freqs = c.most_common()
 
         for ele in group:
-            # print("\nfreqs:")
-            # print(freqs)
             for prop_uri, fre in freqs:
                 if prop_uri in ele['preds']:
-                    ele['candidate'] = prop_uri
-                    # print("candidate found: %s" % prop_uri)
-                    # print("properties: %s" % str(ele['properties']))
-                    break
-                # else:
-                #     print("\n\nNo candidate found")
-                #     print(prop_uri)
-            if 'candidate' not in ele and candidate_failback:
-                if len(ele['preds']) > 0:
-                    ele['candidate'] = ele['preds'][0]
-            if 'candidate' not in ele:
-                ele['candidate'] = ''
+                    ele['candidates'].append(prop_uri)
+
+            if candidate_failback:
+                for p in ele['preds']:
+                    if p not in ele['candidates']:
+                        ele['candidates'].append(p)
 
     def annotate_clusters(self, groups, remove_outliers, estimate, err_meth, candidate_failback, k=3):
         for g in groups:
@@ -63,7 +54,8 @@ class SLabMer:
         for group in groups:
             for ele in group:
                 corr_trans_uris = [uri_to_fname(p) for p in ele['properties']]
-                res = self.sl.eval_column([(0.0, ele['candidate'])], correct_uris=corr_trans_uris, print_diff=False)
+                p_errs = [(0.0, cand) for cand in ele['candidates']]
+                res = self.sl.eval_column(p_errs, correct_uris=corr_trans_uris, print_diff=False)
                 eval_data.append(res)
         prec, rec, f1 = compute_scores(eval_data, k=1)
         score = {'prec': prec, 'rec': rec, 'f1': f1}

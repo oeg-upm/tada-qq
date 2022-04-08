@@ -43,7 +43,7 @@ class SLabMerTest(unittest.TestCase):
     def setUp(self) -> None:
         pass
 
-    def test_slabmer(self):
+    def test_slabmer_perfect(self):
         base_dir = os.path.join('tests', 'test_files')
         meta_df = pd.read_csv(os.path.join(base_dir, 'meta-basketball.csv'))
         clusterer = apply_cluster(meta_df, fetch_method="max", err_meth="mean_err", err_cutoff=0.15, same_class=False)
@@ -52,16 +52,21 @@ class SLabMerTest(unittest.TestCase):
         slabmer.annotate_clusters(clusterer.groups, remove_outliers=False, estimate=True, err_meth="mean_err",
                                   candidate_failback=False, k=1)
         score = slabmer.evaluate_labelling(clusterer.groups)
-        for g in clusterer.groups:
-            print("==========")
-            for ele in g:
-                print("filename: %s" % ele['fname'])
-                print("property: %s" % ele['property'])
-                print("candidate: %s" % ele['candidate'])
-        print(score)
         self.assertEqual(score['prec'], 1.0)
         self.assertEqual(score['rec'], 1.0)
         self.assertEqual(score['f1'], 1.0)
+
+    def test_slabmer_precision(self):
+        base_dir = os.path.join('tests', 'test_files')
+        meta_df = pd.read_csv(os.path.join(base_dir, 'meta-mountain.csv'))
+        clusterer = apply_cluster(meta_df, fetch_method="max", err_meth="mean_err", err_cutoff=0.15, same_class=False)
+        self.assertEqual(len(clusterer.groups), 2)
+        slabmer = SLabMer(SPARQL_ENDPOINT)
+        slabmer.annotate_clusters(clusterer.groups, remove_outliers=False, estimate=True, err_meth="mean_err",
+                                  candidate_failback=False, k=100)
+        score = slabmer.evaluate_labelling(clusterer.groups)
+        self.assertLess(score['prec'], 0.7)
+        self.assertEqual(score['rec'], 1.0)
 
 
 if __name__ == '__main__':

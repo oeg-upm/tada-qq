@@ -16,7 +16,7 @@ with open("README.md") as f:
 # This call to setup() does all the work
 setup(
     name="tada-qq",
-    version="2.1.0",
+    version="2.1.1",
     description=description,
     long_description=README,
     long_description_content_type="text/markdown",

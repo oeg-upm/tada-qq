@@ -1,0 +1,6 @@
+filename,class_uri,columnid,property
+1146722_1_7558140036342906956.tar.gz.csv,http://dbpedia.org/ontology/Mountain,5,http://dbpedia.org/property/elevationFt
+28036255_0_5705563063166785494.tar.gz.csv,http://dbpedia.org/ontology/Mountain,1,http://dbpedia.org/property/elevationM;http://dbpedia.org/ontology/elevation
+28993628_1_6072768612274729703.tar.gz.csv,http://dbpedia.org/ontology/Mountain,2,http://dbpedia.org/property/elevationM;http://dbpedia.org/ontology/elevation
+
+
