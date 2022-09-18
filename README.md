@@ -12,3 +12,5 @@
 TADA (TAbular Data Annotator) for numeric column. It focuses on distributions to label numeric columns in tabular data.
 
 
+# Funding
+This work is partially funded by EIT Digital under the WOODS project.
