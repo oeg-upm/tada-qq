@@ -10,30 +10,37 @@ class Clusterer:
 
     def column_group_matching(self, ele, fetch_method, err_meth, err_cutoff, same_class):
         """
-        Add column to one of the groups (or to a new group)
+            Add column to one of the groups (or to a new group)
         """
         groups = self.groups
         min_idx = None
         min_err = 1
         qq = QQE(list(ele["col"]))
+        # print("\n\n groups: %d" % len(self.groups))
         for idx, g in enumerate(self.groups):
             if not g:
                 print("group None")
                 raise Exception("group is None")
+            # The column to be compared is always placed at index 0. This is done in the add_col_to_group method
             top_ele = g[0]
             if top_ele is None:
                 raise Exception("top_ele is None")
             err = qq.predict_and_get_error(top_ele["col"], method=err_meth, remove_outliers=False)
+            # print("err %f\t%s %s" % (err, ele['property'], top_ele['property']))
             if err < min_err:
                 if same_class and top_ele["concept"] != ele["concept"]:
+                    # print("class skip")
                     continue
                 min_idx = idx
                 min_err = err
 
         if min_err < err_cutoff:
+            # print("append cluster")
             group = self.add_col_to_group(ele, groups[min_idx], fetch_method)
             groups[min_idx] = group
         else:
+            # print("new cluster")
+            # print("min %f" % min_err)
             groups.append([ele])
         if groups[-1] is None:
             print(ele)

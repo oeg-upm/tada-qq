@@ -63,8 +63,8 @@ class SLabel:
         if os.path.exists(class_dir):
             return
         util.create_dir(class_dir)
-        print("prop query: ")
-        print(prop_query)
+        # print("prop query: ")
+        # print(prop_query)
         results = self.esparql.run_query(prop_query)
         properties = [r['p']['value'] for r in results]
 
@@ -185,7 +185,7 @@ class SLabel:
         """
         k = -1
         if len(correct_uris) == 0:
-            print("No correct uris as passed")
+            print("No correct uris are passed")
             print(p_errs)
             raise Exception("No correct uris are passed")
         for idx, item in enumerate(p_errs):
@@ -219,7 +219,6 @@ class SLabel:
                         print('empty diff')
             else:
                 k = 999
-                prev_property_uri = util.property_dir_to_uri(p_errs[0][1])[1]
                 base_a = os.sep.join(p_errs[0][1].split(os.sep)[:-1])
                 corr_uri = os.path.join(base_a, correct_uris[0] + ".txt")
                 if print_diff:
@@ -227,6 +226,7 @@ class SLabel:
                     print(corr_uri)
                 try:
                     if diff_diagram:
+                        prev_property_uri = util.property_dir_to_uri(p_errs[0][1])[1]
                         data = util.get_columns_data(fdir, [col_id])[0][1]
                         pcake.compare(class_uri, util.property_dir_to_uri(corr_uri)[1], prev_property_uri,
                                       label1a=" (correct*)",

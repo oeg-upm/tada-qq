@@ -13,10 +13,11 @@ with open("README.md") as f:
     lines = README.split('\n')
     desc_lines = [line for line in lines if line[:2] != "[!"]
     README = "\n".join(desc_lines)
+    README += "\n"
 # This call to setup() does all the work
 setup(
     name="tada-qq",
-    version="2.2.0",
+    version="2.3.0",
     description=description,
     long_description=README,
     long_description_content_type="text/markdown",

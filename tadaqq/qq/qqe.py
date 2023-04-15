@@ -95,6 +95,41 @@ class QQE:
             predicted_quantiles.append(y)
         return predicted_quantiles
 
+    def estimate_datum_from_quantile(self, quantile):
+        """
+        This function is not needed for the quantile quantile plot used for semantic labelling
+        But, it could be useful for other use cases
+        :param quantile: float
+        :return: datum: float
+
+        Limitation:
+            if m = 0:
+                it will try to find an adjacent m .
+                If not, m will be set to 1 (45 degree slop)
+        """
+        y = quantile
+        if y < 0 or y > 1:
+            err_msg = "Error: quantile should be between 0 and 1"
+            print(err_msg)
+            raise Exception(err_msg)
+
+        for i, q in enumerate(self.estimated_base_eq):
+            if quantile <= q:
+                m = self.ms[i+1]
+                b = self.bs[i+1]
+
+                if m <= 0:
+                    if i == 0:
+                        m = self.ms[1]  # * 0.5
+                        b = self.bs[1]
+                    else:
+                        m = self.ms[-2]  # * 0.5
+                        b = self.bs[-2]
+                    if m == 0:
+                        m = 1
+                data_point = (y - b) / m
+                return data_point
+
     def estimate_datum_quantile(self, data_point):
         """
         :param data_point: float

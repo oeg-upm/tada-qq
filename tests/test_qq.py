@@ -59,6 +59,15 @@ class QQTest(unittest.TestCase):
         estimated_base_eq = e._estimate_base_quantiles(d)
         self.assertListEqual([0.5/3, 1.5/3, 2.5/3], estimated_base_eq)
 
+    def test_qq_estimate_values(self):
+        d = [1, 5, 10]
+        e = QQE(d, remove_outliers=False)
+        estimated_base_eq = e._estimate_base_quantiles(d)
+        qs = [0.5/3, 1.5/3, 2.5/3]
+        estimated_values = [e.estimate_datum_from_quantile(q) for q in qs]
+        self.assertListEqual(qs, estimated_base_eq)
+        self.assertListEqual(d, estimated_values)
+
     def test_qq_exact_quantiles(self):
         d = [1, 5, 10]
         e = QQE(d, remove_outliers=False, estimate_quantile=False)
