@@ -12,8 +12,13 @@
 TADA (TAbular Data Annotator) for numeric column. It focuses on distributions to label numeric columns in tabular data.
 
 
+
 # To publish
 ```
 python setup.py sdist bdist_wheel
 twine upload dist/*
 ```
+
+# Funding
+This work was funded partially by EIT Digital under the WOODS project.
+
